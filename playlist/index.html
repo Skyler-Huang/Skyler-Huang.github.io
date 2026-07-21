@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>聆听列表 - Skyler Huang</title>
+    <style>
+        :root {
+            --paper: #faf7f2;
+            --card-bg: #ffffff;
+            --ink: #2c2416;
+            --ink-secondary: #5c5347;
+            --ink-muted: #8a8175;
+            --pine: #2d4a37;
+            --pine-light: #3a5c47;
+            --pine-pale: rgba(45, 74, 55, 0.06);
+            --pine-glow: rgba(45, 74, 55, 0.14);
+            --bronze: #a0783c;
+            --bronze-light: #c49a4c;
+            --bronze-dark: #8a5f2f;
+            --bronze-pale: rgba(160, 120, 60, 0.08);
+            --bronze-glow: rgba(160, 120, 60, 0.20);
+            --border-subtle: #e8e2d8;
+            --border-card: #ede7dd;
+            --border-input: #e0d9cd;
+            --shadow-sm: 0 1px 3px rgba(44, 36, 22, 0.04);
+            --shadow-md: 0 3px 12px rgba(44, 36, 22, 0.07);
+            --shadow-lg: 0 6px 24px rgba(44, 36, 22, 0.10);
+            --shadow-xl: 0 10px 36px rgba(44, 36, 22, 0.14);
+            --radius-sm: 5px;
+            --radius-md: 10px;
+            --radius-lg: 14px;
+            --radius-xl: 18px;
+            --radius-full: 50%;
+            --transition: 0.30s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-fast: 0.20s cubic-bezier(0.4, 0, 0.2, 1);
+            --font-serif: 'Noto Serif SC', 'Source Han Serif SC', 'STSong', 'Songti SC', 'SimSun', 'KaiTi', '楷体', 'Georgia', 'Times New Roman', serif;
+            --font-sans: 'Inter', 'PingFang SC', 'Hiragino Sans GB', 'Noto Sans SC', 'Microsoft YaHei', 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--paper);
+            color: var(--ink);
+            font-family: var(--font-sans);
+            line-height: 1.7;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            overflow-x: hidden;
+            background-image:
+                radial-gradient(ellipse at 18% 10%, rgba(196, 154, 76, 0.025) 0%, transparent 55%),
+                radial-gradient(ellipse at 82% 88%, rgba(45, 74, 55, 0.02) 0%, transparent 55%),
+                radial-gradient(ellipse at 50% 50%, rgba(160, 120, 60, 0.015) 0%, transparent 70%);
+        }
+
+        /* 顶部装饰线 */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg,
+                    var(--pine) 0%,
+                    var(--bronze-light) 25%,
+                    var(--pine-light) 50%,
+                    var(--bronze) 75%,
+                    var(--pine) 100%);
+            z-index: 100;
+            box-shadow: 0 1px 6px rgba(45, 74, 55, 0.12);
+        }
+
+        /* 主容器 */
+        .main-container {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 640px;
+            padding: 36px 22px 24px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            min-height: 100vh;
+        }
+
+        /* ========== 返回首页 ========== */
+        .back-link-wrapper {
+            margin-bottom: 8px;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            text-decoration: none;
+            color: var(--pine);
+            font-size: 0.88rem;
+            font-weight: 500;
+            letter-spacing: 0.02em;
+            padding: 7px 14px 7px 9px;
+            border-radius: 20px;
+            transition: var(--transition);
+            background: transparent;
+            white-space: nowrap;
+        }
+
+        .back-link:hover {
+            background-color: var(--pine-pale);
+            color: #1f3627;
+            transform: translateX(-2px);
+        }
+        .back-link:active {
+            transform: scale(0.95);
+            background-color: rgba(45, 74, 55, 0.12);
+        }
+        .back-link svg {
+            flex-shrink: 0;
+            transition: transform 0.3s ease;
+        }
+        .back-link:hover svg {
+            transform: translateX(-3px);
+        }
+
+        /* ========== 页面头部 ========== */
+        .page-header {
+            text-align: left;
+            margin-bottom: 28px;
+            padding-top: 2px;
+            position: relative;
+        }
+
+        .header-label {
+            display: inline-block;
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.13em;
+            color: var(--bronze);
+            font-weight: 600;
+            margin-bottom: 6px;
+            padding: 3px 12px;
+            background: var(--bronze-pale);
+            border-radius: 20px;
+            border: 1px solid rgba(160, 120, 60, 0.15);
+        }
+
+        .page-title {
+            font-family: var(--font-serif);
+            font-size: 1.9rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            color: var(--pine);
+            margin: 8px 0 2px;
+            line-height: 1.25;
+        }
+
+        .page-desc {
+            font-size: 0.9rem;
+            color: var(--ink-muted);
+            font-weight: 400;
+            letter-spacing: 0.03em;
+            margin-top: 4px;
+        }
+
+        .page-subject {
+            display: inline-block;
+            font-size: 0.76rem;
+            color: var(--ink-muted);
+            letter-spacing: 0.05em;
+            margin-top: 6px;
+            padding: 4px 14px;
+            background: rgba(45, 74, 55, 0.04);
+            border-radius: 14px;
+            border: 1px solid rgba(45, 74, 55, 0.08);
+            font-style: italic;
+        }
+
+        .header-ornament {
+            display: block;
+            width: 44px;
+            height: 2px;
+            background: linear-gradient(90deg, var(--bronze-light), var(--bronze), transparent);
+            border-radius: 1px;
+            margin-top: 13px;
+            opacity: 0.7;
+        }
+
+        /* ========== 列表 ========== */
+        .playlist {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        /* ========== 单条推荐卡片 ========== */
+        .track-card {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            background-color: var(--card-bg);
+            border-radius: var(--radius-lg);
+            padding: 16px 18px;
+            border: 1.5px solid var(--border-card);
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+            position: relative;
+            cursor: default;
+            -webkit-tap-highlight-color: transparent;
+            overflow: hidden;
+        }
+
+        .track-card:hover {
+            border-color: rgba(160, 120, 60, 0.28);
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+            background-color: #fffefc;
+        }
+        .track-card:active {
+            transform: scale(0.985);
+            box-shadow: var(--shadow-sm);
+            transition: 0.10s ease;
+        }
+
+        /* 左侧装饰条 */
+        .track-card::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 14px;
+            bottom: 14px;
+            width: 3px;
+            background: var(--pine-light);
+            border-radius: 0 2px 2px 0;
+            opacity: 0.35;
+            transition: var(--transition);
+        }
+        .track-card:hover::before {
+            opacity: 0.65;
+            background: var(--bronze-light);
+        }
+
+        /* ========== 封面占位 ========== */
+        .cover-placeholder {
+            flex-shrink: 0;
+            width: 64px;
+            height: 64px;
+            border-radius: var(--radius-md);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(44, 36, 22, 0.12), 0 1px 2px rgba(0, 0, 0, 0.06);
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .track-card:hover .cover-placeholder {
+            box-shadow: 0 4px 16px rgba(44, 36, 22, 0.20), 0 2px 4px rgba(0, 0, 0, 0.10);
+            transform: scale(1.05);
+        }
+
+        /* 封面光泽叠加 */
+        .cover-placeholder::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            z-index: 2;
+            pointer-events: none;
+            background: linear-gradient(135deg,
+                    rgba(255, 255, 255, 0.13) 0%,
+                    rgba(255, 255, 255, 0.03) 40%,
+                    rgba(0, 0, 0, 0.03) 65%,
+                    rgba(0, 0, 0, 0.08) 100%);
+            border-radius: inherit;
+        }
+
+        /* 书脊光 */
+        .cover-placeholder::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 5px;
+            height: 100%;
+            background: linear-gradient(90deg,
+                    rgba(0, 0, 0, 0.14) 0%,
+                    rgba(0, 0, 0, 0.04) 40%,
+                    transparent 100%);
+            z-index: 3;
+            pointer-events: none;
+            border-radius: var(--radius-md) 0 0 var(--radius-md);
+        }
+
+        .cover-icon {
+            position: relative;
+            z-index: 1;
+            width: 28px;
+            height: 28px;
+            opacity: 0.7;
+            transition: var(--transition-fast);
+            pointer-events: none;
+        }
+        .track-card:hover .cover-icon {
+            opacity: 0.9;
+            transform: scale(1.1);
+        }
+
+        /* ---- 各封面配色 ---- */
+        .cover-symphony {
+            background: linear-gradient(160deg, #1a3c34 0%, #234d41 35%, #17352d 100%);
+            color: #d4b06a;
+        }
+        .cover-piano {
+            background: linear-gradient(160deg, #2a3a4a 0%, #354a5e 35%, #1f2d3a 100%);
+            color: #c0b898;
+        }
+        .cover-podcast {
+            background: linear-gradient(160deg, #5c3d2e 0%, #6d4a37 35%, #4e3224 100%);
+            color: #e0c090;
+        }
+        .cover-cello {
+            background: linear-gradient(160deg, #2d3e32 0%, #3a4f42 35%, #24352a 100%);
+            color: #c8b880;
+        }
+        .cover-ambient {
+            background: linear-gradient(160deg, #3a3548 0%, #4a445a 35%, #2d2a3a 100%);
+            color: #d0c8b0;
+        }
+
+        /* ========== 文字信息区域 ========== */
+        .track-info {
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+
+        .track-title {
+            font-family: var(--font-serif);
+            font-size: 1.02rem;
+            font-weight: 700;
+            letter-spacing: 0.03em;
+            color: var(--pine);
+            line-height: 1.35;
+            margin: 0;
+        }
+
+        .track-artist {
+            font-size: 0.82rem;
+            color: var(--ink-secondary);
+            letter-spacing: 0.02em;
+            font-weight: 480;
+            line-height: 1.4;
+        }
+
+        .track-artist::before {
+            content: '';
+            display: inline-block;
+            width: 10px;
+            height: 1px;
+            background: var(--bronze-light);
+            vertical-align: middle;
+            margin-right: 7px;
+            opacity: 0.5;
+        }
+
+        .track-note {
+            font-size: 0.80rem;
+            color: var(--ink-muted);
+            letter-spacing: 0.02em;
+            line-height: 1.5;
+            font-style: italic;
+            margin-top: 1px;
+            padding-left: 12px;
+            border-left: 2px solid var(--bronze-light);
+            border-radius: 0 3px 3px 0;
+        }
+
+        /* 微小的播放图标装饰 */
+        .track-play-hint {
+            flex-shrink: 0;
+            width: 28px;
+            height: 28px;
+            border-radius: var(--radius-full);
+            border: 1.5px solid #d5c8b0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0.35;
+            transition: var(--transition-fast);
+            color: var(--bronze-light);
+            align-self: center;
+            margin-left: auto;
+        }
+        .track-card:hover .track-play-hint {
+            opacity: 0.65;
+            border-color: var(--bronze-light);
+            background-color: rgba(196, 154, 76, 0.06);
+        }
+        .track-play-hint svg {
+            width: 11px;
+            height: 11px;
+            pointer-events: none;
+        }
+
+        /* ========== 底部版权 ========== */
+        .page-footer {
+            text-align: center;
+            margin-top: 38px;
+            padding: 18px 0 8px;
+            color: var(--ink-muted);
+            font-size: 0.78rem;
+            letter-spacing: 0.04em;
+            position: relative;
+        }
+
+        .page-footer::before {
+            content: '';
+            display: block;
+            width: 56px;
+            height: 1.5px;
+            background: linear-gradient(90deg, transparent, var(--bronze-light), var(--bronze), transparent);
+            margin: 0 auto 16px;
+            border-radius: 1px;
+            opacity: 0.55;
+        }
+
+        .page-footer .footer-dot {
+            display: inline-block;
+            width: 4px;
+            height: 4px;
+            background-color: #d4c8b0;
+            border-radius: 50%;
+            margin: 0 8px;
+            vertical-align: middle;
+        }
+
+        .page-footer a {
+            color: var(--pine);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .page-footer a:hover {
+            color: #1f3627;
+            text-decoration: underline;
+            text-underline-offset: 3px;
+            text-decoration-thickness: 1px;
+        }
+
+        /* ========== 响应式设计 ========== */
+        @media (max-width: 600px) {
+            .main-container {
+                padding: 22px 12px 16px;
+                max-width: 100%;
+            }
+
+            .page-header {
+                margin-bottom: 20px;
+            }
+            .page-title {
+                font-size: 1.5rem;
+            }
+            .page-desc {
+                font-size: 0.80rem;
+            }
+            .page-subject {
+                font-size: 0.70rem;
+                padding: 3px 11px;
+                margin-top: 5px;
+            }
+            .header-label {
+                font-size: 0.66rem;
+                padding: 2px 10px;
+            }
+
+            .playlist {
+                gap: 9px;
+            }
+
+            .track-card {
+                padding: 13px 14px;
+                gap: 12px;
+                border-radius: var(--radius-md);
+            }
+            .track-card::before {
+                top: 10px;
+                bottom: 10px;
+                width: 2.5px;
+            }
+
+            .cover-placeholder {
+                width: 50px;
+                height: 50px;
+                border-radius: var(--radius-sm);
+            }
+            .cover-placeholder::before {
+                width: 4px;
+            }
+            .cover-icon {
+                width: 22px;
+                height: 22px;
+            }
+
+            .track-info {
+                gap: 2px;
+            }
+            .track-title {
+                font-size: 0.92rem;
+            }
+            .track-artist {
+                font-size: 0.74rem;
+            }
+            .track-note {
+                font-size: 0.72rem;
+                padding-left: 9px;
+                border-left-width: 1.5px;
+            }
+
+            .track-play-hint {
+                width: 24px;
+                height: 24px;
+                border-width: 1.3px;
+            }
+            .track-play-hint svg {
+                width: 9px;
+                height: 9px;
+            }
+
+            .back-link {
+                font-size: 0.80rem;
+                padding: 6px 11px 6px 7px;
+            }
+            .page-footer {
+                margin-top: 26px;
+                font-size: 0.70rem;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .main-container {
+                padding: 16px 8px 10px;
+            }
+            .playlist {
+                gap: 7px;
+            }
+            .track-card {
+                padding: 11px 10px;
+                gap: 10px;
+                border-radius: var(--radius-sm);
+            }
+            .track-card::before {
+                top: 8px;
+                bottom: 8px;
+                width: 2px;
+            }
+
+            .cover-placeholder {
+                width: 42px;
+                height: 42px;
+                border-radius: 4px;
+            }
+            .cover-placeholder::before {
+                width: 3px;
+            }
+            .cover-icon {
+                width: 19px;
+                height: 19px;
+            }
+
+            .track-title {
+                font-size: 0.84rem;
+            }
+            .track-artist {
+                font-size: 0.69rem;
+            }
+            .track-note {
+                font-size: 0.67rem;
+                padding-left: 7px;
+                border-left-width: 1.2px;
+            }
+
+            .track-play-hint {
+                width: 22px;
+                height: 22px;
+                border-width: 1.1px;
+            }
+            .track-play-hint svg {
+                width: 8px;
+                height: 8px;
+            }
+
+            .page-title {
+                font-size: 1.30rem;
+            }
+            .page-desc {
+                font-size: 0.72rem;
+            }
+            .page-subject {
+                font-size: 0.64rem;
+                padding: 2px 9px;
+            }
+            .page-footer {
+                margin-top: 20px;
+                font-size: 0.64rem;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .main-container {
+                padding-top: 44px;
+                max-width: 660px;
+            }
+            .page-title {
+                font-size: 2.1rem;
+            }
+            .track-card {
+                padding: 18px 22px;
+                gap: 18px;
+            }
+            .cover-placeholder {
+                width: 70px;
+                height: 70px;
+            }
+            .cover-icon {
+                width: 30px;
+                height: 30px;
+            }
+            .track-title {
+                font-size: 1.08rem;
+            }
+            .track-note {
+                font-size: 0.83rem;
+            }
+            .track-play-hint {
+                width: 30px;
+                height: 30px;
+            }
+            .track-play-hint svg {
+                width: 12px;
+                height: 12px;
+            }
+        }
+
+        /* 减弱动画偏好 */
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <main class="main-container">
+
+        <!-- 返回首页 -->
+        <div class="back-link-wrapper">
+            <a href="/" class="back-link" aria-label="返回首页">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+                返回首页
+            </a>
+        </div>
+
+        <!-- 页面头部 -->
+        <header class="page-header">
+            <span class="header-label">Listening</span>
+            <h1 class="page-title">聆听列表</h1>
+            <p class="page-desc">🎧 最近在听 · 持续扩建中</p>
+            <span class="page-subject">古典乐与新古典乐 · 中华文艺鉴赏</span>
+            <span class="header-ornament"></span>
+        </header>
+
+        <!-- 推荐列表 -->
+        <ul class="playlist">
+
+            <!-- 1. 贝多芬第九交响曲 -->
+            <li>
+                <article class="track-card">
+                    <div class="cover-placeholder cover-symphony" aria-hidden="true">
+                        <svg class="cover-icon" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="16" cy="16" r="11" stroke="currentColor" stroke-width="1.5" fill="none" />
+                            <circle cx="16" cy="16" r="4" fill="currentColor" opacity="0.55" />
+                            <line x1="16" y1="5" x2="16" y2="10" stroke="currentColor" stroke-width="1.2" opacity="0.5" stroke-linecap="round" />
+                            <line x1="16" y1="22" x2="16" y2="27" stroke="currentColor" stroke-width="1.2" opacity="0.5" stroke-linecap="round" />
+                            <line x1="5" y1="16" x2="10" y2="16" stroke="currentColor" stroke-width="1.2" opacity="0.5" stroke-linecap="round" />
+                            <line x1="22" y1="16" x2="27" y2="16" stroke="currentColor" stroke-width="1.2" opacity="0.5" stroke-linecap="round" />
+                        </svg>
+                    </div>
+                    <div class="track-info">
+                        <h2 class="track-title">第九交响曲 "合唱"</h2>
+                        <p class="track-artist">柏林爱乐乐团 / 赫伯特·冯·卡拉扬</p>
+                        <p class="track-note">欢乐颂的永恒光芒，人类精神的巅峰之作。</p>
+                    </div>
+                    <div class="track-play-hint" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <polygon points="8,5 19,12 8,19" />
+                        </svg>
+                    </div>
+                </article>
+            </li>
+
+            <!-- 2. Max Richter - The Blue Notebooks -->
+            <li>
+                <article class="track-card">
+                    <div class="cover-placeholder cover-piano" aria-hidden="true">
+                        <svg class="cover-icon" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="4" y="14" width="24" height="12" rx="1.5" stroke="currentColor" stroke-width="1.5" fill="none" />
+                            <line x1="8" y1="14" x2="8" y2="6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
+                            <line x1="12" y1="14" x2="12" y2="6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
+                            <line x1="16" y1="14" x2="16" y2="6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
+                            <line x1="20" y1="14" x2="20" y2="6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
+                            <line x1="24" y1="14" x2="24" y2="6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
+                            <line x1="6" y1="18" x2="26" y2="18" stroke="currentColor" stroke-width="0.7" opacity="0.35" />
+                        </svg>
+                    </div>
+                    <div class="track-info">
+                        <h2 class="track-title">The Blue Notebooks</h2>
+                        <p class="track-artist">Max Richter</p>
+                        <p class="track-note">当代新古典的里程碑，钢琴与弦乐的极简诗意。</p>
+                    </div>
+                    <div class="track-play-hint" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <polygon points="8,5 19,12 8,19" />
+                        </svg>
+                    </div>
+                </article>
+            </li>
+
+            <!-- 3. 文化有限播客 -->
+            <li>
+                <article class="track-card">
+                    <div class="cover-placeholder cover-podcast" aria-hidden="true">
+                        <svg class="cover-icon" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="10" y="6" width="12" height="15" rx="6" stroke="currentColor" stroke-width="1.5" fill="none" />
+                            <rect x="13" y="22" width="6" height="4" rx="1.5" stroke="currentColor" stroke-width="1.3" fill="none" />
+                            <line x1="16" y1="26" x2="16" y2="29" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
+                            <line x1="13" y1="29" x2="19" y2="29" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" />
+                            <circle cx="14" cy="12" r="1.2" fill="currentColor" opacity="0.5" />
+                            <circle cx="18" cy="12" r="1.2" fill="currentColor" opacity="0.5" />
+                        </svg>
+                    </div>
+                    <div class="track-info">
+                        <h2 class="track-title">文化有限</h2>
+                        <p class="track-artist">星光 / 大壹 / 超哥</p>
+                        <p class="track-note">三位媒体人的文艺漫谈，书影音中的生活观察。</p>
+                    </div>
+                    <div class="track-play-hint" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <polygon points="8,5 19,12 8,19" />
+                        </svg>
+                    </div>
+                </article>
+            </li>
+
+            <!-- 4. 巴赫无伴奏大提琴组曲 -->
+            <li>
+                <article class="track-card">
+                    <div class="cover-placeholder cover-cello" aria-hidden="true">
+                        <svg class="cover-icon" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <ellipse cx="16" cy="10" rx="6" ry="3.5" stroke="currentColor" stroke-width="1.5" fill="none" />
+                            <line x1="16" y1="13.5" x2="16" y2="24" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                            <ellipse cx="16" cy="24" rx="5" ry="2.5" stroke="currentColor" stroke-width="1.3" fill="none" />
+                            <line x1="10" y1="16" x2="8" y2="19" stroke="currentColor" stroke-width="1" opacity="0.45" stroke-linecap="round" />
+                            <line x1="22" y1="16" x2="24" y2="19" stroke="currentColor" stroke-width="1" opacity="0.45" stroke-linecap="round" />
+                        </svg>
+                    </div>
+                    <div class="track-info">
+                        <h2 class="track-title">无伴奏大提琴组曲</h2>
+                        <p class="track-artist">约翰·塞巴斯蒂安·巴赫 / 马友友</p>
+                        <p class="track-note">弓弦间的建筑之美，跨越三个世纪的灵魂对话。</p>
+                    </div>
+                    <div class="track-play-hint" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <polygon points="8,5 19,12 8,19" />
+                        </svg>
+                    </div>
+                </article>
+            </li>
+
+            <!-- 5. Ólafur Arnalds - some kind of peace -->
+            <li>
+                <article class="track-card">
+                    <div class="cover-placeholder cover-ambient" aria-hidden="true">
+                        <svg class="cover-icon" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="16" cy="16" r="12" stroke="currentColor" stroke-width="1.5" fill="none" />
+                            <circle cx="16" cy="16" r="6" stroke="currentColor" stroke-width="1.1" fill="none" opacity="0.5" />
+                            <circle cx="16" cy="16" r="2" fill="currentColor" opacity="0.55" />
+                            <path d="M10 8 Q16 4 22 8" stroke="currentColor" stroke-width="1" fill="none" opacity="0.35" stroke-linecap="round" />
+                            <path d="M10 24 Q16 28 22 24" stroke="currentColor" stroke-width="1" fill="none" opacity="0.35" stroke-linecap="round" />
+                        </svg>
+                    </div>
+                    <div class="track-info">
+                        <h2 class="track-title">some kind of peace</h2>
+                        <p class="track-artist">Ólafur Arnalds</p>
+                        <p class="track-note">冰岛音乐人的氛围诗篇，电子与弦乐的温柔融合。</p>
+                    </div>
+                    <div class="track-play-hint" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <polygon points="8,5 19,12 8,19" />
+                        </svg>
+                    </div>
+                </article>
+            </li>
+
+        </ul>
+
+        <!-- 底部版权 -->
+        <footer class="page-footer">
+            <span>&copy; 2024 Skyler Huang</span>
+            <span class="footer-dot"></span>
+            <span>推荐曲目持续更新中</span>
+            <span class="footer-dot"></span>
+            <a href="/">返回首页</a>
+        </footer>
+
+    </main>
+
+</body>
+</html>
