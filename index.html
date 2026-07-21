@@ -390,6 +390,59 @@
             transform: translateY(-7px) rotate(-45deg);
         }
 
+        /* 新增：阅读进度条 */
+        .progress-bar {
+            position: fixed;
+            top: var(--nav-height);
+            left: 0;
+            width: 100%;
+            height: 3px;
+            z-index: 999;
+            background-color: rgba(180, 155, 127, 0.25);
+            pointer-events: none;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            width: 0%;
+            background-color: var(--primary);
+            transition: width 0.1s linear;
+        }
+
+        /* 新增：返回顶部按钮 */
+        .back-to-top {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 999;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            color: #ffffff;
+            border: none;
+            cursor: pointer;
+            font-size: 1.25rem;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity var(--transition-normal), transform var(--transition-normal), box-shadow var(--transition-normal);
+            box-shadow: var(--shadow-md);
+        }
+
+        .back-to-top:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
         /* ========== 主体容器 ========== */
         .main-container {
             max-width: var(--max-width);
@@ -502,6 +555,21 @@
             padding: 2px 8px;
             border-radius: 3px;
             letter-spacing: 0.02em;
+        }
+
+        /* 新增：联系我卡片内的链接样式 */
+        .card-contact-link {
+            display: block;
+            font-size: 0.82rem;
+            color: var(--accent);
+            text-decoration: none;
+            line-height: 1.8;
+            transition: color var(--transition-fast);
+        }
+
+        .card-contact-link:hover {
+            color: var(--primary);
+            text-decoration: underline;
         }
 
         /* ========== 灰色占位区块 ========== */
@@ -722,6 +790,15 @@
                 padding: 16px 16px 28px;
                 font-size: 0.76rem;
             }
+
+            /* 新增：移动端返回顶部按钮 */
+            .back-to-top {
+                width: 40px;
+                height: 40px;
+                bottom: 16px;
+                right: 16px;
+                font-size: 1rem;
+            }
         }
 
         /* ========== 响应式：平板 ========== */
@@ -825,6 +902,11 @@
         </div>
     </nav>
 
+    <!-- 新增：阅读进度条 -->
+    <div class="progress-bar" id="progressBar" aria-hidden="true">
+        <div class="progress-bar-fill" id="progressBarFill"></div>
+    </div>
+
     <!-- ==================== 头部区域 ==================== -->
     <header class="header" id="header">
         <div class="header-inner">
@@ -853,102 +935,44 @@
     <main class="main-container" id="mainContainer">
 
         <!-- ========== 专业 分类区域 ========== -->
+        <!-- 修改：卡片由 JS 动态生成，移除了硬编码的 <a> 卡片元素 -->
         <section class="section-block" id="section-professional" aria-labelledby="heading-professional">
             <h2 class="section-heading" id="heading-professional">专业</h2>
-            <div class="card-grid">
-                <!-- 卡片：关于我 -->
-                <a href="/about/" class="card" data-card>
-                    <span class="card-title">关于我</span>
-                    <span class="card-desc">了解更多背景、经历与方向</span>
-                </a>
-                <!-- 卡片：学习笔记 -->
-                <a href="/blog/" class="card" data-card>
-                    <span class="card-title">学习笔记</span>
-                    <span class="card-desc">会计、审计与财务数字化的思考碎片</span>
-                </a>
+            <div class="card-grid" id="cardGrid-professional">
+                <!-- 卡片由 JS 动态渲染 -->
             </div>
             <!-- 灰色占位区块 -->
             <div class="placeholder-block" data-placeholder>更多功能持续扩展中</div>
         </section>
 
         <!-- ========== 工具 分类区域 ========== -->
+        <!-- 修改：卡片由 JS 动态生成，移除了硬编码的 <a> 卡片元素 -->
         <section class="section-block" id="section-tools" aria-labelledby="heading-tools">
             <h2 class="section-heading" id="heading-tools">工具</h2>
-            <div class="card-grid">
-                <!-- 卡片：记账打卡工具 -->
-                <a href="/recording/" class="card" data-card>
-                    <span class="card-title">记账打卡工具</span>
-                    <span class="card-desc">日常记账与习惯追踪</span>
-                </a>
-                <!-- 卡片：体重饮食记录 -->
-                <a href="/weight/" class="card" data-card>
-                    <span class="card-title">体重饮食记录</span>
-                    <span class="card-desc">记录每日体重、饮食与运动</span>
-                    <span class="card-warning">⚠️ 数据存储功能异常，正在修复</span>
-                </a>
+            <div class="card-grid" id="cardGrid-tools">
+                <!-- 卡片由 JS 动态渲染 -->
             </div>
             <!-- 灰色占位区块 -->
             <div class="placeholder-block" data-placeholder>更多功能持续扩展中</div>
         </section>
 
         <!-- ========== 生活 分类区域 ========== -->
+        <!-- 修改：卡片由 JS 动态生成，移除了硬编码的 <a> 卡片元素 -->
         <section class="section-block" id="section-life" aria-labelledby="heading-life">
             <h2 class="section-heading" id="heading-life">生活</h2>
-            <div class="card-grid">
-                <!-- 卡片：当前状态 -->
-                <a href="/now/" class="card" data-card>
-                    <span class="card-title">当前状态</span>
-                    <span class="card-desc">我正在做什么</span>
-                </a>
-                <!-- 卡片：书单/读书笔记 -->
-                <a href="/reading/" class="card" data-card>
-                    <span class="card-title">书单/读书笔记</span>
-                    <span class="card-desc">阅读记录与感想</span>
-                </a>
-                <!-- 卡片：随手拍 -->
-                <a href="/photos/" class="card" data-card>
-                    <span class="card-title">随手拍</span>
-                    <span class="card-desc">日常影像碎片</span>
-                </a>
-                <!-- 卡片：最近在听 -->
-                <a href="/playlist/" class="card" data-card>
-                    <span class="card-title">最近在听</span>
-                    <span class="card-desc">音乐与播客推荐</span>
-                </a>
-                <!-- 卡片：旅行记录 -->
-                <a href="/travel/" class="card" data-card>
-                    <span class="card-title">旅行记录</span>
-                    <span class="card-desc">去过的地方</span>
-                </a>
-                <!-- 卡片：收集的句子 -->
-                <a href="/quotes/" class="card" data-card>
-                    <span class="card-title">收集的句子</span>
-                    <span class="card-desc">喜欢的文字片段</span>
-                </a>
+            <div class="card-grid" id="cardGrid-life">
+                <!-- 卡片由 JS 动态渲染 -->
             </div>
             <!-- 灰色占位区块 -->
             <div class="placeholder-block" data-placeholder>更多功能持续扩展中</div>
         </section>
 
         <!-- ========== 连接 分类区域 ========== -->
+        <!-- 修改：卡片由 JS 动态生成，移除了硬编码的 <a> 卡片元素 -->
         <section class="section-block" id="section-connect" aria-labelledby="heading-connect">
             <h2 class="section-heading" id="heading-connect">连接</h2>
-            <div class="card-grid">
-                <!-- 卡片：社交聚合 -->
-                <a href="/social/" class="card" data-card>
-                    <span class="card-title">社交聚合</span>
-                    <span class="card-desc">各平台入口</span>
-                </a>
-                <!-- 卡片：留言板 -->
-                <a href="/board/" class="card" data-card>
-                    <span class="card-title">留言板</span>
-                    <span class="card-desc">访客留言</span>
-                </a>
-                <!-- 卡片：访客签名簿 -->
-                <a href="/guestbook/" class="card" data-card>
-                    <span class="card-title">访客签名簿</span>
-                    <span class="card-desc">留下你的足迹</span>
-                </a>
+            <div class="card-grid" id="cardGrid-connect">
+                <!-- 卡片由 JS 动态渲染（含新增的"联系我"卡片） -->
             </div>
             <!-- 灰色占位区块 -->
             <div class="placeholder-block" data-placeholder>更多功能持续扩展中</div>
@@ -970,23 +994,141 @@
         <p class="footer-note">正在建设中，持续更新中</p>
     </footer>
 
+    <!-- 新增：返回顶部按钮 -->
+    <button class="back-to-top" id="backToTop" aria-label="返回顶部">↑</button>
+
     <!-- ==================== JavaScript ==================== -->
     <script>
         (function() {
-            // ========== DOM 引用 ==========
-            const navBar = document.getElementById('navBar');
-            const hamburgerBtn = document.getElementById('hamburgerBtn');
-            const navLinks = document.getElementById('navLinks');
-            const allNavItems = navLinks.querySelectorAll('.nav-item[data-has-dropdown="true"]');
-            const allDropdowns = document.querySelectorAll('.dropdown-menu');
-            const sectionBlocks = document.querySelectorAll('.section-block');
-            const allCards = document.querySelectorAll('[data-card]');
-            const allPlaceholders = document.querySelectorAll('[data-placeholder]');
-            const selfIntro = document.getElementById('selfIntro');
-            const footer = document.getElementById('footer');
+            // ========== 新增：卡片数据外部化 ==========
+            var cardsData = {
+                professional: [
+                    { title: '关于我', desc: '了解更多背景、经历与方向', href: '/about/' },
+                    { title: '学习笔记', desc: '会计、审计与财务数字化的思考碎片', href: '/blog/' }
+                ],
+                tools: [
+                    { title: '记账打卡工具', desc: '日常记账与习惯追踪', href: '/recording/' },
+                    { title: '体重饮食记录', desc: '记录每日体重、饮食与运动', href: '/weight/', warning: '⚠️ 数据存储功能异常，正在修复' },
+                    { title: '备忘录', desc: '随手记录待办与灵感', href: '/memo/' }
+                ],
+                life: [
+                    { title: '当前状态', desc: '我正在做什么', href: '/now/' },
+                    { title: '书单/读书笔记', desc: '阅读记录与感想', href: '/reading/' },
+                    { title: '随手拍', desc: '日常影像碎片', href: '/photos/' },
+                    { title: '最近在听', desc: '音乐与播客推荐', href: '/playlist/' },
+                    { title: '旅行记录', desc: '去过的地方', href: '/travel/' },
+                    { title: '收集的句子', desc: '喜欢的文字片段', href: '/quotes/' }
+                ],
+                connect: [
+                    // 新增：联系我卡片（无 href，显示邮箱和电话，使用古铜金强调线）
+                    { title: '联系我', desc: '欢迎理性、克制的交流。', email: 'hletian1220@gmail.com', phone: '15872157112', accent: true },
+                    { title: '社交聚合', desc: '各平台入口', href: '/social/' },
+                    { title: '留言板', desc: '访客留言', href: '/board/' },
+                    { title: '访客签名簿', desc: '留下你的足迹', href: '/guestbook/' }
+                ]
+            };
 
-            let openDropdownId = null; // 当前打开的下拉菜单 ID
-            let isMobileOpen = false; // 移动端汉堡菜单状态
+            // 新增：渲染单张卡片的辅助函数
+            function renderCard(card) {
+                // 有 href 的卡片用 <a>，无 href（如联系我）用 <div>
+                var cardEl = document.createElement(card.href ? 'a' : 'div');
+                cardEl.className = 'card';
+                cardEl.setAttribute('data-card', '');
+
+                if (card.href) {
+                    cardEl.href = card.href;
+                }
+
+                // 古铜金强调线（用于联系我卡片）
+                if (card.accent) {
+                    cardEl.style.borderLeftColor = 'var(--accent)';
+                    cardEl.style.cursor = 'default';
+                }
+
+                // 卡片标题
+                var titleEl = document.createElement('span');
+                titleEl.className = 'card-title';
+                titleEl.textContent = card.title;
+                cardEl.appendChild(titleEl);
+
+                // 卡片描述
+                var descEl = document.createElement('span');
+                descEl.className = 'card-desc';
+                descEl.textContent = card.desc;
+                cardEl.appendChild(descEl);
+
+                // 联系信息（邮箱 + 电话）
+                if (card.email || card.phone) {
+                    var contactDiv = document.createElement('div');
+                    contactDiv.style.cssText = 'margin-top: 8px;';
+
+                    if (card.email) {
+                        var emailLink = document.createElement('a');
+                        emailLink.href = 'mailto:' + card.email;
+                        emailLink.className = 'card-contact-link';
+                        emailLink.textContent = '📧 ' + card.email;
+                        contactDiv.appendChild(emailLink);
+                    }
+
+                    if (card.phone) {
+                        var phoneLink = document.createElement('a');
+                        phoneLink.href = 'tel:' + card.phone;
+                        phoneLink.className = 'card-contact-link';
+                        phoneLink.textContent = '📞 ' + card.phone;
+                        contactDiv.appendChild(phoneLink);
+                    }
+
+                    cardEl.appendChild(contactDiv);
+                }
+
+                // 警告标签
+                if (card.warning) {
+                    var warnEl = document.createElement('span');
+                    warnEl.className = 'card-warning';
+                    warnEl.textContent = card.warning;
+                    cardEl.appendChild(warnEl);
+                }
+
+                return cardEl;
+            }
+
+            // 新增：渲染所有分类的卡片到对应 card-grid 容器
+            function renderAllCards() {
+                Object.keys(cardsData).forEach(function(key) {
+                    var gridEl = document.getElementById('cardGrid-' + key);
+                    if (!gridEl) return;
+
+                    // 清空容器
+                    gridEl.innerHTML = '';
+
+                    // 遍历数据生成卡片
+                    cardsData[key].forEach(function(card) {
+                        gridEl.appendChild(renderCard(card));
+                    });
+                });
+            }
+
+            // 新增：立即执行卡片渲染（DOM 已就绪）
+            renderAllCards();
+
+            // ========== DOM 引用 ==========
+            var navBar = document.getElementById('navBar');
+            var hamburgerBtn = document.getElementById('hamburgerBtn');
+            var navLinks = document.getElementById('navLinks');
+            var allNavItems = navLinks.querySelectorAll('.nav-item[data-has-dropdown="true"]');
+            var allDropdowns = document.querySelectorAll('.dropdown-menu');
+            var sectionBlocks = document.querySelectorAll('.section-block');
+            var allCards = document.querySelectorAll('[data-card]');
+            var allPlaceholders = document.querySelectorAll('[data-placeholder]');
+            var selfIntro = document.getElementById('selfIntro');
+            var footer = document.getElementById('footer');
+
+            // 新增：进度条和返回顶部按钮的 DOM 引用
+            var progressBarFill = document.getElementById('progressBarFill');
+            var backToTopBtn = document.getElementById('backToTop');
+
+            var openDropdownId = null; // 当前打开的下拉菜单 ID
+            var isMobileOpen = false; // 移动端汉堡菜单状态
 
             // ========== 滚动：导航栏样式切换 ==========
             function updateNavBarStyle() {
@@ -996,8 +1138,44 @@
                     navBar.classList.remove('scrolled');
                 }
             }
-            window.addEventListener('scroll', updateNavBarStyle, { passive: true });
-            updateNavBarStyle(); // 初始检查
+
+            // 新增：更新阅读进度条
+            function updateProgressBar() {
+                if (!progressBarFill) return;
+                var scrollTop = window.scrollY || document.documentElement.scrollTop;
+                var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+                var progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+                if (progress > 100) progress = 100;
+                if (progress < 0) progress = 0;
+                progressBarFill.style.width = progress + '%';
+            }
+
+            // 新增：更新返回顶部按钮可见性
+            function updateBackToTop() {
+                if (!backToTopBtn) return;
+                if (window.scrollY > 400) {
+                    backToTopBtn.classList.add('visible');
+                } else {
+                    backToTopBtn.classList.remove('visible');
+                }
+            }
+
+            // 合并滚动处理
+            function handleScroll() {
+                updateNavBarStyle();
+                updateProgressBar();
+                updateBackToTop();
+            }
+
+            window.addEventListener('scroll', handleScroll, { passive: true });
+            handleScroll(); // 初始检查
+
+            // 新增：返回顶部按钮点击事件
+            if (backToTopBtn) {
+                backToTopBtn.addEventListener('click', function() {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
+            }
 
             // ========== 关闭所有下拉菜单 ==========
             function closeAllDropdowns() {
@@ -1014,7 +1192,7 @@
             // ========== 打开指定下拉菜单 ==========
             function openDropdown(dropdownId, navItem) {
                 closeAllDropdowns();
-                const dropdown = document.getElementById(dropdownId);
+                var dropdown = document.getElementById(dropdownId);
                 if (dropdown) {
                     dropdown.classList.add('open');
                     if (navItem) {
@@ -1038,7 +1216,7 @@
             allNavItems.forEach(function(navItem) {
                 navItem.addEventListener('click', function(e) {
                     e.stopPropagation();
-                    const dropdownId = navItem.getAttribute('data-dropdown');
+                    var dropdownId = navItem.getAttribute('data-dropdown');
                     toggleDropdown(dropdownId, navItem);
                 });
 
@@ -1046,7 +1224,7 @@
                 navItem.addEventListener('keydown', function(e) {
                     if (e.key === 'Enter' || e.key === ' ') {
                         e.preventDefault();
-                        const dropdownId = navItem.getAttribute('data-dropdown');
+                        var dropdownId = navItem.getAttribute('data-dropdown');
                         toggleDropdown(dropdownId, navItem);
                     }
                 });
@@ -1054,7 +1232,7 @@
 
             // ========== 点击页面其他区域关闭下拉 ==========
             document.addEventListener('click', function(e) {
-                const clickedInsideNav = e.target.closest('.nav-item') || e.target.closest('.dropdown-menu');
+                var clickedInsideNav = e.target.closest('.nav-item') || e.target.closest('.dropdown-menu');
                 if (!clickedInsideNav) {
                     closeAllDropdowns();
                 }
@@ -1120,23 +1298,23 @@
             });
 
             // ========== Intersection Observer：滚动动画 ==========
-            const observerOptions = {
+            var observerOptions = {
                 root: null,
                 rootMargin: '0px 0px -40px 0px',
                 threshold: 0.12
             };
 
-            const observer = new IntersectionObserver(function(entries) {
+            var observer = new IntersectionObserver(function(entries) {
                 entries.forEach(function(entry) {
                     if (entry.isIntersecting) {
-                        const target = entry.target;
+                        var target = entry.target;
 
                         // 分类区域
                         if (target.classList.contains('section-block')) {
                             target.classList.add('visible');
 
                             // 该区域内的卡片依次出现
-                            const cardsInSection = target.querySelectorAll('[data-card]');
+                            var cardsInSection = target.querySelectorAll('[data-card]');
                             cardsInSection.forEach(function(card, index) {
                                 setTimeout(function() {
                                     card.classList.add('visible');
@@ -1144,7 +1322,7 @@
                             });
 
                             // 灰色占位区块跟随出现
-                            const placeholder = target.querySelector('[data-placeholder]');
+                            var placeholder = target.querySelector('[data-placeholder]');
                             if (placeholder) {
                                 setTimeout(function() {
                                     placeholder.classList.add('visible');
@@ -1187,26 +1365,26 @@
             // ========== 页面加载后自动触发已可见区域的动画 ==========
             // （处理页面加载时已经在视口中的元素）
             function triggerVisibleOnLoad() {
-                const allObservables = [
+                var allObservables = [
                     ...sectionBlocks,
                     selfIntro,
                     footer
                 ].filter(Boolean);
 
                 allObservables.forEach(function(el) {
-                    const rect = el.getBoundingClientRect();
-                    const windowHeight = window.innerHeight;
+                    var rect = el.getBoundingClientRect();
+                    var windowHeight = window.innerHeight;
                     if (rect.top < windowHeight && rect.bottom > 0) {
                         // 在视口中
                         if (el.classList.contains('section-block') && !el.classList.contains('visible')) {
                             el.classList.add('visible');
-                            const cardsInSection = el.querySelectorAll('[data-card]');
+                            var cardsInSection = el.querySelectorAll('[data-card]');
                             cardsInSection.forEach(function(card, index) {
                                 setTimeout(function() {
                                     card.classList.add('visible');
                                 }, index * 80);
                             });
-                            const placeholder = el.querySelector('[data-placeholder]');
+                            var placeholder = el.querySelector('[data-placeholder]');
                             if (placeholder) {
                                 setTimeout(function() {
                                     placeholder.classList.add('visible');
