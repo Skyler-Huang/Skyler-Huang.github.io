@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>术语卡片 - Skyler Huang</title>
+    <style>
+        :root {
+            --paper: #faf7f2;
+            --card-bg: #ffffff;
+            --ink: #2c2416;
+            --ink-secondary: #5c5347;
+            --ink-muted: #8a8175;
+            --pine: #2d4a37;
+            --pine-light: #3a5c47;
+            --pine-pale: rgba(45, 74, 55, 0.06);
+            --bronze: #a0783c;
+            --bronze-light: #c49a4c;
+            --bronze-dark: #8a5f2f;
+            --bronze-pale: rgba(160, 120, 60, 0.08);
+            --border-subtle: #e8e2d8;
+            --border-card: #ede7dd;
+            --shadow-sm: 0 1px 3px rgba(44, 36, 22, 0.04);
+            --shadow-md: 0 3px 12px rgba(44, 36, 22, 0.07);
+            --shadow-lg: 0 6px 24px rgba(44, 36, 22, 0.10);
+            --shadow-xl: 0 10px 36px rgba(44, 36, 22, 0.14);
+            --radius-sm: 5px;
+            --radius-md: 10px;
+            --radius-lg: 14px;
+            --radius-xl: 18px;
+            --transition: 0.30s cubic-bezier(0.4, 0, 0.2, 1);
+            --font-serif: 'Noto Serif SC', 'Source Han Serif SC', 'STSong', 'Songti SC', 'SimSun', 'KaiTi', '楷体', 'Georgia', 'Times New Roman', serif;
+            --font-sans: 'Inter', 'PingFang SC', 'Hiragino Sans GB', 'Noto Sans SC', 'Microsoft YaHei', 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--paper);
+            color: var(--ink);
+            font-family: var(--font-sans);
+            line-height: 1.7;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            overflow-x: hidden;
+            background-image:
+                radial-gradient(ellipse at 18% 10%, rgba(196, 154, 76, 0.025) 0%, transparent 55%),
+                radial-gradient(ellipse at 82% 88%, rgba(45, 74, 55, 0.02) 0%, transparent 55%),
+                radial-gradient(ellipse at 50% 50%, rgba(160, 120, 60, 0.015) 0%, transparent 70%);
+        }
+
+        /* 顶部装饰线 */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg,
+                    var(--pine) 0%,
+                    var(--bronze-light) 25%,
+                    var(--pine-light) 50%,
+                    var(--bronze) 75%,
+                    var(--pine) 100%);
+            z-index: 100;
+            box-shadow: 0 1px 6px rgba(45, 74, 55, 0.12);
+        }
+
+        /* 主容器 */
+        .main-container {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 660px;
+            padding: 36px 22px 24px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            min-height: 100vh;
+        }
+
+        /* ========== 返回首页 ========== */
+        .back-link-wrapper {
+            margin-bottom: 8px;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            text-decoration: none;
+            color: var(--pine);
+            font-size: 0.88rem;
+            font-weight: 500;
+            letter-spacing: 0.02em;
+            padding: 7px 14px 7px 9px;
+            border-radius: 20px;
+            transition: var(--transition);
+            background: transparent;
+            white-space: nowrap;
+        }
+
+        .back-link:hover {
+            background-color: var(--pine-pale);
+            color: #1f3627;
+            transform: translateX(-2px);
+        }
+
+        .back-link:active {
+            transform: scale(0.95);
+            background-color: rgba(45, 74, 55, 0.12);
+        }
+
+        .back-link svg {
+            flex-shrink: 0;
+            transition: transform 0.3s ease;
+        }
+
+        .back-link:hover svg {
+            transform: translateX(-3px);
+        }
+
+        /* ========== 页面头部 ========== */
+        .page-header {
+            text-align: left;
+            margin-bottom: 28px;
+            padding-top: 2px;
+            position: relative;
+        }
+
+        .header-label {
+            display: inline-block;
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.13em;
+            color: var(--bronze);
+            font-weight: 600;
+            margin-bottom: 6px;
+            padding: 3px 12px;
+            background: var(--bronze-pale);
+            border-radius: 20px;
+            border: 1px solid rgba(160, 120, 60, 0.15);
+        }
+
+        .page-title {
+            font-family: var(--font-serif);
+            font-size: 1.9rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            color: var(--pine);
+            margin: 8px 0 2px;
+            line-height: 1.25;
+        }
+
+        .page-desc {
+            font-size: 0.9rem;
+            color: var(--ink-muted);
+            font-weight: 400;
+            letter-spacing: 0.03em;
+            margin-top: 4px;
+        }
+
+        .header-ornament {
+            display: block;
+            width: 44px;
+            height: 2px;
+            background: linear-gradient(90deg, var(--bronze-light), var(--bronze), transparent);
+            border-radius: 1px;
+            margin-top: 13px;
+            opacity: 0.7;
+        }
+
+        /* ========== 术语列表 ========== */
+        .glossary-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        /* ========== 单条术语卡片 ========== */
+        .term-card {
+            background-color: var(--card-bg);
+            border-radius: var(--radius-lg);
+            padding: 18px 20px 16px;
+            border: 1.5px solid var(--border-card);
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+            position: relative;
+            cursor: default;
+            -webkit-tap-highlight-color: transparent;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .term-card:hover {
+            border-color: rgba(160, 120, 60, 0.28);
+            box-shadow: var(--shadow-xl);
+            transform: translateY(-2px);
+            background-color: #fffefc;
+        }
+
+        .term-card:active {
+            transform: scale(0.985);
+            box-shadow: var(--shadow-sm);
+            transition: 0.10s ease;
+        }
+
+        /* 左侧装饰竖线 */
+        .term-card::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 14px;
+            bottom: 14px;
+            width: 3px;
+            background: var(--pine-light);
+            border-radius: 0 2px 2px 0;
+            opacity: 0.35;
+            transition: var(--transition);
+        }
+
+        .term-card:hover::before {
+            opacity: 0.7;
+            background: var(--bronze-light);
+        }
+
+        /* 术语标题 */
+        .term-title {
+            font-family: var(--font-serif);
+            font-size: 1.25rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            color: var(--pine);
+            line-height: 1.35;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* 术语标题前的金色小菱形 */
+        .term-title::before {
+            content: '';
+            display: inline-block;
+            width: 7px;
+            height: 7px;
+            background-color: var(--bronze-light);
+            border-radius: 1px;
+            opacity: 0.7;
+            flex-shrink: 0;
+            transform: rotate(45deg);
+            margin-right: 2px;
+        }
+
+        /* 术语解释 */
+        .term-definition {
+            font-size: 0.92rem;
+            color: var(--ink-secondary);
+            letter-spacing: 0.02em;
+            line-height: 1.6;
+            padding-left: 14px;
+            border-left: 2px solid var(--bronze-light);
+            margin-left: 2px;
+            margin-top: 2px;
+            border-radius: 0 3px 3px 0;
+            font-style: normal;
+        }
+
+        /* ========== 底部版权 ========== */
+        .page-footer {
+            text-align: center;
+            margin-top: 38px;
+            padding: 18px 0 8px;
+            color: var(--ink-muted);
+            font-size: 0.78rem;
+            letter-spacing: 0.04em;
+            position: relative;
+        }
+
+        .page-footer::before {
+            content: '';
+            display: block;
+            width: 56px;
+            height: 1.5px;
+            background: linear-gradient(90deg, transparent, var(--bronze-light), var(--bronze), transparent);
+            margin: 0 auto 16px;
+            border-radius: 1px;
+            opacity: 0.55;
+        }
+
+        .page-footer .footer-dot {
+            display: inline-block;
+            width: 4px;
+            height: 4px;
+            background-color: #d4c8b0;
+            border-radius: 50%;
+            margin: 0 8px;
+            vertical-align: middle;
+        }
+
+        .page-footer a {
+            color: var(--pine);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .page-footer a:hover {
+            color: #1f3627;
+            text-decoration: underline;
+            text-underline-offset: 3px;
+            text-decoration-thickness: 1px;
+        }
+
+        /* ========== 响应式设计 ========== */
+        @media (max-width: 600px) {
+            .main-container {
+                padding: 22px 12px 16px;
+                max-width: 100%;
+            }
+
+            .page-header {
+                margin-bottom: 20px;
+            }
+
+            .page-title {
+                font-size: 1.5rem;
+            }
+
+            .page-desc {
+                font-size: 0.80rem;
+            }
+
+            .header-label {
+                font-size: 0.66rem;
+                padding: 2px 10px;
+            }
+
+            .glossary-list {
+                gap: 9px;
+            }
+
+            .term-card {
+                padding: 15px 14px 13px;
+                border-radius: var(--radius-md);
+            }
+
+            .term-card::before {
+                top: 12px;
+                bottom: 12px;
+                width: 2.5px;
+            }
+
+            .term-title {
+                font-size: 1.05rem;
+            }
+
+            .term-title::before {
+                width: 5px;
+                height: 5px;
+                margin-right: 1px;
+            }
+
+            .term-definition {
+                font-size: 0.82rem;
+                padding-left: 10px;
+                border-left-width: 1.5px;
+            }
+
+            .back-link {
+                font-size: 0.80rem;
+                padding: 6px 11px 6px 7px;
+            }
+
+            .page-footer {
+                margin-top: 24px;
+                font-size: 0.70rem;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .main-container {
+                padding: 16px 8px 10px;
+            }
+
+            .glossary-list {
+                gap: 7px;
+            }
+
+            .term-card {
+                padding: 12px 10px 11px;
+                border-radius: var(--radius-sm);
+            }
+
+            .term-card::before {
+                top: 10px;
+                bottom: 10px;
+                width: 2px;
+            }
+
+            .term-title {
+                font-size: 0.95rem;
+            }
+
+            .term-definition {
+                font-size: 0.74rem;
+                padding-left: 7px;
+                border-left-width: 1.2px;
+            }
+
+            .page-title {
+                font-size: 1.3rem;
+            }
+
+            .page-desc {
+                font-size: 0.72rem;
+            }
+
+            .page-footer {
+                margin-top: 18px;
+                font-size: 0.64rem;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .main-container {
+                padding-top: 44px;
+            }
+
+            .page-title {
+                font-size: 2.1rem;
+            }
+
+            .term-card {
+                padding: 20px 24px 18px;
+            }
+
+            .term-title {
+                font-size: 1.35rem;
+            }
+
+            .term-definition {
+                font-size: 0.98rem;
+            }
+        }
+
+        /* 减弱动画偏好 */
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <main class="main-container">
+
+        <!-- 返回首页 -->
+        <div class="back-link-wrapper">
+            <a href="/" class="back-link" aria-label="返回首页">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+                返回首页
+            </a>
+        </div>
+
+        <!-- 页面头部 -->
+        <header class="page-header">
+            <span class="header-label">Glossary</span>
+            <h1 class="page-title">术语卡片</h1>
+            <p class="page-desc">📖 术语卡片 · 持续扩建中</p>
+            <span class="header-ornament"></span>
+        </header>
+
+        <!-- 术语列表 -->
+        <ul class="glossary-list">
+
+            <!-- 资产 -->
+            <li>
+                <article class="term-card">
+                    <h2 class="term-title">资产</h2>
+                    <p class="term-definition">
+                        企业过去的交易或者事项形成的、由企业拥有或者控制的、预期会给企业带来经济利益的资源。
+                    </p>
+                </article>
+            </li>
+
+            <!-- 负债 -->
+            <li>
+                <article class="term-card">
+                    <h2 class="term-title">负债</h2>
+                    <p class="term-definition">
+                        企业过去的交易或者事项形成的、预期会导致经济利益流出企业的现时义务。
+                    </p>
+                </article>
+            </li>
+
+            <!-- 所有者权益 -->
+            <li>
+                <article class="term-card">
+                    <h2 class="term-title">所有者权益</h2>
+                    <p class="term-definition">
+                        企业资产扣除负债后，由所有者享有的剩余权益。又称股东权益。
+                    </p>
+                </article>
+            </li>
+
+            <!-- 收入 -->
+            <li>
+                <article class="term-card">
+                    <h2 class="term-title">收入</h2>
+                    <p class="term-definition">
+                        企业在日常活动中形成的、会导致所有者权益增加的、与所有者投入资本无关的经济利益的总流入。
+                    </p>
+                </article>
+            </li>
+
+            <!-- 费用 -->
+            <li>
+                <article class="term-card">
+                    <h2 class="term-title">费用</h2>
+                    <p class="term-definition">
+                        企业在日常活动中发生的、会导致所有者权益减少的、与向所有者分配利润无关的经济利益的总流出。
+                    </p>
+                </article>
+            </li>
+
+        </ul>
+
+        <!-- 底部版权 -->
+        <footer class="page-footer">
+            <span>&copy; 2024 Skyler Huang</span>
+            <span class="footer-dot"></span>
+            <span>术语卡片持续更新中</span>
+            <span class="footer-dot"></span>
+            <a href="/">返回首页</a>
+        </footer>
+
+    </main>
+
+</body>
+</html>
