@@ -6,10 +6,14 @@
     <title>/now/</title>
     <style>
         :root {
-            --bg: #fafafa;
-            --text: #2c2c2c;
-            --muted: #999;
-            --accent: #555;
+            --bg: #fcf8f2;
+            /* 米白纸色 */
+            --ink: #2b4a3f;
+            /* 墨绿主文字 */
+            --gold: #c29b5a;
+            /* 古铜金点缀 */
+            --ink-light: #7f9a94;
+            /* 墨绿浅色 */
         }
 
         * {
@@ -20,50 +24,83 @@
 
         body {
             background: var(--bg);
-            color: var(--text);
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+            color: var(--ink);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", "Noto Serif SC", serif;
             display: flex;
             align-items: center;
             justify-content: center;
             min-height: 100vh;
-            padding: 2rem;
+            padding: 1.5rem;
+            line-height: 1.6;
         }
 
-        .container {
-            text-align: center;
-            max-width: 520px;
+        .page {
+            width: 100%;
+            max-width: 480px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 1.8rem;
         }
 
-        .status {
-            font-size: 1.25rem;
-            line-height: 2;
+        /* 返回首页链接 */
+        .back-home {
+            align-self: flex-start;
+            color: var(--gold);
+            text-decoration: none;
+            font-size: 0.95rem;
+            letter-spacing: 0.03em;
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.2s ease, color 0.2s ease;
+        }
+
+        .back-home:hover,
+        .back-home:focus {
+            border-bottom-color: var(--gold);
+            color: var(--ink);
+        }
+
+        /* 主体内容 */
+        .now-content {
+            width: 100%;
+            padding: 0.5rem 0 0 0;
+        }
+
+        .status-line {
+            font-size: 1.2rem;
             letter-spacing: 0.02em;
-            color: var(--text);
+            color: var(--ink);
+            line-height: 2;
+            margin: 0;
         }
 
-        .status .divider {
-            color: var(--accent);
-            opacity: 0.4;
-            margin: 0 0.35em;
+        .status-line .sep {
+            color: var(--gold);
+            margin: 0 0.4em;
+            font-weight: 300;
         }
 
-        .updated {
-            margin-top: 2.5rem;
+        .update-meta {
+            margin-top: 2.2rem;
             font-size: 0.8rem;
-            color: var(--muted);
-            letter-spacing: 0.04em;
+            color: var(--ink-light);
+            letter-spacing: 0.05em;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <!-- 👇 直接修改下面这行即可 -->
-        <p class="status">
-            正在做：个人网页制作<span class="divider">｜</span>减脂中<span class="divider">｜</span>更新中
-        </p>
-        <!-- 👆 状态行结束 -->
+    <div class="page">
+        <a href="/" class="back-home">← 返回首页</a>
 
-        <p class="updated">最后更新：2026-07-21</p>
+        <div class="now-content">
+            <!-- 👇 直接修改下面这行即可 -->
+            <p class="status-line">
+                正在做：个人网页制作<span class="sep">｜</span>减脂中<span class="sep">｜</span>更新中
+            </p>
+            <!-- 👆 状态行结束 -->
+
+            <p class="update-meta">最后更新：2026-07-21</p>
+        </div>
     </div>
 </body>
 </html>
