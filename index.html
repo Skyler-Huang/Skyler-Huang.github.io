@@ -9,8 +9,10 @@
     <!--
       ╔══════════════════════════════════════════╗
       ║  个人导航主页 — 黄乐天 Skyler           ║
+      ║  版本：V1.1                             ║
       ║  风格：极简 · 克制 · 旧式账簿/信笺     ║
       ║  纯 HTML + CSS，无外部依赖              ║
+      ║  更新：导航栏 + 分类布局               ║
       ╚══════════════════════════════════════════╝
     -->
 
@@ -55,6 +57,7 @@
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
             text-rendering: optimizeLegibility;
+            scroll-behavior: smooth;
         }
 
         body {
@@ -167,15 +170,80 @@
         }
 
         /* ========================================
-           2. 核心入口卡片区域
+           2. 导航栏（V1.1 新增）
            ======================================== */
-        .cards-grid {
+        .nav-bar {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            margin-top: -20px;
+            /* 拉近与 header 的距离 */;
+        }
+
+        .nav-links {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 28px;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .nav-link {
+            font-family: var(--font-sans);
+            font-size: 0.9rem;
+            font-weight: 400;
+            color: var(--text-light);
+            letter-spacing: 0.04em;
+            transition: color 0.2s ease;
+            white-space: nowrap;
+            position: relative;
+        }
+
+        .nav-link:hover {
+            color: var(--gold);
+        }
+
+        /* 导航栏下方细分割线 */
+        .nav-divider {
+            width: 100%;
+            height: 1px;
+            background-color: var(--divider);
+            border: none;
+            margin-top: 14px;
+        }
+
+        /* ========================================
+           3. 内容分类区域（V1.1 新增）
+           ======================================== */
+        .category-section {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .category-heading {
+            font-family: var(--font-serif);
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-light);
+            letter-spacing: 0.06em;
+            line-height: 1;
+            padding-bottom: 2px;
+            /* 微小的底部留白 */;
+        }
+
+        /* 分类下的卡片网格 — 继承原 cards-grid 的双列布局 */
+        .category-cards {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 14px;
         }
 
-        /* 卡片基础样式 */
+        /* ========================================
+           4. 卡片基础样式（保留自 V1.0）
+           ======================================== */
         .card {
             display: flex;
             flex-direction: column;
@@ -216,6 +284,20 @@
         }
         .card--reserved:hover {
             border-left-color: #c5bdb2;
+            box-shadow: var(--shadow-card);
+            background-color: var(--card-bg);
+        }
+
+        /* 生活分类占位卡片 — 全宽柔和提示 */
+        .card--placeholder {
+            border-left-color: #e3ddd4;
+            cursor: default;
+            opacity: 0.65;
+            grid-column: 1 / -1;
+            /* 横跨两列 */;
+        }
+        .card--placeholder:hover {
+            border-left-color: #d5cec4;
             box-shadow: var(--shadow-card);
             background-color: var(--card-bg);
         }
@@ -284,7 +366,7 @@
         }
 
         /* ========================================
-           3. 关于我简述区域
+           5. 关于我简述区域
            ======================================== */
         .about-section {
             display: flex;
@@ -316,7 +398,7 @@
         }
 
         /* ========================================
-           4. 页脚区域
+           6. 页脚区域
            ======================================== */
         .footer {
             display: flex;
@@ -369,7 +451,7 @@
         }
 
         /* ========================================
-           响应式适配 — 移动端
+           响应式适配 — 移动端（<600px）
            ======================================== */
         @media (max-width: 600px) {
             body {
@@ -394,10 +476,36 @@
                 margin-top: 12px;
             }
 
+            /* 导航栏移动端：减小间距，允许折行 */
+            .nav-bar {
+                margin-top: -14px;
+            }
+            .nav-links {
+                gap: 18px;
+            }
+            .nav-link {
+                font-size: 0.84rem;
+                letter-spacing: 0.03em;
+            }
+            .nav-divider {
+                margin-top: 10px;
+            }
+
+            /* 分类标题 */
+            .category-heading {
+                font-size: 0.95rem;
+                letter-spacing: 0.05em;
+            }
+
             /* 移动端卡片单列 */
-            .cards-grid {
+            .category-cards {
                 grid-template-columns: 1fr;
                 gap: 10px;
+            }
+
+            /* 生活占位卡片在单列下无需横跨 */
+            .card--placeholder {
+                grid-column: auto;
             }
 
             .card {
@@ -431,7 +539,7 @@
             }
         }
 
-        /* 极窄屏幕微调 */
+        /* 极窄屏幕微调（<380px） */
         @media (max-width: 380px) {
             body {
                 padding: 24px 12px 20px;
@@ -442,6 +550,23 @@
             .header-tagline {
                 font-size: 0.8rem;
             }
+
+            /* 导航栏更紧凑 */
+            .nav-links {
+                gap: 12px;
+            }
+            .nav-link {
+                font-size: 0.78rem;
+                letter-spacing: 0.02em;
+            }
+            .nav-divider {
+                margin-top: 8px;
+            }
+
+            .category-heading {
+                font-size: 0.9rem;
+            }
+
             .card {
                 padding: 14px 14px 14px 12px;
             }
@@ -476,66 +601,108 @@
         </header>
 
         <!-- ========================================
-          区块 2：核心入口卡片区
-          使用 CSS Grid 双列布局，移动端自动单列
-          每个卡片左侧有墨绿或古铜金强调线
+          区块 2：导航栏（V1.1 新增）
+          极简水平导航，悬停古铜金，下方细分割线
           ======================================== -->
-        <nav class="cards-grid" aria-label="核心入口">
-
-            <!-- 卡片：记账打卡工具 — 墨绿强调线 -->
-            <a href="/recording/" class="card" aria-label="记账打卡工具">
-                <span class="card-emoji" aria-hidden="true">📒</span>
-                <span class="card-title">记账打卡工具</span>
-                <span class="card-desc">日常记账与习惯追踪，为财务敏感度打底</span>
-            </a>
-
-            <!-- 卡片：关于我 — 古铜金强调线 -->
-            <a href="/about/" class="card card--gold" aria-label="关于我">
-                <span class="card-emoji" aria-hidden="true">📄</span>
-                <span class="card-title">关于我</span>
-                <span class="card-desc">了解更多背景、经历与方向</span>
-            </a>
-
-            <!-- 卡片：学习笔记 — 墨绿强调线 -->
-            <a href="/blog/" class="card" aria-label="学习笔记">
-                <span class="card-emoji" aria-hidden="true">📝</span>
-                <span class="card-title">学习笔记</span>
-                <span class="card-desc">会计、审计与财务数字化的思考碎片</span>
-            </a>
-
-            <!-- 卡片：联系我 — 古铜金强调线，内部展示邮箱与电话 -->
-            <div class="card card--gold" aria-label="联系方式">
-                <span class="card-emoji" aria-hidden="true">✉️</span>
-                <span class="card-title">联系我</span>
-                <span class="card-desc">欢迎理性、克制的交流</span>
-                <div class="card-contact-links">
-                    <!-- 邮箱 — mailto 链接 -->
-                    <a href="mailto:hletian1220@gmail.com"
-                       class="card-contact-link"
-                       rel="noopener">
-                        <span class="card-contact-label">邮箱</span>
-                        hletian1220@gmail.com
-                    </a>
-                    <!-- 电话 — tel 链接（移动端可直接拨打） -->
-                    <a href="tel:15872157112"
-                       class="card-contact-link">
-                        <span class="card-contact-label">电话</span>
-                        15872157112
-                    </a>
-                </div>
-            </div>
-
-            <!-- 卡片：预留入口 — 更淡的强调线，建设中 -->
-            <div class="card card--reserved" aria-label="预留入口，更多工具即将上线">
-                <span class="card-emoji" aria-hidden="true">🔧</span>
-                <span class="card-title">更多工具</span>
-                <span class="card-desc">实用工具正在建设中，敬请期待</span>
-            </div>
-
+        <nav class="nav-bar" aria-label="主导航">
+            <ul class="nav-links">
+                <li><a href="#" class="nav-link">首页</a></li>
+                <li><a href="#professional" class="nav-link">专业</a></li>
+                <li><a href="#life" class="nav-link">生活</a></li>
+                <li><a href="#tools" class="nav-link">工具</a></li>
+                <li><a href="#connect" class="nav-link">连接</a></li>
+            </ul>
+            <hr class="nav-divider" aria-hidden="true">
         </nav>
 
         <!-- ========================================
-          区块 3：关于我简述
+          区块 3：内容分类区域（V1.1 重组）
+          按「专业·工具·生活·连接」四大类分组
+          ======================================== -->
+
+        <!-- 分类：专业 -->
+        <section class="category-section" id="professional" aria-labelledby="heading-professional">
+            <h2 class="category-heading" id="heading-professional">专业</h2>
+            <div class="category-cards">
+                <!-- 卡片：关于我 — 古铜金强调线 -->
+                <a href="/about/" class="card card--gold" aria-label="关于我">
+                    <span class="card-emoji" aria-hidden="true">📄</span>
+                    <span class="card-title">关于我</span>
+                    <span class="card-desc">了解更多背景、经历与方向</span>
+                </a>
+
+                <!-- 卡片：学习笔记 — 墨绿强调线 -->
+                <a href="/blog/" class="card" aria-label="学习笔记">
+                    <span class="card-emoji" aria-hidden="true">📝</span>
+                    <span class="card-title">学习笔记</span>
+                    <span class="card-desc">会计、审计与财务数字化的思考碎片</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- 分类：工具 -->
+        <section class="category-section" id="tools" aria-labelledby="heading-tools">
+            <h2 class="category-heading" id="heading-tools">工具</h2>
+            <div class="category-cards">
+                <!-- 卡片：记账打卡工具 — 墨绿强调线 -->
+                <a href="/recording/" class="card" aria-label="记账打卡工具">
+                    <span class="card-emoji" aria-hidden="true">📒</span>
+                    <span class="card-title">记账打卡工具</span>
+                    <span class="card-desc">日常记账与习惯追踪，为财务敏感度打底</span>
+                </a>
+
+                <!-- 卡片：更多工具 — 预留入口（V1.1 调整文案） -->
+                <div class="card card--reserved" aria-label="预留入口，更多工具即将上线">
+                    <span class="card-emoji" aria-hidden="true">🔧</span>
+                    <span class="card-title">更多工具</span>
+                    <span class="card-desc">更多工具即将上线</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- 分类：生活（预留，暂无卡片） -->
+        <section class="category-section" id="life" aria-labelledby="heading-life">
+            <h2 class="category-heading" id="heading-life">生活</h2>
+            <div class="category-cards">
+                <!-- 占位卡片：生活分类暂无内容，全宽柔和提示 -->
+                <div class="card card--placeholder" aria-label="生活内容预留">
+                    <span class="card-emoji" aria-hidden="true">🌿</span>
+                    <span class="card-title">生活记录</span>
+                    <span class="card-desc">内容正在筹备中，敬请期待</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- 分类：连接 -->
+        <section class="category-section" id="connect" aria-labelledby="heading-connect">
+            <h2 class="category-heading" id="heading-connect">连接</h2>
+            <div class="category-cards">
+                <!-- 卡片：联系我 — 古铜金强调线，内部展示邮箱与电话 -->
+                <div class="card card--gold" aria-label="联系方式">
+                    <span class="card-emoji" aria-hidden="true">✉️</span>
+                    <span class="card-title">联系我</span>
+                    <span class="card-desc">欢迎理性、克制的交流</span>
+                    <div class="card-contact-links">
+                        <!-- 邮箱 — mailto 链接 -->
+                        <a href="mailto:hletian1220@gmail.com"
+                           class="card-contact-link"
+                           rel="noopener">
+                            <span class="card-contact-label">邮箱</span>
+                            hletian1220@gmail.com
+                        </a>
+                        <!-- 电话 — tel 链接（移动端可直接拨打） -->
+                        <a href="tel:15872157112"
+                           class="card-contact-link">
+                            <span class="card-contact-label">电话</span>
+                            15872157112
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================
+          区块 4：关于我简述
           2–3 句自我介绍，像书籍前言般的排版
           ======================================== -->
         <section class="about-section" aria-label="关于我简述">
@@ -551,7 +718,7 @@
         </section>
 
         <!-- ========================================
-          区块 4：页脚
+          区块 5：页脚
           版权信息、GitHub 链接、Powered by 声明
           ======================================== -->
         <footer class="footer">
