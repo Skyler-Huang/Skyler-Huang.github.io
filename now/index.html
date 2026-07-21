@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>/now/</title>
+    <style>
+        :root {
+            --bg: #fafafa;
+            --text: #2c2c2c;
+            --muted: #999;
+            --accent: #555;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            text-align: center;
+            max-width: 520px;
+        }
+
+        .status {
+            font-size: 1.25rem;
+            line-height: 2;
+            letter-spacing: 0.02em;
+            color: var(--text);
+        }
+
+        .status .divider {
+            color: var(--accent);
+            opacity: 0.4;
+            margin: 0 0.35em;
+        }
+
+        .updated {
+            margin-top: 2.5rem;
+            font-size: 0.8rem;
+            color: var(--muted);
+            letter-spacing: 0.04em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 👇 直接修改下面这行即可 -->
+        <p class="status">
+            正在做：个人网页制作<span class="divider">｜</span>减脂中<span class="divider">｜</span>更新中
+        </p>
+        <!-- 👆 状态行结束 -->
+
+        <p class="updated">最后更新：2026-07-21</p>
+    </div>
+</body>
+</html>
