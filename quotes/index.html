@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>句子收藏 - Skyler Huang</title>
+    <style>
+        :root {
+            --paper: #faf7f2;
+            --card-bg: #ffffff;
+            --ink: #2c2416;
+            --ink-secondary: #5c5347;
+            --ink-muted: #8a8175;
+            --pine: #2d4a37;
+            --pine-light: #3a5c47;
+            --pine-pale: rgba(45, 74, 55, 0.06);
+            --pine-glow: rgba(45, 74, 55, 0.14);
+            --bronze: #a0783c;
+            --bronze-light: #c49a4c;
+            --bronze-dark: #8a5f2f;
+            --bronze-pale: rgba(160, 120, 60, 0.08);
+            --bronze-glow: rgba(160, 120, 60, 0.20);
+            --border-subtle: #e8e2d8;
+            --border-card: #ede7dd;
+            --shadow-sm: 0 1px 3px rgba(44, 36, 22, 0.04);
+            --shadow-md: 0 3px 12px rgba(44, 36, 22, 0.07);
+            --shadow-lg: 0 6px 24px rgba(44, 36, 22, 0.10);
+            --shadow-xl: 0 10px 36px rgba(44, 36, 22, 0.14);
+            --radius-sm: 5px;
+            --radius-md: 10px;
+            --radius-lg: 14px;
+            --radius-xl: 18px;
+            --transition: 0.30s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-fast: 0.20s cubic-bezier(0.4, 0, 0.2, 1);
+            --font-serif: 'Noto Serif SC', 'Source Han Serif SC', 'STSong', 'Songti SC', 'SimSun', 'KaiTi', '楷体', 'Georgia', 'Times New Roman', serif;
+            --font-sans: 'Inter', 'PingFang SC', 'Hiragino Sans GB', 'Noto Sans SC', 'Microsoft YaHei', 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--paper);
+            color: var(--ink);
+            font-family: var(--font-sans);
+            line-height: 1.7;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            overflow-x: hidden;
+            background-image:
+                radial-gradient(ellipse at 18% 10%, rgba(196, 154, 76, 0.025) 0%, transparent 55%),
+                radial-gradient(ellipse at 82% 88%, rgba(45, 74, 55, 0.02) 0%, transparent 55%),
+                radial-gradient(ellipse at 50% 50%, rgba(160, 120, 60, 0.015) 0%, transparent 70%);
+        }
+
+        /* 顶部装饰线 */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg,
+                    var(--pine) 0%,
+                    var(--bronze-light) 25%,
+                    var(--pine-light) 50%,
+                    var(--bronze) 75%,
+                    var(--pine) 100%);
+            z-index: 100;
+            box-shadow: 0 1px 6px rgba(45, 74, 55, 0.12);
+        }
+
+        /* 主容器 */
+        .main-container {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 640px;
+            padding: 36px 22px 24px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            min-height: 100vh;
+        }
+
+        /* ========== 返回首页 ========== */
+        .back-link-wrapper {
+            margin-bottom: 8px;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            text-decoration: none;
+            color: var(--pine);
+            font-size: 0.88rem;
+            font-weight: 500;
+            letter-spacing: 0.02em;
+            padding: 7px 14px 7px 9px;
+            border-radius: 20px;
+            transition: var(--transition);
+            background: transparent;
+            white-space: nowrap;
+        }
+
+        .back-link:hover {
+            background-color: var(--pine-pale);
+            color: #1f3627;
+            transform: translateX(-2px);
+        }
+
+        .back-link:active {
+            transform: scale(0.95);
+            background-color: rgba(45, 74, 55, 0.12);
+        }
+
+        .back-link svg {
+            flex-shrink: 0;
+            transition: transform 0.3s ease;
+        }
+
+        .back-link:hover svg {
+            transform: translateX(-3px);
+        }
+
+        /* ========== 页面头部 ========== */
+        .page-header {
+            text-align: left;
+            margin-bottom: 28px;
+            padding-top: 2px;
+            position: relative;
+        }
+
+        .header-label {
+            display: inline-block;
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.13em;
+            color: var(--bronze);
+            font-weight: 600;
+            margin-bottom: 6px;
+            padding: 3px 12px;
+            background: var(--bronze-pale);
+            border-radius: 20px;
+            border: 1px solid rgba(160, 120, 60, 0.15);
+        }
+
+        .page-title {
+            font-family: var(--font-serif);
+            font-size: 1.9rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            color: var(--pine);
+            margin: 8px 0 2px;
+            line-height: 1.25;
+        }
+
+        .page-desc {
+            font-size: 0.9rem;
+            color: var(--ink-muted);
+            font-weight: 400;
+            letter-spacing: 0.03em;
+            margin-top: 4px;
+        }
+
+        .header-ornament {
+            display: block;
+            width: 44px;
+            height: 2px;
+            background: linear-gradient(90deg, var(--bronze-light), var(--bronze), transparent);
+            border-radius: 1px;
+            margin-top: 13px;
+            opacity: 0.7;
+        }
+
+        /* ========== 句子列表 ========== */
+        .quotes-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        /* ========== 单条句子卡片 ========== */
+        .quote-card {
+            background-color: var(--card-bg);
+            border-radius: var(--radius-lg);
+            padding: 24px 22px 20px;
+            border: 1.5px solid var(--border-card);
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+            position: relative;
+            cursor: default;
+            -webkit-tap-highlight-color: transparent;
+            overflow: visible;
+        }
+
+        .quote-card:hover {
+            border-color: rgba(160, 120, 60, 0.28);
+            box-shadow: var(--shadow-xl);
+            transform: translateY(-2px);
+            background-color: #fffefc;
+        }
+
+        .quote-card:active {
+            transform: scale(0.985);
+            box-shadow: var(--shadow-sm);
+            transition: 0.10s ease;
+        }
+
+        /* 左侧装饰竖线 */
+        .quote-card::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 16px;
+            bottom: 16px;
+            width: 3px;
+            background: var(--pine-light);
+            border-radius: 0 2px 2px 0;
+            opacity: 0.4;
+            transition: var(--transition);
+        }
+
+        .quote-card:hover::before {
+            opacity: 0.7;
+            background: var(--bronze-light);
+        }
+
+        /* 引号装饰 */
+        .quote-card::after {
+            content: '';
+            position: absolute;
+            top: 14px;
+            right: 18px;
+            width: 32px;
+            height: 28px;
+            background: radial-gradient(ellipse at center,
+                    rgba(160, 120, 60, 0.12) 0%,
+                    transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0.5;
+            transition: var(--transition);
+            z-index: 0;
+        }
+
+        .quote-card:hover::after {
+            opacity: 0.8;
+            transform: scale(1.3);
+            background: radial-gradient(ellipse at center,
+                    rgba(160, 120, 60, 0.18) 0%,
+                    transparent 70%);
+        }
+
+        /* ========== 句子内容区域 ========== */
+        .quote-content {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        /* 句子正文 */
+        .quote-text {
+            font-family: var(--font-serif);
+            font-size: 1.18rem;
+            font-weight: 600;
+            line-height: 1.75;
+            letter-spacing: 0.05em;
+            color: var(--pine);
+            position: relative;
+            padding-left: 2px;
+            quotes: "「" "」" "『" "』";
+        }
+
+        /* 句子正文两侧的引号装饰 - 使用伪元素包裹 */
+        .quote-text-inner {
+            display: inline;
+            position: relative;
+        }
+
+        .quote-text-inner::before {
+            content: '「';
+            font-family: var(--font-serif);
+            font-size: 1.35rem;
+            color: var(--bronze-light);
+            font-weight: 700;
+            letter-spacing: 0;
+            margin-right: 2px;
+            opacity: 0.7;
+            transition: var(--transition-fast);
+        }
+
+        .quote-text-inner::after {
+            content: '」';
+            font-family: var(--font-serif);
+            font-size: 1.35rem;
+            color: var(--bronze-light);
+            font-weight: 700;
+            letter-spacing: 0;
+            margin-left: 2px;
+            opacity: 0.7;
+            transition: var(--transition-fast);
+        }
+
+        .quote-card:hover .quote-text-inner::before,
+        .quote-card:hover .quote-text-inner::after {
+            opacity: 1;
+            color: var(--bronze);
+        }
+
+        /* ========== 来源区域 ========== */
+        .quote-source-area {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 2px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* 装饰小横线 */
+        .quote-source-dash {
+            width: 18px;
+            height: 1px;
+            background: var(--bronze-light);
+            opacity: 0.5;
+            flex-shrink: 0;
+            border-radius: 0.5px;
+        }
+
+        .quote-source {
+            font-size: 0.78rem;
+            color: var(--ink-muted);
+            letter-spacing: 0.04em;
+            font-weight: 450;
+            font-family: var(--font-sans);
+            font-style: normal;
+            line-height: 1.4;
+        }
+
+        .quote-source em {
+            font-style: italic;
+            color: var(--ink-secondary);
+            letter-spacing: 0.03em;
+        }
+
+        /* 来源书籍名加一点样式 */
+        .quote-source .source-book {
+            font-weight: 550;
+            color: var(--bronze-dark);
+            letter-spacing: 0.04em;
+            font-style: normal;
+        }
+
+        /* 标签：中国古典 / 西方哲学 */
+        .quote-tag {
+            display: inline-block;
+            font-size: 0.64rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            font-weight: 600;
+            padding: 2px 10px;
+            border-radius: 12px;
+            width: fit-content;
+            border: 1px solid;
+            line-height: 1.5;
+            flex-shrink: 0;
+            margin-left: auto;
+        }
+
+        .tag-chinese {
+            background: rgba(45, 74, 55, 0.05);
+            color: #2d4a37;
+            border-color: rgba(45, 74, 55, 0.18);
+        }
+
+        .tag-western {
+            background: rgba(160, 120, 60, 0.06);
+            color: #8a5f2f;
+            border-color: rgba(160, 120, 60, 0.20);
+        }
+
+        /* ========== 底部版权 ========== */
+        .page-footer {
+            text-align: center;
+            margin-top: 38px;
+            padding: 18px 0 8px;
+            color: var(--ink-muted);
+            font-size: 0.78rem;
+            letter-spacing: 0.04em;
+            position: relative;
+        }
+
+        .page-footer::before {
+            content: '';
+            display: block;
+            width: 56px;
+            height: 1.5px;
+            background: linear-gradient(90deg, transparent, var(--bronze-light), var(--bronze), transparent);
+            margin: 0 auto 16px;
+            border-radius: 1px;
+            opacity: 0.55;
+        }
+
+        .page-footer .footer-dot {
+            display: inline-block;
+            width: 4px;
+            height: 4px;
+            background-color: #d4c8b0;
+            border-radius: 50%;
+            margin: 0 8px;
+            vertical-align: middle;
+        }
+
+        .page-footer a {
+            color: var(--pine);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .page-footer a:hover {
+            color: #1f3627;
+            text-decoration: underline;
+            text-underline-offset: 3px;
+            text-decoration-thickness: 1px;
+        }
+
+        /* ========== 响应式设计 ========== */
+        @media (max-width: 600px) {
+            .main-container {
+                padding: 22px 12px 16px;
+                max-width: 100%;
+            }
+
+            .page-header {
+                margin-bottom: 20px;
+            }
+
+            .page-title {
+                font-size: 1.5rem;
+            }
+
+            .page-desc {
+                font-size: 0.80rem;
+            }
+
+            .header-label {
+                font-size: 0.66rem;
+                padding: 2px 10px;
+            }
+
+            .quotes-list {
+                gap: 11px;
+            }
+
+            .quote-card {
+                padding: 18px 15px 15px;
+                border-radius: var(--radius-md);
+            }
+
+            .quote-card::before {
+                top: 12px;
+                bottom: 12px;
+                width: 2.5px;
+            }
+
+            .quote-card::after {
+                top: 10px;
+                right: 12px;
+                width: 24px;
+                height: 22px;
+            }
+
+            .quote-text {
+                font-size: 1.02rem;
+                line-height: 1.7;
+                letter-spacing: 0.04em;
+            }
+
+            .quote-text-inner::before,
+            .quote-text-inner::after {
+                font-size: 1.15rem;
+            }
+
+            .quote-source {
+                font-size: 0.70rem;
+            }
+
+            .quote-source-dash {
+                width: 14px;
+            }
+
+            .quote-tag {
+                font-size: 0.58rem;
+                padding: 1px 8px;
+                letter-spacing: 0.06em;
+            }
+
+            .quote-source-area {
+                gap: 5px;
+            }
+
+            .back-link {
+                font-size: 0.80rem;
+                padding: 6px 11px 6px 7px;
+            }
+
+            .page-footer {
+                margin-top: 24px;
+                font-size: 0.70rem;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .main-container {
+                padding: 16px 8px 10px;
+            }
+
+            .quotes-list {
+                gap: 8px;
+            }
+
+            .quote-card {
+                padding: 15px 12px 13px;
+                border-radius: var(--radius-sm);
+            }
+
+            .quote-card::before {
+                top: 10px;
+                bottom: 10px;
+                width: 2px;
+            }
+
+            .quote-card::after {
+                top: 8px;
+                right: 8px;
+                width: 20px;
+                height: 18px;
+            }
+
+            .quote-text {
+                font-size: 0.90rem;
+                line-height: 1.65;
+                letter-spacing: 0.03em;
+            }
+
+            .quote-text-inner::before,
+            .quote-text-inner::after {
+                font-size: 1.02rem;
+            }
+
+            .quote-source {
+                font-size: 0.65rem;
+            }
+
+            .quote-source-dash {
+                width: 10px;
+            }
+
+            .quote-tag {
+                font-size: 0.54rem;
+                padding: 1px 7px;
+                letter-spacing: 0.05em;
+            }
+
+            .quote-source-area {
+                gap: 4px;
+            }
+
+            .page-title {
+                font-size: 1.28rem;
+            }
+
+            .page-desc {
+                font-size: 0.70rem;
+            }
+
+            .page-footer {
+                margin-top: 18px;
+                font-size: 0.62rem;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .main-container {
+                padding-top: 44px;
+                max-width: 660px;
+            }
+
+            .page-title {
+                font-size: 2.1rem;
+            }
+
+            .quote-card {
+                padding: 28px 26px 22px;
+            }
+
+            .quote-text {
+                font-size: 1.28rem;
+                line-height: 1.8;
+            }
+
+            .quote-text-inner::before,
+            .quote-text-inner::after {
+                font-size: 1.5rem;
+            }
+
+            .quote-source {
+                font-size: 0.82rem;
+            }
+
+            .quote-tag {
+                font-size: 0.66rem;
+                padding: 2px 11px;
+            }
+        }
+
+        /* 减弱动画偏好 */
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <main class="main-container">
+
+        <!-- 返回首页 -->
+        <div class="back-link-wrapper">
+            <a href="/" class="back-link" aria-label="返回首页">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+                返回首页
+            </a>
+        </div>
+
+        <!-- 页面头部 -->
+        <header class="page-header">
+            <span class="header-label">Collected Quotes</span>
+            <h1 class="page-title">句子收藏</h1>
+            <p class="page-desc">📝 收集的句子 · 持续扩建中</p>
+            <span class="header-ornament"></span>
+        </header>
+
+        <!-- 句子列表 -->
+        <ul class="quotes-list">
+
+            <!-- 1. 《论语》 -->
+            <li>
+                <article class="quote-card">
+                    <div class="quote-content">
+                        <p class="quote-text">
+                            <span class="quote-text-inner">己所不欲，勿施于人</span>
+                        </p>
+                        <div class="quote-source-area">
+                            <span class="quote-source-dash"></span>
+                            <span class="quote-source">出自 <span class="source-book">《论语·卫灵公》</span></span>
+                            <span class="quote-tag tag-chinese">中国古典</span>
+                        </div>
+                    </div>
+                </article>
+            </li>
+
+            <!-- 2. 《道德经》 -->
+            <li>
+                <article class="quote-card">
+                    <div class="quote-content">
+                        <p class="quote-text">
+                            <span class="quote-text-inner">上善若水，水善利万物而不争</span>
+                        </p>
+                        <div class="quote-source-area">
+                            <span class="quote-source-dash"></span>
+                            <span class="quote-source">出自 <span class="source-book">《道德经》第八章</span> · 老子</span>
+                            <span class="quote-tag tag-chinese">中国古典</span>
+                        </div>
+                    </div>
+                </article>
+            </li>
+
+            <!-- 3. 苏格拉底 -->
+            <li>
+                <article class="quote-card">
+                    <div class="quote-content">
+                        <p class="quote-text">
+                            <span class="quote-text-inner">认识你自己</span>
+                        </p>
+                        <div class="quote-source-area">
+                            <span class="quote-source-dash"></span>
+                            <span class="quote-source">苏格拉底 · <em>德尔斐神庙铭文</em></span>
+                            <span class="quote-tag tag-western">西方哲学</span>
+                        </div>
+                    </div>
+                </article>
+            </li>
+
+            <!-- 4. 庄子 -->
+            <li>
+                <article class="quote-card">
+                    <div class="quote-content">
+                        <p class="quote-text">
+                            <span class="quote-text-inner">吾生也有涯，而知也无涯</span>
+                        </p>
+                        <div class="quote-source-area">
+                            <span class="quote-source-dash"></span>
+                            <span class="quote-source">出自 <span class="source-book">《庄子·养生主》</span></span>
+                            <span class="quote-tag tag-chinese">中国古典</span>
+                        </div>
+                    </div>
+                </article>
+            </li>
+
+            <!-- 5. 尼采 -->
+            <li>
+                <article class="quote-card">
+                    <div class="quote-content">
+                        <p class="quote-text">
+                            <span class="quote-text-inner">每一个不曾起舞的日子，都是对生命的辜负</span>
+                        </p>
+                        <div class="quote-source-area">
+                            <span class="quote-source-dash"></span>
+                            <span class="quote-source">尼采 · <em>《查拉图斯特拉如是说》</em></span>
+                            <span class="quote-tag tag-western">西方哲学</span>
+                        </div>
+                    </div>
+                </article>
+            </li>
+
+        </ul>
+
+        <!-- 底部版权 -->
+        <footer class="page-footer">
+            <span>&copy; 2024 Skyler Huang</span>
+            <span class="footer-dot"></span>
+            <span>句子持续收集中</span>
+            <span class="footer-dot"></span>
+            <a href="/">返回首页</a>
+        </footer>
+
+    </main>
+
+</body>
+</html>
