@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>此页尚在构思中</title>
+    <style>
+        :root {
+            --paper: #FBF7F2;
+            --paper-warm: #F5EFE6;
+            --sage: #4A7C6F;
+            --sage-light: #6B9A8D;
+            --gold: #B49B7F;
+            --gold-light: #D4C4B0;
+            --ink: #3D3D3D;
+            --ink-light: #6B6B6B;
+            --border-subtle: #E5DDD3;
+            --shadow-soft: rgba(74, 124, 111, 0.06);
+            --shadow-md: rgba(74, 124, 111, 0.10);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Microsoft YaHei", "Source Han Sans CN", -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--paper);
+            color: var(--ink);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1.25rem;
+            line-height: 1.75;
+            position: relative;
+            background-image:
+                radial-gradient(ellipse at 15% 20%, rgba(180, 155, 127, 0.05) 0%, transparent 55%),
+                radial-gradient(ellipse at 85% 70%, rgba(74, 124, 111, 0.04) 0%, transparent 55%),
+                radial-gradient(ellipse at 50% 50%, rgba(180, 155, 127, 0.03) 0%, transparent 75%);
+            background-attachment: fixed;
+        }
+
+        /* 纸张纹理覆盖层 */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            background:
+                repeating-linear-gradient(0deg,
+                    transparent,
+                    transparent 3px,
+                    rgba(180, 155, 127, 0.015) 3px,
+                    rgba(180, 155, 127, 0.015) 4px),
+                repeating-linear-gradient(90deg,
+                    transparent,
+                    transparent 120px,
+                    rgba(74, 124, 111, 0.012) 120px,
+                    rgba(74, 124, 111, 0.012) 121px);
+        }
+
+        /* 顶部导航 */
+        .nav-top {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 10;
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: flex-start;
+        }
+
+        .nav-home {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--sage);
+            text-decoration: none;
+            letter-spacing: 0.04em;
+            transition: color 0.3s ease, gap 0.3s ease;
+            font-weight: 500;
+            position: relative;
+        }
+
+        .nav-home::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--gold);
+            transition: width 0.35s ease;
+        }
+
+        .nav-home:hover {
+            color: var(--sage-light);
+            gap: 0.7rem;
+        }
+        .nav-home:hover::after {
+            width: 100%;
+        }
+
+        .nav-arrow {
+            display: inline-block;
+            transition: transform 0.3s ease;
+            font-size: 0.85rem;
+        }
+        .nav-home:hover .nav-arrow {
+            transform: translateX(-4px);
+        }
+
+        /* 主容器 */
+        .main-wrapper {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 560px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* 信笺卡片 */
+        .letter-card {
+            width: 100%;
+            background: var(--paper-warm);
+            border: 1px solid var(--border-subtle);
+            border-radius: 6px;
+            padding: 3rem 2.5rem 2.5rem;
+            position: relative;
+            box-shadow:
+                0 1px 2px var(--shadow-soft),
+                0 8px 32px var(--shadow-md),
+                0 2px 8px rgba(180, 155, 127, 0.06);
+            transition: box-shadow 0.4s ease;
+        }
+
+        .letter-card:hover {
+            box-shadow:
+                0 1px 2px var(--shadow-soft),
+                0 12px 40px rgba(74, 124, 111, 0.12),
+                0 3px 12px rgba(180, 155, 127, 0.08);
+        }
+
+        /* 信笺顶部装饰线 */
+        .letter-card::before {
+            content: '';
+            position: absolute;
+            top: 1.4rem;
+            left: 2.5rem;
+            right: 2.5rem;
+            height: 1px;
+            background: linear-gradient(to right,
+                    transparent,
+                    var(--gold-light) 8%,
+                    var(--gold) 50%,
+                    var(--gold-light) 92%,
+                    transparent);
+            opacity: 0.55;
+        }
+
+        /* 信笺底部装饰线 */
+        .letter-card::after {
+            content: '';
+            position: absolute;
+            bottom: 1.4rem;
+            left: 2.5rem;
+            right: 2.5rem;
+            height: 1px;
+            background: linear-gradient(to right,
+                    transparent,
+                    var(--gold-light) 8%,
+                    var(--gold) 50%,
+                    var(--gold-light) 92%,
+                    transparent);
+            opacity: 0.4;
+        }
+
+        /* 蜡封装饰 */
+        .seal {
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            background: var(--sage);
+            position: absolute;
+            top: -18px;
+            right: 36px;
+            box-shadow:
+                0 2px 8px rgba(74, 124, 111, 0.25),
+                inset 0 1px 0 rgba(255, 255, 255, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.85);
+            z-index: 2;
+        }
+
+        .seal::after {
+            content: '';
+            position: absolute;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            border: 1.5px solid rgba(255, 255, 255, 0.35);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        /* 标题 */
+        .letter-title {
+            font-size: 1.35rem;
+            font-weight: 600;
+            color: var(--sage);
+            text-align: center;
+            letter-spacing: 0.05em;
+            margin-bottom: 2rem;
+            margin-top: 0.25rem;
+            line-height: 1.4;
+        }
+
+        .letter-title .emoji {
+            display: inline-block;
+            margin-right: 0.35rem;
+            font-style: normal;
+        }
+
+        /* 核心文案 */
+        .letter-core {
+            text-align: center;
+            font-size: 1.05rem;
+            color: var(--ink);
+            letter-spacing: 0.04em;
+            margin-bottom: 2rem;
+            padding: 1.25rem 1rem;
+            position: relative;
+        }
+
+        .letter-core p {
+            margin: 0;
+            font-weight: 500;
+        }
+
+        /* 核心文案两侧引号装饰 */
+        .letter-core::before {
+            content: '"';
+            position: absolute;
+            top: -0.2rem;
+            left: 50%;
+            transform: translateX(-50%) translateX(-120px);
+            font-size: 3rem;
+            color: var(--gold);
+            opacity: 0.3;
+            font-family: Georgia, "Times New Roman", serif;
+            line-height: 1;
+            pointer-events: none;
+        }
+
+        .letter-core::after {
+            content: '"';
+            position: absolute;
+            bottom: -0.8rem;
+            left: 50%;
+            transform: translateX(-50%) translateX(120px);
+            font-size: 3rem;
+            color: var(--gold);
+            opacity: 0.3;
+            font-family: Georgia, "Times New Roman", serif;
+            line-height: 1;
+            pointer-events: none;
+        }
+
+        /* 分隔花饰 */
+        .ornament-divider {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin: 0 auto 2rem;
+            width: 80%;
+            max-width: 280px;
+        }
+
+        .ornament-divider .line {
+            flex: 1;
+            height: 1px;
+            background: var(--border-subtle);
+        }
+
+        .ornament-divider .dot {
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: var(--gold);
+            opacity: 0.6;
+            flex-shrink: 0;
+        }
+
+        /* 短笺说明 */
+        .letter-note {
+            text-align: center;
+            font-size: 0.92rem;
+            color: var(--ink-light);
+            letter-spacing: 0.03em;
+            line-height: 1.85;
+            margin-bottom: 2rem;
+            padding: 0 0.5rem;
+        }
+
+        .letter-note a {
+            color: var(--sage);
+            text-decoration: none;
+            font-weight: 500;
+            border-bottom: 1px dotted var(--gold);
+            padding-bottom: 1px;
+            transition: color 0.3s ease, border-color 0.3s ease;
+        }
+
+        .letter-note a:hover {
+            color: var(--sage-light);
+            border-bottom-color: var(--sage-light);
+        }
+
+        /* 日期 */
+        .letter-date {
+            text-align: right;
+            font-size: 0.82rem;
+            color: var(--gold);
+            letter-spacing: 0.06em;
+            font-style: italic;
+            margin-top: 0.5rem;
+            padding-right: 0.25rem;
+            opacity: 0.8;
+        }
+
+        /* 底部版权 */
+        .footer-copy {
+            margin-top: 3rem;
+            text-align: center;
+            font-size: 0.78rem;
+            color: var(--ink-light);
+            letter-spacing: 0.05em;
+            opacity: 0.6;
+            z-index: 1;
+            position: relative;
+        }
+
+        .footer-copy .divider-dot {
+            display: inline-block;
+            margin: 0 0.6rem;
+            color: var(--gold);
+            opacity: 0.5;
+            font-size: 0.5rem;
+            vertical-align: middle;
+        }
+
+        /* 响应式 */
+        @media (max-width: 600px) {
+            body {
+                padding: 1.5rem 1rem;
+            }
+
+            .nav-top {
+                padding: 1rem 1.25rem;
+            }
+
+            .nav-home {
+                font-size: 0.82rem;
+            }
+
+            .letter-card {
+                padding: 2.5rem 1.5rem 2rem;
+                border-radius: 5px;
+            }
+
+            .letter-card::before,
+            .letter-card::after {
+                left: 1.5rem;
+                right: 1.5rem;
+            }
+            .letter-card::before {
+                top: 1.1rem;
+            }
+            .letter-card::after {
+                bottom: 1.1rem;
+            }
+
+            .seal {
+                width: 38px;
+                height: 38px;
+                top: -15px;
+                right: 22px;
+                font-size: 0.95rem;
+            }
+            .seal::after {
+                width: 22px;
+                height: 22px;
+            }
+
+            .letter-title {
+                font-size: 1.15rem;
+                margin-bottom: 1.5rem;
+                margin-top: 0.15rem;
+            }
+
+            .letter-core {
+                font-size: 0.95rem;
+                margin-bottom: 1.5rem;
+                padding: 1rem 0.5rem;
+            }
+
+            .letter-core::before {
+                transform: translateX(-50%) translateX(-80px);
+                font-size: 2.2rem;
+            }
+            .letter-core::after {
+                transform: translateX(-50%) translateX(80px);
+                font-size: 2.2rem;
+            }
+
+            .letter-note {
+                font-size: 0.85rem;
+                margin-bottom: 1.5rem;
+                padding: 0;
+            }
+
+            .letter-date {
+                font-size: 0.76rem;
+            }
+
+            .ornament-divider {
+                max-width: 200px;
+                margin-bottom: 1.5rem;
+            }
+
+            .footer-copy {
+                margin-top: 2.25rem;
+                font-size: 0.72rem;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .letter-card {
+                padding: 2rem 1.15rem 1.75rem;
+            }
+
+            .letter-card::before,
+            .letter-card::after {
+                left: 1.15rem;
+                right: 1.15rem;
+            }
+
+            .seal {
+                right: 16px;
+                width: 34px;
+                height: 34px;
+                top: -13px;
+                font-size: 0.85rem;
+            }
+            .seal::after {
+                width: 19px;
+                height: 19px;
+            }
+
+            .letter-title {
+                font-size: 1.05rem;
+            }
+            .letter-core {
+                font-size: 0.88rem;
+            }
+            .letter-core::before,
+            .letter-core::after {
+                display: none;
+            }
+            .letter-note {
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 返回首页 -->
+    <nav class="nav-top" aria-label="返回导航">
+        <a href="/" class="nav-home" title="返回首页">
+            <span class="nav-arrow">←</span> 返回首页
+        </a>
+    </nav>
+
+    <!-- 主体 -->
+    <main class="main-wrapper">
+        <article class="letter-card" aria-label="致访客的短笺">
+            <!-- 蜡封装饰 -->
+            <div class="seal" aria-hidden="true">✉</div>
+
+            <!-- 标题 -->
+            <h1 class="letter-title">
+                <span class="emoji">📮</span>此页尚在构思中
+            </h1>
+
+            <!-- 核心文案 -->
+            <div class="letter-core">
+                <p>这个页面，站长未来会更新，谢谢。</p>
+            </div>
+
+            <!-- 花饰分隔 -->
+            <div class="ornament-divider" aria-hidden="true">
+                <span class="line"></span>
+                <span class="dot"></span>
+                <span class="line"></span>
+            </div>
+
+            <!-- 短笺说明 -->
+            <div class="letter-note">
+                <p>
+                    目前正在思考它的具体形态，如果你有想法，不妨直接通过<a href="mailto:hi@example.com" title="发送邮件给站长">邮箱</a>告诉我。你的每一条建议，都会帮助我更好地决定这里放什么。
+                </p>
+            </div>
+
+            <!-- 日期 -->
+            <p class="letter-date" id="current-date"></p>
+        </article>
+
+        <!-- 版权 -->
+        <footer class="footer-copy">
+            <span id="copyright-year"></span>
+            <span class="divider-dot">·</span>
+            <span>保持期待，后会有期</span>
+        </footer>
+    </main>
+
+    <script>
+        (function() {
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = now.getMonth() + 1;
+            const day = now.getDate();
+
+            // 设置日期：格式如 2025年7月11日
+            const dateEl = document.getElementById('current-date');
+            if (dateEl) {
+                dateEl.textContent = year + '年' + month + '月' + day + '日';
+            }
+
+            // 设置版权年份
+            const copyEl = document.getElementById('copyright-year');
+            if (copyEl) {
+                copyEl.textContent = '© ' + year + ' 保留所有权利';
+            }
+        })();
+    </script>
+</body>
+</html>
