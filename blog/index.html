@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文章 · hletian</title>
+    <style>
+        /* ========== CSS 变量：配色与排版 ========== */
+        :root {
+            /* 纸张暖白背景 */
+            --bg-paper: #faf7f0;
+            /* 墨绿色 —— 用于标题、强调 */
+            --ink-green: #2d4a3a;
+            /* 深墨绿 —— hover 状态 */
+            --ink-green-dark: #1d3327;
+            /* 古铜金 —— 用于日期、点缀 */
+            --bronze-gold: #9b7a3c;
+            /* 古铜金浅 —— 细线、hover 背景 */
+            --bronze-gold-light: #c9b27e;
+            /* 正文深灰棕 */
+            --text-body: #3d3629;
+            /* 次要文字 */
+            --text-muted: #8c8070;
+            /* 极淡分隔线 */
+            --divider: #e8e2d4;
+            /* 选中文字背景 */
+            --selection-bg: #d9cdb0;
+
+            /* 字体栈 */
+            --font-serif: "Noto Serif SC", "Source Han Serif SC", "STSong", "Songti SC", "SimSun", Georgia, "Times New Roman", serif;
+            --font-sans: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+            /* 排版 */
+            --max-width: 680px;
+            --line-height-body: 1.75;
+            --line-height-heading: 1.35;
+        }
+
+        /* ========== 全局重置 ========== */
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            font-size: 16px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
+        }
+
+        body {
+            background-color: var(--bg-paper);
+            color: var(--text-body);
+            font-family: var(--font-sans);
+            line-height: var(--line-height-body);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem 1.25rem;
+            /* 微妙的纸张纹理 —— 极淡噪点，模拟纸纤维感 */
+            background-image:
+                radial-gradient(ellipse at 50% 0%, rgba(180, 160, 120, 0.06) 0%, transparent 70%),
+                radial-gradient(ellipse at 80% 100%, rgba(160, 140, 100, 0.04) 0%, transparent 60%);
+            background-attachment: fixed;
+        }
+
+        /* ========== 选中文字样式 ========== */
+        ::selection {
+            background-color: var(--selection-bg);
+            color: var(--ink-green-dark);
+        }
+
+        /* ========== 主容器 ========== */
+        .page-wrapper {
+            width: 100%;
+            max-width: var(--max-width);
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        /* ========== 头部：返回链接 + 主标题 ========== */
+        .site-header {
+            margin-bottom: 3rem;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            font-size: 0.9rem;
+            color: var(--bronze-gold);
+            text-decoration: none;
+            font-family: var(--font-sans);
+            letter-spacing: 0.02em;
+            transition: color 0.25s ease, transform 0.2s ease;
+            margin-bottom: 2rem;
+            line-height: 1;
+        }
+
+        .back-link:hover {
+            color: var(--ink-green);
+            transform: translateX(-3px);
+        }
+
+        .back-link .arrow {
+            display: inline-block;
+            transition: transform 0.2s ease;
+        }
+
+        .back-link:hover .arrow {
+            transform: translateX(-2px);
+        }
+
+        .main-title {
+            font-family: var(--font-serif);
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--ink-green);
+            letter-spacing: 0.04em;
+            line-height: var(--line-height-heading);
+        }
+
+        /* ========== 文章列表区域 ========== */
+        .post-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 2.25rem;
+            flex: 1;
+        }
+
+        /* 单篇文章 */
+        .post-item {
+            border-bottom: 1px solid var(--divider);
+            padding-bottom: 2rem;
+        }
+
+        .post-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        /* 发布日期 */
+        .post-date {
+            display: block;
+            font-family: var(--font-sans);
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--bronze-gold);
+            letter-spacing: 0.04em;
+            margin-bottom: 0.45rem;
+        }
+
+        /* 文章标题 */
+        .post-title {
+            font-family: var(--font-serif);
+            font-size: 1.35rem;
+            font-weight: 700;
+            line-height: var(--line-height-heading);
+            margin-bottom: 0.55rem;
+        }
+
+        .post-title a {
+            color: var(--ink-green);
+            text-decoration: none;
+            transition: color 0.25s ease;
+            /* 底部细线 —— 仅在 hover 时显现 */
+            background-image: linear-gradient(to right, var(--bronze-gold-light), var(--bronze-gold-light));
+            background-repeat: no-repeat;
+            background-position: 0 100%;
+            background-size: 0 1px;
+            transition: background-size 0.3s ease, color 0.25s ease;
+            padding-bottom: 2px;
+        }
+
+        .post-title a:hover {
+            color: var(--ink-green-dark);
+            background-size: 100% 1px;
+        }
+
+        /* 文章摘要 */
+        .post-excerpt {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            line-height: var(--line-height-body);
+            max-width: 95%;
+        }
+
+        /* ========== 底部版权信息 ========== */
+        .site-footer {
+            margin-top: 4rem;
+            padding-top: 1.5rem;
+            text-align: center;
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            letter-spacing: 0.03em;
+            border-top: 1px solid var(--divider);
+        }
+
+        .site-footer .copy-year {
+            color: var(--bronze-gold);
+            font-weight: 500;
+        }
+
+        /* ========== 响应式：平板及以上 ========== */
+        @media (min-width: 600px) {
+            body {
+                padding: 3rem 2rem;
+            }
+
+            .main-title {
+                font-size: 2.25rem;
+            }
+
+            .post-title {
+                font-size: 1.45rem;
+            }
+
+            .post-excerpt {
+                font-size: 0.98rem;
+                max-width: 90%;
+            }
+
+            .post-list {
+                gap: 2.5rem;
+            }
+
+            .post-item {
+                padding-bottom: 2.25rem;
+            }
+        }
+
+        /* ========== 响应式：桌面端 ========== */
+        @media (min-width: 900px) {
+            body {
+                padding: 4rem 2rem;
+            }
+
+            .main-title {
+                font-size: 2.5rem;
+            }
+
+            .post-title {
+                font-size: 1.5rem;
+            }
+
+            .post-list {
+                gap: 2.75rem;
+            }
+
+            .post-item {
+                padding-bottom: 2.5rem;
+            }
+
+            .site-footer {
+                margin-top: 5rem;
+            }
+        }
+
+        /* ========== 响应式：小屏手机 (320-400px) ========== */
+        @media (max-width: 400px) {
+            body {
+                padding: 1.5rem 1rem;
+            }
+
+            .main-title {
+                font-size: 1.7rem;
+            }
+
+            .post-title {
+                font-size: 1.15rem;
+            }
+
+            .post-excerpt {
+                font-size: 0.88rem;
+                max-width: 100%;
+            }
+
+            .post-date {
+                font-size: 0.78rem;
+            }
+
+            .post-list {
+                gap: 1.75rem;
+            }
+
+            .post-item {
+                padding-bottom: 1.5rem;
+            }
+
+            .site-header {
+                margin-bottom: 2rem;
+            }
+
+            .back-link {
+                font-size: 0.82rem;
+                margin-bottom: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ==================== 页面容器 ==================== -->
+    <div class="page-wrapper">
+
+        <!-- ==================== 头部区域 ==================== -->
+        <header class="site-header">
+            <!--
+                返回首页链接
+                如需修改文案或目标地址，直接编辑下方 href 和文字
+            -->
+            <a href="https://hletian.cn/" class="back-link" title="返回首页">
+                <span class="arrow">←</span> 返回首页
+            </a>
+
+            <!--
+                主标题：可根据需要改为「学习笔记」
+            -->
+            <h1 class="main-title">文章</h1>
+        </header>
+
+        <!-- ==================== 文章列表（主内容区） ==================== -->
+        <main>
+            <ol class="post-list">
+
+                <!--
+                ==========================================
+                文章条目 #1（最新）
+                日期：2026-07-21
+                替换说明：
+                  1. 修改 <time> 的 datetime 属性和显示文字
+                  2. 修改 <a> 的 href 为真实文章链接
+                  3. 修改 <a> 内的标题文字
+                  4. 修改 <p> 内的摘要文字
+                ==========================================
+                -->
+                <li class="post-item">
+                    <article>
+                        <time class="post-date" datetime="2026-07-21">2026-07-21</time>
+                        <h2 class="post-title">
+                            <!-- ★ 替换 href="#" 为真实文章链接 -->
+                            <a href="#">记账工具开发笔记：从想法到上线</a>
+                        </h2>
+                        <!-- ★ 替换摘要文字 -->
+                        <p class="post-excerpt">
+                            通过咖啡因子来规划储蓄习惯，AI提示词工程赋能网站建设
+                        </p>
+                    </article>
+                </li>
+
+                <!--
+                ==========================================
+                文章条目 #2
+                日期：2026-07-20
+                ==========================================
+                -->
+                <li class="post-item">
+                    <article>
+                        <time class="post-date" datetime="2026-07-20">2026-07-20</time>
+                        <h2 class="post-title">
+                            <!-- ★ 替换 href="#" 为真实文章链接 -->
+                            <a href="#">极简理财第一步：搭建自己的"财务仪表盘"</a>
+                        </h2>
+                        <!-- ★ 替换摘要文字 -->
+                        <p class="post-excerpt">
+                            用几个关键数字（净资产、储蓄率、被动收入占比）快速判断财务状况，告别复杂的报表。
+                        </p>
+                    </article>
+                </li>
+
+                <!--
+                ==========================================
+                文章条目 #3
+                日期：2026-07-19
+                ==========================================
+                -->
+                <li class="post-item">
+                    <article>
+                        <time class="post-date" datetime="2026-07-19">2026-07-19</time>
+                        <h2 class="post-title">
+                            <!-- ★ 替换 href="#" 为真实文章链接 -->
+                            <a href="#">紧急备用金到底该存多少？一个可落地的计算方式</a>
+                        </h2>
+                        <!-- ★ 替换摘要文字 -->
+                        <p class="post-excerpt">
+                            结合月支出、收入稳定性和心理安全感，给出适合不同人群的备用金额度建议与存放位置。
+                        </p>
+                    </article>
+                </li>
+
+                <!--
+                ==========================================
+                后续新增文章在此处添加，格式参照上方条目。
+                注意：新文章请插入到列表最上方（第一条之前），
+                以保持从新到旧的倒序排列。
+                ==========================================
+                -->
+
+            </ol>
+        </main>
+
+        <!-- ==================== 底部版权信息 ==================== -->
+        <!--
+            与个人主页完全一致的版权信息。
+            如需修改年份或名称，编辑下方文字即可。
+        -->
+        <footer class="site-footer">
+            <span class="copy-year">© 2026</span> hletian
+        </footer>
+
+    </div><!-- .page-wrapper 结束 -->
+
+</body>
+</html>
