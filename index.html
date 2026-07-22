@@ -54,39 +54,21 @@
             padding-top: var(--nav-height);
         }
 
-        /* ========== 入场动画关键帧 ========== */
         @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(24px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(24px); }
+            to   { opacity: 1; transform: translateY(0); }
         }
 
         @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
+            from { opacity: 0; }
+            to   { opacity: 1; }
         }
 
         @keyframes navFadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(-8px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(-8px); }
+            to   { opacity: 1; transform: translateY(0); }
         }
 
-        /* ========== 头部区域 ========== */
         .header {
             text-align: center;
             padding: 48px 24px 20px;
@@ -99,7 +81,6 @@
             position: relative;
         }
 
-        /* 头像徽标 */
         .avatar-badge {
             display: inline-flex;
             align-items: center;
@@ -121,7 +102,6 @@
             flex-shrink: 0;
         }
 
-        /* 徽标修饰：右下角小古铜金圆点 */
         .avatar-badge::after {
             content: '';
             position: absolute;
@@ -134,7 +114,6 @@
             opacity: 0.85;
         }
 
-        /* 头部文字 */
         .header-name {
             font-family: var(--font-serif);
             font-size: 2rem;
@@ -166,7 +145,6 @@
             animation-delay: 0.50s;
         }
 
-        /* GitHub 图标链接 */
         .header-github {
             position: absolute;
             top: 8px;
@@ -195,7 +173,6 @@
             fill: currentColor;
         }
 
-        /* 头部分隔线 */
         .header-divider {
             max-width: var(--max-width);
             margin: 18px auto 0;
@@ -205,7 +182,6 @@
             border: none;
         }
 
-        /* ========== 主导航栏 ========== */
         .nav-bar {
             position: fixed;
             top: 0;
@@ -222,7 +198,6 @@
             animation-delay: 0.65s;
         }
 
-        /* 滚动后的导航栏样式 */
         .nav-bar.scrolled {
             background-color: rgba(250, 247, 242, 0.92);
             backdrop-filter: blur(10px);
@@ -241,7 +216,6 @@
             position: relative;
         }
 
-        /* 导航项 */
         .nav-item {
             position: relative;
             display: inline-flex;
@@ -265,13 +239,11 @@
             background-color: var(--hover-bg);
         }
 
-        /* 当前页（首页）标识 */
         .nav-item.active {
             color: var(--primary);
             font-weight: 600;
         }
 
-        /* 导航项底部细线（悬停效果） */
         .nav-item::after {
             content: '';
             position: absolute;
@@ -295,7 +267,6 @@
             background-color: var(--primary);
         }
 
-        /* 下拉箭头指示符 */
         .nav-arrow {
             display: inline-block;
             font-size: 0.65rem;
@@ -307,7 +278,6 @@
             transform: rotate(180deg);
         }
 
-        /* ========== 下拉菜单 ========== */
         .dropdown-menu {
             position: absolute;
             top: 100%;
@@ -355,7 +325,6 @@
             color: var(--primary);
         }
 
-        /* ========== 汉堡菜单按钮 ========== */
         .hamburger-btn {
             display: none;
             background: none;
@@ -390,7 +359,6 @@
             transform: translateY(-7px) rotate(-45deg);
         }
 
-        /* 新增：阅读进度条 */
         .progress-bar {
             position: fixed;
             top: var(--nav-height);
@@ -409,7 +377,6 @@
             transition: width 0.1s linear;
         }
 
-        /* 新增：返回顶部按钮 */
         .back-to-top {
             position: fixed;
             bottom: 24px;
@@ -443,14 +410,12 @@
             pointer-events: auto;
         }
 
-        /* ========== 主体容器 ========== */
         .main-container {
             max-width: var(--max-width);
             margin: 0 auto;
             padding: 0 24px 40px;
         }
 
-        /* ========== 分类区域 ========== */
         .section-block {
             margin-top: 44px;
             opacity: 0;
@@ -463,7 +428,6 @@
             transform: translateY(0);
         }
 
-        /* 分类标题 */
         .section-heading {
             display: flex;
             align-items: center;
@@ -478,7 +442,6 @@
             border-bottom: 1px solid rgba(180, 155, 127, 0.25);
         }
 
-        /* 标题左侧装饰圆点 */
         .section-heading::before {
             content: '';
             display: inline-block;
@@ -489,14 +452,12 @@
             flex-shrink: 0;
         }
 
-        /* ========== 卡片网格 ========== */
         .card-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 16px;
         }
 
-        /* ========== 亮色卡片 ========== */
         .card {
             background-color: var(--card-bg);
             border-radius: var(--radius);
@@ -545,19 +506,6 @@
             letter-spacing: 0.02em;
         }
 
-        /* 体重饮食记录卡片中的警告标注 */
-        .card-warning {
-            display: inline-block;
-            margin-top: 4px;
-            font-size: 0.78rem;
-            color: #c07a4b;
-            background-color: #fef9f4;
-            padding: 2px 8px;
-            border-radius: 3px;
-            letter-spacing: 0.02em;
-        }
-
-        /* 新增：联系我卡片内的链接样式 */
         .card-contact-link {
             display: block;
             font-size: 0.82rem;
@@ -572,7 +520,6 @@
             text-decoration: underline;
         }
 
-        /* ========== 灰色占位区块 ========== */
         .placeholder-block {
             background-color: var(--gray-placeholder);
             border-radius: var(--radius);
@@ -594,7 +541,6 @@
             transform: translateY(0);
         }
 
-        /* ========== 自我介绍区域 ========== */
         .self-intro {
             margin-top: 52px;
             padding-top: 28px;
@@ -625,7 +571,6 @@
             margin-bottom: 0;
         }
 
-        /* ========== 底部信息 ========== */
         .footer {
             max-width: var(--max-width);
             margin: 36px auto 0;
@@ -656,58 +601,45 @@
             color: #b0a89e;
         }
 
-        /* ========== 响应式：移动端 ========== */
         @media (max-width: 600px) {
             .header {
                 padding: 36px 16px 16px;
             }
-
             .header-name {
                 font-size: 1.55rem;
             }
-
             .header-tagline {
                 font-size: 0.85rem;
             }
-
             .avatar-badge {
                 width: 56px;
                 height: 56px;
                 font-size: 26px;
             }
-
             .avatar-badge::after {
                 width: 7px;
                 height: 7px;
                 bottom: 4px;
                 right: 6px;
             }
-
             .header-github {
                 top: 0;
                 right: 0;
                 width: 34px;
                 height: 34px;
             }
-
             .header-github svg {
                 width: 18px;
                 height: 18px;
             }
-
-            /* 导航栏移动端 */
             .nav-inner {
                 justify-content: flex-start;
                 padding: 0 16px;
                 flex-wrap: nowrap;
             }
-
-            /* 汉堡按钮显示 */
             .hamburger-btn {
                 display: flex;
             }
-
-            /* 导航项容器：默认隐藏 */
             .nav-links {
                 display: none;
                 position: absolute;
@@ -724,23 +656,18 @@
                 z-index: 999;
                 gap: 2px;
             }
-
             .nav-links.open {
                 display: flex;
             }
-
             .nav-item {
                 width: 100%;
                 justify-content: space-between;
                 padding: 12px 16px;
                 font-size: 0.95rem;
             }
-
             .nav-item::after {
                 display: none;
             }
-
-            /* 移动端下拉菜单 */
             .dropdown-menu {
                 position: static;
                 transform: none;
@@ -752,46 +679,35 @@
                 min-width: auto;
                 transition: max-height 0.25s ease, opacity 0.25s ease;
             }
-
             .dropdown-menu.open {
                 transform: none;
             }
-
             .dropdown-menu a {
                 padding: 9px 16px;
                 font-size: 0.85rem;
             }
-
-            /* 卡片单列 */
             .card-grid {
                 grid-template-columns: 1fr;
                 gap: 12px;
             }
-
             .card {
                 padding: 18px 16px;
             }
-
             .self-intro {
                 font-size: 0.88rem;
                 line-height: 1.9;
                 padding: 20px 8px 0;
             }
-
             .section-heading {
                 font-size: 1.2rem;
             }
-
             .main-container {
                 padding: 0 16px 32px;
             }
-
             .footer {
                 padding: 16px 16px 28px;
                 font-size: 0.76rem;
             }
-
-            /* 新增：移动端返回顶部按钮 */
             .back-to-top {
                 width: 40px;
                 height: 40px;
@@ -801,7 +717,6 @@
             }
         }
 
-        /* ========== 响应式：平板 ========== */
         @media (min-width: 601px) and (max-width: 900px) {
             .card-grid {
                 grid-template-columns: repeat(2, 1fr);
@@ -809,18 +724,15 @@
             }
         }
 
-        /* ========== 响应式：桌面端 ========== */
         @media (min-width: 601px) {
             .hamburger-btn {
                 display: none;
             }
-
             .nav-links {
                 display: flex;
                 align-items: center;
                 gap: 4px;
             }
-
             .dropdown-menu {
                 position: absolute;
                 top: 100%;
@@ -836,73 +748,19 @@
     <!-- ==================== 主导航栏 ==================== -->
     <nav class="nav-bar" id="navBar" aria-label="主导航">
         <div class="nav-inner">
-
-            <!-- 汉堡菜单按钮（移动端） -->
             <button class="hamburger-btn" id="hamburgerBtn" aria-label="打开菜单" aria-expanded="false">
                 <span></span>
                 <span></span>
                 <span></span>
             </button>
-
-            <!-- 导航链接容器 -->
             <div class="nav-links" id="navLinks">
-                <!-- 首页 -->
-                <a href="/" class="nav-item active" data-has-dropdown="false">首页</a>
-
-                <!-- 专业 -->
-                <span class="nav-item" data-has-dropdown="true" data-dropdown="dropdown-professional" role="button" tabindex="0" aria-expanded="false">
-                    专业 <span class="nav-arrow">▼</span>
-                </span>
-
-                <!-- 工具 -->
-                <span class="nav-item" data-has-dropdown="true" data-dropdown="dropdown-tools" role="button" tabindex="0" aria-expanded="false">
-                    工具 <span class="nav-arrow">▼</span>
-                </span>
-
-                <!-- 生活 -->
-                <span class="nav-item" data-has-dropdown="true" data-dropdown="dropdown-life" role="button" tabindex="0" aria-expanded="false">
-                    生活 <span class="nav-arrow">▼</span>
-                </span>
-
-                <!-- 连接 -->
-                <span class="nav-item" data-has-dropdown="true" data-dropdown="dropdown-connect" role="button" tabindex="0" aria-expanded="false">
-                    连接 <span class="nav-arrow">▼</span>
-                </span>
+                <!-- 导航项由 JS 动态生成 -->
             </div>
         </div>
-
-        <!-- ========== 下拉菜单（放在 nav-bar 内以便绝对定位） ========== -->
-        <!-- 专业下拉 -->
-        <div class="dropdown-menu" id="dropdown-professional" aria-label="专业子菜单">
-            <a href="/about/">关于我</a>
-            <a href="/blog/">学习笔记</a>
-            <a href="/wiki/">知识库</a>
-            <a href="/glossary/">术语卡片</a>
-        </div>
-        <!-- 工具下拉 -->
-        <div class="dropdown-menu" id="dropdown-tools" aria-label="工具子菜单">
-            <a href="/recording/">记账打卡工具</a>
-            <a href="/weight/">体重饮食记录</a>
-            <a href="/memo/">备忘录</a>
-        </div>
-        <!-- 生活下拉 -->
-        <div class="dropdown-menu" id="dropdown-life" aria-label="生活子菜单">
-            <a href="/now/">当前状态</a>
-            <a href="/reading/">书单/读书笔记</a>
-            <a href="/photos/">随手拍</a>
-            <a href="/playlist/">最近在听</a>
-            <a href="/travel/">旅行记录</a>
-            <a href="/quotes/">收集的句子</a>
-        </div>
-        <!-- 连接下拉 -->
-        <div class="dropdown-menu" id="dropdown-connect" aria-label="连接子菜单">
-            <a href="/social/">社交聚合</a>
-            <a href="/board/">留言板</a>
-            <a href="/guestbook/">访客签名簿</a>
-        </div>
+        <!-- 下拉菜单由 JS 动态生成 -->
     </nav>
 
-    <!-- 新增：阅读进度条 -->
+    <!-- 阅读进度条 -->
     <div class="progress-bar" id="progressBar" aria-hidden="true">
         <div class="progress-bar-fill" id="progressBarFill"></div>
     </div>
@@ -910,154 +768,182 @@
     <!-- ==================== 头部区域 ==================== -->
     <header class="header" id="header">
         <div class="header-inner">
-            <!-- 头像：字母徽标 -->
-            <div class="avatar-badge" aria-label="Skyler 头像徽标">S</div>
-
-            <!-- 姓名 -->
-            <h1 class="header-name">黄乐天</h1>
-            <!-- 英文名 -->
-            <p class="header-english-name">Skyler</p>
-            <!-- 定位语 -->
-            <p class="header-tagline">会计学专业 · 用技术为专业能力提效</p>
-
-            <!-- GitHub 图标链接 -->
-            <a href="https://github.com/Skyler-Huang" class="header-github" target="_blank" rel="noopener noreferrer" aria-label="GitHub 主页">
-                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.385-1.335-1.755-1.335-1.755-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.605-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12z"/>
-                </svg>
-            </a>
+            <!-- 头部内容由 JS 动态生成 -->
         </div>
-        <!-- 头部分隔线 -->
         <hr class="header-divider" aria-hidden="true">
     </header>
 
     <!-- ==================== 主体内容 ==================== -->
     <main class="main-container" id="mainContainer">
-
-        <!-- ========== 专业 分类区域 ========== -->
-        <!-- 修改：卡片由 JS 动态生成，移除了硬编码的 <a> 卡片元素 -->
-        <section class="section-block" id="section-professional" aria-labelledby="heading-professional">
-            <h2 class="section-heading" id="heading-professional">专业</h2>
-            <div class="card-grid" id="cardGrid-professional">
-                <!-- 卡片由 JS 动态渲染 -->
-            </div>
-            <!-- 灰色占位区块 -->
-            <div class="placeholder-block" data-placeholder>更多功能持续扩展中</div>
-        </section>
-
-        <!-- ========== 工具 分类区域 ========== -->
-        <!-- 修改：卡片由 JS 动态生成，移除了硬编码的 <a> 卡片元素 -->
-        <section class="section-block" id="section-tools" aria-labelledby="heading-tools">
-            <h2 class="section-heading" id="heading-tools">工具</h2>
-            <div class="card-grid" id="cardGrid-tools">
-                <!-- 卡片由 JS 动态渲染 -->
-            </div>
-            <!-- 灰色占位区块 -->
-            <div class="placeholder-block" data-placeholder>更多功能持续扩展中</div>
-        </section>
-
-        <!-- ========== 生活 分类区域 ========== -->
-        <!-- 修改：卡片由 JS 动态生成，移除了硬编码的 <a> 卡片元素 -->
-        <section class="section-block" id="section-life" aria-labelledby="heading-life">
-            <h2 class="section-heading" id="heading-life">生活</h2>
-            <div class="card-grid" id="cardGrid-life">
-                <!-- 卡片由 JS 动态渲染 -->
-            </div>
-            <!-- 灰色占位区块 -->
-            <div class="placeholder-block" data-placeholder>更多功能持续扩展中</div>
-        </section>
-
-        <!-- ========== 连接 分类区域 ========== -->
-        <!-- 修改：卡片由 JS 动态生成，移除了硬编码的 <a> 卡片元素 -->
-        <section class="section-block" id="section-connect" aria-labelledby="heading-connect">
-            <h2 class="section-heading" id="heading-connect">连接</h2>
-            <div class="card-grid" id="cardGrid-connect">
-                <!-- 卡片由 JS 动态渲染（含新增的"联系我"卡片） -->
-            </div>
-            <!-- 灰色占位区块 -->
-            <div class="placeholder-block" data-placeholder>更多功能持续扩展中</div>
-        </section>
-
-        <!-- ========== 自我介绍区域 ========== -->
-        <section class="self-intro" id="selfIntro" aria-labelledby="heading-intro">
-            <p>会计学专业大二在读，对传统审计与海外财务方向保持持续关注。</p>
-            <p>相信技术可以成为专业能力的杠杆——目前正在探索提示词工程、财务数字化工具与自动化工作流，试图在严谨的学科框架中，找到一条更具效率与创造力的路径。</p>
-            <p>希望将严谨的会计思维与现代效率工具相结合，为未来的职业道路做好准备。课余时间维护个人知识库与效率工具集，信奉「慢即是快」，在浮躁中保留一份对精耕细作的耐心。</p>
-        </section>
-
+        <!-- 分类区域 + 自我介绍 由 JS 动态生成 -->
     </main>
 
     <!-- ==================== 底部信息 ==================== -->
     <footer class="footer" id="footer">
-        <p>© 2026 黄乐天 · <span class="footer-domain">hletian.cn</span></p>
-        <p>Powered by GitHub Pages</p>
-        <p class="footer-note">正在建设中，持续更新中</p>
+        <!-- 底部内容由 JS 动态生成 -->
     </footer>
 
-    <!-- 新增：返回顶部按钮 -->
+    <!-- 返回顶部按钮 -->
     <button class="back-to-top" id="backToTop" aria-label="返回顶部">↑</button>
+
+    <!-- ==================== 外部数据 ==================== -->
+    <script src="site-data.js"></script>
 
     <!-- ==================== JavaScript ==================== -->
     <script>
         (function() {
-            // ========== 新增：卡片数据外部化 ==========
-            var cardsData = {
-                professional: [
-                    { title: '关于我', desc: '了解更多背景、经历与方向', href: '/about/' },
-                    { title: '学习笔记', desc: '会计、审计与财务数字化的思考碎片', href: '/blog/' }
-                ],
-                tools: [
-                    { title: '记账打卡工具', desc: '日常记账与习惯追踪', href: '/recording/' },
-                    { title: '体重饮食记录', desc: '记录每日体重、饮食与运动', href: '/weight/', warning: '⚠️ 数据存储功能异常，正在修复' },
-                    { title: '备忘录', desc: '随手记录待办与灵感', href: '/memo/' }
-                ],
-                life: [
-                    { title: '当前状态', desc: '我正在做什么', href: '/now/' },
-                    { title: '书单/读书笔记', desc: '阅读记录与感想', href: '/reading/' },
-                    { title: '随手拍', desc: '日常影像碎片', href: '/photos/' },
-                    { title: '最近在听', desc: '音乐与播客推荐', href: '/playlist/' },
-                    { title: '旅行记录', desc: '去过的地方', href: '/travel/' },
-                    { title: '收集的句子', desc: '喜欢的文字片段', href: '/quotes/' }
-                ],
-                connect: [
-                    // 新增：联系我卡片（无 href，显示邮箱和电话，使用古铜金强调线）
-                    { title: '联系我', desc: '欢迎理性、克制的交流。', email: 'hletian1220@gmail.com', phone: '15872157112', accent: true },
-                    { title: '社交聚合', desc: '各平台入口', href: '/social/' },
-                    { title: '留言板', desc: '访客留言', href: '/board/' },
-                    { title: '访客签名簿', desc: '留下你的足迹', href: '/guestbook/' }
-                ]
-            };
 
-            // 新增：渲染单张卡片的辅助函数
+            // ========== 渲染头部 ==========
+            function renderHeader() {
+                var headerInner = document.querySelector('#header .header-inner');
+                if (!headerInner) return;
+                headerInner.innerHTML = '';
+
+                var d = siteData.header;
+
+                var avatar = document.createElement('div');
+                avatar.className = 'avatar-badge';
+                avatar.setAttribute('aria-label', d.englishName + ' 头像徽标');
+                avatar.textContent = d.avatarLetter;
+                headerInner.appendChild(avatar);
+
+                var h1 = document.createElement('h1');
+                h1.className = 'header-name';
+                h1.textContent = d.name;
+                headerInner.appendChild(h1);
+
+                var pEn = document.createElement('p');
+                pEn.className = 'header-english-name';
+                pEn.textContent = d.englishName;
+                headerInner.appendChild(pEn);
+
+                var pTag = document.createElement('p');
+                pTag.className = 'header-tagline';
+                pTag.textContent = d.tagline;
+                headerInner.appendChild(pTag);
+
+                var ghLink = document.createElement('a');
+                ghLink.href = d.githubUrl;
+                ghLink.className = 'header-github';
+                ghLink.target = '_blank';
+                ghLink.rel = 'noopener noreferrer';
+                ghLink.setAttribute('aria-label', 'GitHub 主页');
+                ghLink.innerHTML = '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.385-1.335-1.755-1.335-1.755-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.605-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12z"/></svg>';
+                headerInner.appendChild(ghLink);
+            }
+
+            // ========== 渲染导航 ==========
+            function renderNavigation() {
+                var navLinks = document.getElementById('navLinks');
+                var navBar = document.getElementById('navBar');
+                if (!navLinks || !navBar) return;
+
+                navLinks.innerHTML = '';
+
+                // 移除旧下拉菜单
+                var oldDropdowns = navBar.querySelectorAll('.dropdown-menu');
+                oldDropdowns.forEach(function(dd) { dd.remove(); });
+
+                var dropdownIdx = 0;
+
+                siteData.navigation.items.forEach(function(item) {
+                    if (item.hasDropdown) {
+                        var dropdownId = 'dropdown-' + dropdownIdx;
+
+                        var navItem = document.createElement('span');
+                        navItem.className = 'nav-item';
+                        navItem.setAttribute('data-has-dropdown', 'true');
+                        navItem.setAttribute('data-dropdown', dropdownId);
+                        navItem.setAttribute('role', 'button');
+                        navItem.setAttribute('tabindex', '0');
+                        navItem.setAttribute('aria-expanded', 'false');
+                        navItem.innerHTML = item.label + ' <span class="nav-arrow">▼</span>';
+                        navLinks.appendChild(navItem);
+
+                        var menu = document.createElement('div');
+                        menu.className = 'dropdown-menu';
+                        menu.id = dropdownId;
+                        menu.setAttribute('aria-label', item.label + '子菜单');
+                        item.dropdown.forEach(function(sub) {
+                            var a = document.createElement('a');
+                            a.href = sub.href;
+                            a.textContent = sub.label;
+                            menu.appendChild(a);
+                        });
+                        navBar.appendChild(menu);
+
+                        dropdownIdx++;
+                    } else {
+                        var navItem = document.createElement('a');
+                        navItem.className = 'nav-item';
+                        navItem.href = item.href || '/';
+                        navItem.setAttribute('data-has-dropdown', 'false');
+                        if (item.isActive) {
+                            navItem.classList.add('active');
+                        }
+                        navItem.textContent = item.label;
+                        navLinks.appendChild(navItem);
+                    }
+                });
+            }
+
+            // ========== 渲染分类区域 ==========
+            function renderSections() {
+                var main = document.getElementById('mainContainer');
+                if (!main) return;
+
+                siteData.categories.forEach(function(cat) {
+                    var section = document.createElement('section');
+                    section.className = 'section-block';
+                    section.id = 'section-' + cat.id;
+                    section.setAttribute('aria-labelledby', 'heading-' + cat.id);
+
+                    var heading = document.createElement('h2');
+                    heading.className = 'section-heading';
+                    heading.id = 'heading-' + cat.id;
+                    heading.textContent = cat.title;
+                    section.appendChild(heading);
+
+                    var grid = document.createElement('div');
+                    grid.className = 'card-grid';
+                    grid.id = 'cardGrid-' + cat.id;
+                    section.appendChild(grid);
+
+                    var placeholder = document.createElement('div');
+                    placeholder.className = 'placeholder-block';
+                    placeholder.setAttribute('data-placeholder', '');
+                    placeholder.textContent = cat.placeholder;
+                    section.appendChild(placeholder);
+
+                    main.appendChild(section);
+                });
+            }
+
+            // ========== 渲染单张卡片 ==========
             function renderCard(card) {
-                // 有 href 的卡片用 <a>，无 href（如联系我）用 <div>
-                var cardEl = document.createElement(card.href ? 'a' : 'div');
+                var cardEl = document.createElement(card.link ? 'a' : 'div');
                 cardEl.className = 'card';
                 cardEl.setAttribute('data-card', '');
 
-                if (card.href) {
-                    cardEl.href = card.href;
+                if (card.link) {
+                    cardEl.href = card.link;
                 }
 
-                // 古铜金强调线（用于联系我卡片）
                 if (card.accent) {
                     cardEl.style.borderLeftColor = 'var(--accent)';
                     cardEl.style.cursor = 'default';
                 }
 
-                // 卡片标题
                 var titleEl = document.createElement('span');
                 titleEl.className = 'card-title';
                 titleEl.textContent = card.title;
                 cardEl.appendChild(titleEl);
 
-                // 卡片描述
                 var descEl = document.createElement('span');
                 descEl.className = 'card-desc';
-                descEl.textContent = card.desc;
+                descEl.textContent = card.description;
                 cardEl.appendChild(descEl);
 
-                // 联系信息（邮箱 + 电话）
                 if (card.email || card.phone) {
                     var contactDiv = document.createElement('div');
                     contactDiv.style.cssText = 'margin-top: 8px;';
@@ -1081,107 +967,136 @@
                     cardEl.appendChild(contactDiv);
                 }
 
-                // 警告标签
-                if (card.warning) {
-                    var warnEl = document.createElement('span');
-                    warnEl.className = 'card-warning';
-                    warnEl.textContent = card.warning;
-                    cardEl.appendChild(warnEl);
-                }
-
                 return cardEl;
             }
 
-            // 新增：渲染所有分类的卡片到对应 card-grid 容器
+            // ========== 渲染所有卡片 ==========
             function renderAllCards() {
-                Object.keys(cardsData).forEach(function(key) {
-                    var gridEl = document.getElementById('cardGrid-' + key);
+                siteData.categories.forEach(function(cat) {
+                    var gridEl = document.getElementById('cardGrid-' + cat.id);
                     if (!gridEl) return;
-
-                    // 清空容器
                     gridEl.innerHTML = '';
-
-                    // 遍历数据生成卡片
-                    cardsData[key].forEach(function(card) {
+                    cat.cards.forEach(function(card) {
                         gridEl.appendChild(renderCard(card));
                     });
                 });
             }
 
-            // 新增：立即执行卡片渲染（DOM 已就绪）
-            renderAllCards();
+            // ========== 渲染自我介绍 ==========
+            function renderSelfIntro() {
+                var main = document.getElementById('mainContainer');
+                if (!main) return;
 
-            // ========== DOM 引用 ==========
+                var section = document.createElement('section');
+                section.className = 'self-intro';
+                section.id = 'selfIntro';
+                section.setAttribute('aria-labelledby', 'heading-intro');
+
+                siteData.about.forEach(function(text) {
+                    var p = document.createElement('p');
+                    p.textContent = text;
+                    section.appendChild(p);
+                });
+
+                main.appendChild(section);
+            }
+
+            // ========== 渲染底部 ==========
+            function renderFooter() {
+                var footer = document.getElementById('footer');
+                if (!footer) return;
+                footer.innerHTML = '';
+
+                var f = siteData.footer;
+
+                var p1 = document.createElement('p');
+                p1.innerHTML = f.copyright + ' · <span class="footer-domain">' + f.domain + '</span>';
+                footer.appendChild(p1);
+
+                var p2 = document.createElement('p');
+                p2.textContent = f.powered;
+                footer.appendChild(p2);
+
+                var p3 = document.createElement('p');
+                p3.className = 'footer-note';
+                p3.textContent = f.note;
+                footer.appendChild(p3);
+            }
+
+            // ========== 更新页面标题 ==========
+            function updatePageTitle() {
+                var d = siteData.header;
+                document.title = d.name + ' · ' + d.englishName + ' | ' + d.tagline;
+                var metaDesc = document.querySelector('meta[name="description"]');
+                if (metaDesc) {
+                    metaDesc.setAttribute('content',
+                        d.name + '（' + d.englishName + '）的个人数字据点——' + d.tagline + '。' + siteData.footer.domain);
+                }
+            }
+
+            // ========== 执行所有渲染 ==========
+            updatePageTitle();
+            renderHeader();
+            renderNavigation();
+            renderSections();
+            renderAllCards();
+            renderSelfIntro();
+            renderFooter();
+
+            // ========== DOM 引用（渲染后获取） ==========
             var navBar = document.getElementById('navBar');
             var hamburgerBtn = document.getElementById('hamburgerBtn');
             var navLinks = document.getElementById('navLinks');
             var allNavItems = navLinks.querySelectorAll('.nav-item[data-has-dropdown="true"]');
             var allDropdowns = document.querySelectorAll('.dropdown-menu');
             var sectionBlocks = document.querySelectorAll('.section-block');
-            var allCards = document.querySelectorAll('[data-card]');
-            var allPlaceholders = document.querySelectorAll('[data-placeholder]');
             var selfIntro = document.getElementById('selfIntro');
             var footer = document.getElementById('footer');
 
-            // 新增：进度条和返回顶部按钮的 DOM 引用
             var progressBarFill = document.getElementById('progressBarFill');
             var backToTopBtn = document.getElementById('backToTop');
 
-            var openDropdownId = null; // 当前打开的下拉菜单 ID
-            var isMobileOpen = false; // 移动端汉堡菜单状态
+            var openDropdownId = null;
+            var isMobileOpen = false;
 
-            // ========== 滚动：导航栏样式切换 ==========
-            function updateNavBarStyle() {
+            // ========== 滚动：导航栏样式 + 进度条 + 返回顶部 ==========
+            function handleScroll() {
                 if (window.scrollY > 100) {
                     navBar.classList.add('scrolled');
                 } else {
                     navBar.classList.remove('scrolled');
                 }
-            }
 
-            // 新增：更新阅读进度条
-            function updateProgressBar() {
-                if (!progressBarFill) return;
-                var scrollTop = window.scrollY || document.documentElement.scrollTop;
-                var docHeight = document.documentElement.scrollHeight - window.innerHeight;
-                var progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
-                if (progress > 100) progress = 100;
-                if (progress < 0) progress = 0;
-                progressBarFill.style.width = progress + '%';
-            }
+                if (progressBarFill) {
+                    var scrollTop = window.scrollY || document.documentElement.scrollTop;
+                    var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+                    var progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+                    if (progress > 100) progress = 100;
+                    if (progress < 0) progress = 0;
+                    progressBarFill.style.width = progress + '%';
+                }
 
-            // 新增：更新返回顶部按钮可见性
-            function updateBackToTop() {
-                if (!backToTopBtn) return;
-                if (window.scrollY > 400) {
-                    backToTopBtn.classList.add('visible');
-                } else {
-                    backToTopBtn.classList.remove('visible');
+                if (backToTopBtn) {
+                    if (window.scrollY > 400) {
+                        backToTopBtn.classList.add('visible');
+                    } else {
+                        backToTopBtn.classList.remove('visible');
+                    }
                 }
             }
 
-            // 合并滚动处理
-            function handleScroll() {
-                updateNavBarStyle();
-                updateProgressBar();
-                updateBackToTop();
-            }
-
             window.addEventListener('scroll', handleScroll, { passive: true });
-            handleScroll(); // 初始检查
+            handleScroll();
 
-            // 新增：返回顶部按钮点击事件
             if (backToTopBtn) {
                 backToTopBtn.addEventListener('click', function() {
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                 });
             }
 
-            // ========== 关闭所有下拉菜单 ==========
+            // ========== 下拉菜单逻辑 ==========
             function closeAllDropdowns() {
-                allDropdowns.forEach(function(dd) {
-                    dd.classList.remove('open');
-                });
+                allDropdowns.forEach(function(dd) { dd.classList.remove('open'); });
                 allNavItems.forEach(function(item) {
                     item.classList.remove('dropdown-open');
                     item.setAttribute('aria-expanded', 'false');
@@ -1189,7 +1104,6 @@
                 openDropdownId = null;
             }
 
-            // ========== 打开指定下拉菜单 ==========
             function openDropdown(dropdownId, navItem) {
                 closeAllDropdowns();
                 var dropdown = document.getElementById(dropdownId);
@@ -1203,7 +1117,6 @@
                 }
             }
 
-            // ========== 切换下拉菜单 ==========
             function toggleDropdown(dropdownId, navItem) {
                 if (openDropdownId === dropdownId) {
                     closeAllDropdowns();
@@ -1212,15 +1125,12 @@
                 }
             }
 
-            // ========== 桌面端/移动端：导航项点击事件 ==========
             allNavItems.forEach(function(navItem) {
                 navItem.addEventListener('click', function(e) {
                     e.stopPropagation();
                     var dropdownId = navItem.getAttribute('data-dropdown');
                     toggleDropdown(dropdownId, navItem);
                 });
-
-                // 键盘可访问性
                 navItem.addEventListener('keydown', function(e) {
                     if (e.key === 'Enter' || e.key === ' ') {
                         e.preventDefault();
@@ -1230,23 +1140,18 @@
                 });
             });
 
-            // ========== 点击页面其他区域关闭下拉 ==========
             document.addEventListener('click', function(e) {
-                var clickedInsideNav = e.target.closest('.nav-item') || e.target.closest('.dropdown-menu');
-                if (!clickedInsideNav) {
+                var inside = e.target.closest('.nav-item') || e.target.closest('.dropdown-menu');
+                if (!inside) {
                     closeAllDropdowns();
                 }
             });
 
-            // ========== 下拉菜单内链接：点击后关闭菜单 ==========
             allDropdowns.forEach(function(dd) {
                 dd.addEventListener('click', function(e) {
-                    // 让链接正常跳转，同时关闭菜单
                     if (e.target.tagName === 'A') {
                         closeAllDropdowns();
-                        if (isMobileOpen) {
-                            closeMobileNav();
-                        }
+                        if (isMobileOpen) closeMobileNav();
                     }
                 });
             });
@@ -1270,11 +1175,7 @@
             }
 
             function toggleMobileNav() {
-                if (isMobileOpen) {
-                    closeMobileNav();
-                } else {
-                    openMobileNav();
-                }
+                if (isMobileOpen) { closeMobileNav(); } else { openMobileNav(); }
             }
 
             hamburgerBtn.addEventListener('click', function(e) {
@@ -1282,15 +1183,15 @@
                 toggleMobileNav();
             });
 
-            // 移动端：点击导航面板外的区域关闭
             document.addEventListener('click', function(e) {
-                if (isMobileOpen && !e.target.closest('#navLinks') && !e.target.closest('#hamburgerBtn') && !e
-                    .target.closest('.dropdown-menu')) {
+                if (isMobileOpen &&
+                    !e.target.closest('#navLinks') &&
+                    !e.target.closest('#hamburgerBtn') &&
+                    !e.target.closest('.dropdown-menu')) {
                     closeMobileNav();
                 }
             });
 
-            // 窗口大小变化时，如果切换到桌面端，关闭移动端菜单
             window.addEventListener('resize', function() {
                 if (window.innerWidth > 600 && isMobileOpen) {
                     closeMobileNav();
@@ -1309,36 +1210,28 @@
                     if (entry.isIntersecting) {
                         var target = entry.target;
 
-                        // 分类区域
                         if (target.classList.contains('section-block')) {
                             target.classList.add('visible');
-
-                            // 该区域内的卡片依次出现
                             var cardsInSection = target.querySelectorAll('[data-card]');
                             cardsInSection.forEach(function(card, index) {
                                 setTimeout(function() {
                                     card.classList.add('visible');
-                                }, index * 80); // 每个延迟 0.08 秒
+                                }, index * 80);
                             });
-
-                            // 灰色占位区块跟随出现
                             var placeholder = target.querySelector('[data-placeholder]');
                             if (placeholder) {
                                 setTimeout(function() {
                                     placeholder.classList.add('visible');
                                 }, cardsInSection.length * 80 + 50);
                             }
-
                             observer.unobserve(target);
                         }
 
-                        // 自我介绍
                         if (target === selfIntro) {
                             target.classList.add('visible');
                             observer.unobserve(target);
                         }
 
-                        // 底部
                         if (target === footer) {
                             target.classList.add('visible');
                             observer.unobserve(target);
@@ -1347,35 +1240,19 @@
                 });
             }, observerOptions);
 
-            // 观察分类区域
-            sectionBlocks.forEach(function(section) {
-                observer.observe(section);
-            });
+            sectionBlocks.forEach(function(section) { observer.observe(section); });
+            if (selfIntro) observer.observe(selfIntro);
+            if (footer) observer.observe(footer);
 
-            // 观察自我介绍
-            if (selfIntro) {
-                observer.observe(selfIntro);
-            }
-
-            // 观察底部
-            if (footer) {
-                observer.observe(footer);
-            }
-
-            // ========== 页面加载后自动触发已可见区域的动画 ==========
-            // （处理页面加载时已经在视口中的元素）
+            // ========== 页面加载后触发已可见区域 ==========
             function triggerVisibleOnLoad() {
-                var allObservables = [
-                    ...sectionBlocks,
-                    selfIntro,
-                    footer
-                ].filter(Boolean);
+                var allObservables = [].slice.call(sectionBlocks);
+                if (selfIntro) allObservables.push(selfIntro);
+                if (footer) allObservables.push(footer);
 
                 allObservables.forEach(function(el) {
                     var rect = el.getBoundingClientRect();
-                    var windowHeight = window.innerHeight;
-                    if (rect.top < windowHeight && rect.bottom > 0) {
-                        // 在视口中
+                    if (rect.top < window.innerHeight && rect.bottom > 0) {
                         if (el.classList.contains('section-block') && !el.classList.contains('visible')) {
                             el.classList.add('visible');
                             var cardsInSection = el.querySelectorAll('[data-card]');
@@ -1404,16 +1281,13 @@
                 });
             }
 
-            // 在入场动画完成后检查
             setTimeout(triggerVisibleOnLoad, 800);
 
-            // ========== 键盘 Escape 关闭所有 ==========
+            // ========== Escape 关闭 ==========
             document.addEventListener('keydown', function(e) {
                 if (e.key === 'Escape') {
                     closeAllDropdowns();
-                    if (isMobileOpen) {
-                        closeMobileNav();
-                    }
+                    if (isMobileOpen) closeMobileNav();
                 }
             });
 
