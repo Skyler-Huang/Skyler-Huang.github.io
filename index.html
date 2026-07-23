@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -134,6 +135,16 @@
             margin-bottom: 10px;
             animation: fadeInUp 0.7s ease-out both;
             animation-delay: 0.35s;
+        }
+
+        .header-quote {
+            font-size: 0.85rem;
+            color: #b0a89e;
+            font-style: italic;
+            letter-spacing: 0.04em;
+            margin-bottom: 10px;
+            animation: fadeInUp 0.7s ease-out both;
+            animation-delay: 0.42s;
         }
 
         .header-tagline {
@@ -817,6 +828,14 @@
                 pEn.textContent = d.englishName;
                 headerInner.appendChild(pEn);
 
+                if (siteData.quotes && siteData.quotes.length > 0) {
+                    var pQuote = document.createElement('p');
+                    pQuote.className = 'header-quote';
+                    var randomIndex = Math.floor(Math.random() * siteData.quotes.length);
+                    pQuote.textContent = siteData.quotes[randomIndex];
+                    headerInner.appendChild(pQuote);
+                }
+
                 var pTag = document.createElement('p');
                 pTag.className = 'header-tagline';
                 pTag.textContent = d.tagline;
@@ -1021,6 +1040,13 @@
                 p3.className = 'footer-note';
                 p3.textContent = f.note;
                 footer.appendChild(p3);
+
+                if (f.lastUpdated) {
+                    var p4 = document.createElement('p');
+                    p4.style.cssText = 'font-size:0.78rem;color:#b0a89e;margin-top:6px;';
+                    p4.textContent = '最后更新：' + f.lastUpdated;
+                    footer.appendChild(p4);
+                }
             }
 
             // ========== 更新页面标题 ==========
