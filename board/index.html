@@ -3,559 +3,522 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>此页尚在构思中</title>
+    <title>留言板 - Skyler Huang</title>
     <style>
         :root {
-            --paper: #FBF7F2;
-            --paper-warm: #F5EFE6;
-            --sage: #4A7C6F;
-            --sage-light: #6B9A8D;
-            --gold: #B49B7F;
-            --gold-light: #D4C4B0;
-            --ink: #3D3D3D;
-            --ink-light: #6B6B6B;
-            --border-subtle: #E5DDD3;
-            --shadow-soft: rgba(74, 124, 111, 0.06);
-            --shadow-md: rgba(74, 124, 111, 0.10);
+            --paper: #faf7f2;
+            --card-bg: #ffffff;
+            --ink: #2c2416;
+            --ink-secondary: #5c5347;
+            --ink-muted: #8a8175;
+            --pine: #2d4a37;
+            --pine-light: #3a5c47;
+            --pine-pale: rgba(45, 74, 55, 0.06);
+            --bronze: #a0783c;
+            --bronze-light: #c49a4c;
+            --bronze-pale: rgba(160, 120, 60, 0.08);
+            --border-subtle: #e8e2d8;
+            --border-card: #ede7dd;
+            --danger: #b06a4f;
+            --danger-pale: rgba(176, 106, 79, 0.10);
+            --shadow-sm: 0 1px 3px rgba(44, 36, 22, 0.04);
+            --shadow-md: 0 3px 12px rgba(44, 36, 22, 0.07);
+            --shadow-lg: 0 6px 24px rgba(44, 36, 22, 0.10);
+            --radius-sm: 5px;
+            --radius-md: 10px;
+            --radius-lg: 14px;
+            --transition: 0.30s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-fast: 0.20s cubic-bezier(0.4, 0, 0.2, 1);
+            --font-serif: 'Noto Serif SC', 'Source Han Serif SC', 'STSong', 'Songti SC', 'SimSun', 'KaiTi', '楷体', 'Georgia', 'Times New Roman', serif;
+            --font-sans: 'Inter', 'PingFang SC', 'Hiragino Sans GB', 'Noto Sans SC', 'Microsoft YaHei', 'Segoe UI', system-ui, -apple-system, sans-serif;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; scroll-behavior: smooth; }
 
         body {
-            font-family: "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Microsoft YaHei", "Source Han Sans CN", -apple-system, BlinkMacSystemFont, sans-serif;
             background-color: var(--paper);
             color: var(--ink);
+            font-family: var(--font-sans);
+            line-height: 1.7;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            padding: 2rem 1.25rem;
-            line-height: 1.75;
             position: relative;
+            overflow-x: hidden;
             background-image:
-                radial-gradient(ellipse at 15% 20%, rgba(180, 155, 127, 0.05) 0%, transparent 55%),
-                radial-gradient(ellipse at 85% 70%, rgba(74, 124, 111, 0.04) 0%, transparent 55%),
-                radial-gradient(ellipse at 50% 50%, rgba(180, 155, 127, 0.03) 0%, transparent 75%);
-            background-attachment: fixed;
+                radial-gradient(ellipse at 18% 10%, rgba(196, 154, 76, 0.025) 0%, transparent 55%),
+                radial-gradient(ellipse at 82% 88%, rgba(45, 74, 55, 0.02) 0%, transparent 55%);
         }
 
-        /* 纸张纹理覆盖层 */
         body::before {
             content: '';
             position: fixed;
-            inset: 0;
-            pointer-events: none;
-            z-index: 0;
-            background:
-                repeating-linear-gradient(0deg,
-                    transparent,
-                    transparent 3px,
-                    rgba(180, 155, 127, 0.015) 3px,
-                    rgba(180, 155, 127, 0.015) 4px),
-                repeating-linear-gradient(90deg,
-                    transparent,
-                    transparent 120px,
-                    rgba(74, 124, 111, 0.012) 120px,
-                    rgba(74, 124, 111, 0.012) 121px);
+            top: 0; left: 0;
+            width: 100%; height: 3px;
+            background: linear-gradient(90deg, var(--pine) 0%, var(--bronze-light) 25%, var(--pine-light) 50%, var(--bronze) 75%, var(--pine) 100%);
+            z-index: 100;
+            box-shadow: 0 1px 6px rgba(45, 74, 55, 0.12);
         }
 
-        /* 顶部导航 */
-        .nav-top {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 10;
-            padding: 1.5rem 2rem;
-            display: flex;
-            justify-content: flex-start;
-        }
-
-        .nav-home {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 0.9rem;
-            color: var(--sage);
-            text-decoration: none;
-            letter-spacing: 0.04em;
-            transition: color 0.3s ease, gap 0.3s ease;
-            font-weight: 500;
-            position: relative;
-        }
-
-        .nav-home::after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 0;
-            width: 0;
-            height: 1px;
-            background: var(--gold);
-            transition: width 0.35s ease;
-        }
-
-        .nav-home:hover {
-            color: var(--sage-light);
-            gap: 0.7rem;
-        }
-        .nav-home:hover::after {
-            width: 100%;
-        }
-
-        .nav-arrow {
-            display: inline-block;
-            transition: transform 0.3s ease;
-            font-size: 0.85rem;
-        }
-        .nav-home:hover .nav-arrow {
-            transform: translateX(-4px);
-        }
-
-        /* 主容器 */
-        .main-wrapper {
+        .main-container {
             position: relative;
             z-index: 1;
             width: 100%;
-            max-width: 560px;
+            max-width: 680px;
+            padding: 36px 22px 24px;
+            margin: 0 auto;
             display: flex;
             flex-direction: column;
-            align-items: center;
-        }
-
-        /* 信笺卡片 */
-        .letter-card {
-            width: 100%;
-            background: var(--paper-warm);
-            border: 1px solid var(--border-subtle);
-            border-radius: 6px;
-            padding: 3rem 2.5rem 2.5rem;
-            position: relative;
-            box-shadow:
-                0 1px 2px var(--shadow-soft),
-                0 8px 32px var(--shadow-md),
-                0 2px 8px rgba(180, 155, 127, 0.06);
-            transition: box-shadow 0.4s ease;
-        }
-
-        .letter-card:hover {
-            box-shadow:
-                0 1px 2px var(--shadow-soft),
-                0 12px 40px rgba(74, 124, 111, 0.12),
-                0 3px 12px rgba(180, 155, 127, 0.08);
-        }
-
-        /* 信笺顶部装饰线 */
-        .letter-card::before {
-            content: '';
-            position: absolute;
-            top: 1.4rem;
-            left: 2.5rem;
-            right: 2.5rem;
-            height: 1px;
-            background: linear-gradient(to right,
-                    transparent,
-                    var(--gold-light) 8%,
-                    var(--gold) 50%,
-                    var(--gold-light) 92%,
-                    transparent);
-            opacity: 0.55;
-        }
-
-        /* 信笺底部装饰线 */
-        .letter-card::after {
-            content: '';
-            position: absolute;
-            bottom: 1.4rem;
-            left: 2.5rem;
-            right: 2.5rem;
-            height: 1px;
-            background: linear-gradient(to right,
-                    transparent,
-                    var(--gold-light) 8%,
-                    var(--gold) 50%,
-                    var(--gold-light) 92%,
-                    transparent);
-            opacity: 0.4;
-        }
-
-        /* 蜡封装饰 */
-        .seal {
-            width: 46px;
-            height: 46px;
-            border-radius: 50%;
-            background: var(--sage);
-            position: absolute;
-            top: -18px;
-            right: 36px;
-            box-shadow:
-                0 2px 8px rgba(74, 124, 111, 0.25),
-                inset 0 1px 0 rgba(255, 255, 255, 0.15);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.1rem;
-            color: rgba(255, 255, 255, 0.85);
-            z-index: 2;
-        }
-
-        .seal::after {
-            content: '';
-            position: absolute;
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            border: 1.5px solid rgba(255, 255, 255, 0.35);
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
-
-        /* 标题 */
-        .letter-title {
-            font-size: 1.35rem;
-            font-weight: 600;
-            color: var(--sage);
-            text-align: center;
-            letter-spacing: 0.05em;
-            margin-bottom: 2rem;
-            margin-top: 0.25rem;
-            line-height: 1.4;
-        }
-
-        .letter-title .emoji {
-            display: inline-block;
-            margin-right: 0.35rem;
-            font-style: normal;
-        }
-
-        /* 核心文案 */
-        .letter-core {
-            text-align: center;
-            font-size: 1.05rem;
-            color: var(--ink);
-            letter-spacing: 0.04em;
-            margin-bottom: 2rem;
-            padding: 1.25rem 1rem;
-            position: relative;
-        }
-
-        .letter-core p {
-            margin: 0;
-            font-weight: 500;
-        }
-
-        /* 核心文案两侧引号装饰 */
-        .letter-core::before {
-            content: '"';
-            position: absolute;
-            top: -0.2rem;
-            left: 50%;
-            transform: translateX(-50%) translateX(-120px);
-            font-size: 3rem;
-            color: var(--gold);
-            opacity: 0.3;
-            font-family: Georgia, "Times New Roman", serif;
-            line-height: 1;
-            pointer-events: none;
-        }
-
-        .letter-core::after {
-            content: '"';
-            position: absolute;
-            bottom: -0.8rem;
-            left: 50%;
-            transform: translateX(-50%) translateX(120px);
-            font-size: 3rem;
-            color: var(--gold);
-            opacity: 0.3;
-            font-family: Georgia, "Times New Roman", serif;
-            line-height: 1;
-            pointer-events: none;
-        }
-
-        /* 分隔花饰 */
-        .ornament-divider {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 1rem;
-            margin: 0 auto 2rem;
-            width: 80%;
-            max-width: 280px;
-        }
-
-        .ornament-divider .line {
             flex: 1;
-            height: 1px;
-            background: var(--border-subtle);
+            min-height: 100vh;
         }
 
-        .ornament-divider .dot {
-            width: 5px;
-            height: 5px;
-            border-radius: 50%;
-            background: var(--gold);
-            opacity: 0.6;
-            flex-shrink: 0;
+        /* 返回首页 */
+        .back-link-wrapper { margin-bottom: 8px; }
+        .back-link {
+            display: inline-flex; align-items: center; gap: 7px;
+            text-decoration: none; color: var(--pine);
+            font-size: 0.88rem; font-weight: 500; letter-spacing: 0.02em;
+            padding: 7px 14px 7px 9px; border-radius: 20px;
+            transition: var(--transition); background: transparent; white-space: nowrap;
+        }
+        .back-link:hover { background-color: var(--pine-pale); color: #1f3627; transform: translateX(-2px); }
+        .back-link:active { transform: scale(0.95); background-color: rgba(45, 74, 55, 0.12); }
+        .back-link svg { flex-shrink: 0; transition: transform 0.3s ease; }
+        .back-link:hover svg { transform: translateX(-3px); }
+
+        /* 页面头部 */
+        .page-header { text-align: left; margin-bottom: 24px; padding-top: 2px; position: relative; }
+        .header-label {
+            display: inline-block; font-size: 0.72rem; text-transform: uppercase;
+            letter-spacing: 0.13em; color: var(--bronze); font-weight: 600;
+            margin-bottom: 6px; padding: 3px 12px; background: var(--bronze-pale);
+            border-radius: 20px; border: 1px solid rgba(160, 120, 60, 0.15);
+        }
+        .page-title {
+            font-family: var(--font-serif); font-size: 1.9rem; font-weight: 700;
+            letter-spacing: 0.04em; color: var(--pine); margin: 8px 0 2px; line-height: 1.25;
+        }
+        .page-desc { font-size: 0.9rem; color: var(--ink-muted); margin-top: 4px; }
+        .header-ornament {
+            display: block; width: 44px; height: 2px;
+            background: linear-gradient(90deg, var(--bronze-light), var(--bronze), transparent);
+            border-radius: 1px; margin-top: 13px; opacity: 0.7;
         }
 
-        /* 短笺说明 */
-        .letter-note {
-            text-align: center;
-            font-size: 0.92rem;
-            color: var(--ink-light);
-            letter-spacing: 0.03em;
-            line-height: 1.85;
-            margin-bottom: 2rem;
-            padding: 0 0.5rem;
+        /* 发表留言卡片 */
+        .compose-card {
+            background: var(--card-bg);
+            border: 1.5px solid var(--border-card);
+            border-radius: var(--radius-lg);
+            padding: 22px 20px 18px;
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 26px;
+            position: relative;
+        }
+        .compose-card::before {
+            content: ''; position: absolute; left: 0; top: 16px; bottom: 16px; width: 3px;
+            background: var(--pine-light); border-radius: 0 2px 2px 0; opacity: 0.4;
+        }
+        .compose-title {
+            font-family: var(--font-serif); font-size: 1.1rem; color: var(--pine);
+            margin-bottom: 14px; padding-left: 10px; letter-spacing: 0.03em;
         }
 
-        .letter-note a {
-            color: var(--sage);
-            text-decoration: none;
-            font-weight: 500;
-            border-bottom: 1px dotted var(--gold);
-            padding-bottom: 1px;
-            transition: color 0.3s ease, border-color 0.3s ease;
-        }
+        .field-row { display: flex; gap: 12px; margin-bottom: 12px; }
+        .field-row .field { flex: 1; min-width: 0; }
 
-        .letter-note a:hover {
-            color: var(--sage-light);
-            border-bottom-color: var(--sage-light);
+        .field {
+            width: 100%;
+            font-family: var(--font-sans); font-size: 0.95rem; color: var(--ink);
+            background: #fff; border: 1.5px solid var(--border-card);
+            border-radius: var(--radius-md); padding: 11px 14px;
+            transition: border-color var(--transition), box-shadow var(--transition);
         }
+        .field::placeholder { color: var(--ink-muted); opacity: 0.75; }
+        .field:focus {
+            outline: none; border-color: var(--pine-light);
+            box-shadow: 0 0 0 3px var(--pine-pale);
+        }
+        textarea.field { resize: vertical; min-height: 92px; line-height: 1.6; }
 
-        /* 日期 */
-        .letter-date {
-            text-align: right;
-            font-size: 0.82rem;
-            color: var(--gold);
-            letter-spacing: 0.06em;
-            font-style: italic;
-            margin-top: 0.5rem;
-            padding-right: 0.25rem;
-            opacity: 0.8;
+        .form-actions { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 4px; }
+        .form-hint { font-size: 0.76rem; color: var(--ink-muted); }
+
+        .btn-primary {
+            background: var(--pine); color: #fff; border: none; border-radius: 999px;
+            padding: 10px 24px; font-size: 0.92rem; font-family: var(--font-sans);
+            cursor: pointer; letter-spacing: 0.04em; white-space: nowrap;
+            transition: background-color var(--transition), transform 0.1s ease;
+        }
+        .btn-primary:hover { background: var(--pine-light); }
+        .btn-primary:active { transform: scale(0.97); }
+        .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
+
+        /* 留言列表 */
+        .msg-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 16px; }
+
+        .msg-card {
+            background: var(--card-bg);
+            border: 1.5px solid var(--border-card);
+            border-radius: var(--radius-lg);
+            padding: 20px 20px 16px;
+            box-shadow: var(--shadow-sm);
+            position: relative;
+            transition: var(--transition);
+        }
+        .msg-card:hover { box-shadow: var(--shadow-md); }
+        .msg-card::before {
+            content: ''; position: absolute; left: 0; top: 16px; bottom: 16px; width: 3px;
+            background: var(--pine-light); border-radius: 0 2px 2px 0; opacity: 0.4; transition: var(--transition);
+        }
+        .msg-card:hover::before { opacity: 0.7; background: var(--bronze-light); }
+
+        .msg-head { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 10px; }
+        .msg-nick { font-family: var(--font-serif); font-weight: 600; font-size: 1.02rem; color: var(--pine); }
+        .msg-email { font-size: 0.78rem; color: var(--bronze); text-decoration: none; }
+        .msg-email:hover { text-decoration: underline; }
+        .msg-time { margin-left: auto; font-size: 0.74rem; color: var(--ink-muted); letter-spacing: 0.02em; }
+        .msg-content { margin-top: 8px; font-size: 0.95rem; line-height: 1.7; color: var(--ink-secondary); white-space: pre-wrap; word-break: break-word; }
+
+        .msg-actions { display: flex; gap: 4px; margin-top: 10px; }
+
+        .link-btn {
+            background: none; border: none; cursor: pointer; color: var(--pine);
+            font-size: 0.82rem; padding: 4px 8px; border-radius: 6px;
+            font-family: var(--font-sans); letter-spacing: 0.02em;
+            transition: background-color var(--transition), color var(--transition);
+        }
+        .link-btn:hover { background: var(--pine-pale); }
+        .link-btn:active { transform: scale(0.96); }
+        .link-btn.danger { color: var(--danger); }
+        .link-btn.danger:hover { background: var(--danger-pale); }
+
+        /* 回复表单 */
+        .reply-form { margin-top: 12px; padding-top: 12px; border-top: 1px dashed var(--border-subtle); display: flex; flex-direction: column; gap: 10px; }
+        .reply-form[hidden] { display: none; }
+        .reply-form .field-row { margin-bottom: 0; }
+        .reply-form-actions { display: flex; justify-content: flex-end; gap: 8px; align-items: center; }
+
+        .btn-small {
+            background: var(--pine-light); color: #fff; border: none; border-radius: 999px;
+            padding: 7px 18px; font-size: 0.84rem; cursor: pointer; font-family: var(--font-sans);
+            letter-spacing: 0.03em; transition: background-color var(--transition), transform 0.1s ease;
+        }
+        .btn-small:hover { background: var(--pine); }
+        .btn-small:active { transform: scale(0.97); }
+
+        /* 回复列表 */
+        .reply-list { list-style: none; padding: 0; margin: 12px 0 0; display: flex; flex-direction: column; gap: 10px; }
+        .reply-card {
+            background: var(--pine-pale); border-radius: var(--radius-md);
+            padding: 12px 14px; border-left: 3px solid var(--bronze-light);
+        }
+        .reply-head { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+        .reply-nick { font-weight: 600; font-size: 0.9rem; color: var(--pine); }
+        .reply-time { margin-left: auto; font-size: 0.7rem; color: var(--ink-muted); }
+        .reply-content-text { margin-top: 5px; font-size: 0.88rem; color: var(--ink-secondary); white-space: pre-wrap; word-break: break-word; }
+        .reply-card .link-btn { margin-top: 4px; padding: 2px 6px; font-size: 0.74rem; }
+
+        .empty {
+            text-align: center; color: var(--ink-muted); font-size: 0.9rem;
+            padding: 30px 0; border: 1.5px dashed var(--border-card); border-radius: var(--radius-lg);
+        }
+        .banner-error {
+            background: var(--danger-pale); color: #8a4a34; border: 1px solid rgba(176, 106, 79, 0.25);
+            border-radius: var(--radius-md); padding: 10px 14px; font-size: 0.85rem; margin-bottom: 18px;
         }
 
         /* 底部版权 */
-        .footer-copy {
-            margin-top: 3rem;
-            text-align: center;
-            font-size: 0.78rem;
-            color: var(--ink-light);
-            letter-spacing: 0.05em;
-            opacity: 0.6;
-            z-index: 1;
-            position: relative;
+        .page-footer {
+            text-align: center; margin-top: 38px; padding: 18px 0 8px;
+            color: var(--ink-muted); font-size: 0.78rem; letter-spacing: 0.04em; position: relative;
         }
-
-        .footer-copy .divider-dot {
-            display: inline-block;
-            margin: 0 0.6rem;
-            color: var(--gold);
-            opacity: 0.5;
-            font-size: 0.5rem;
-            vertical-align: middle;
+        .page-footer::before {
+            content: ''; display: block; width: 56px; height: 1.5px;
+            background: linear-gradient(90deg, transparent, var(--bronze-light), var(--bronze), transparent);
+            margin: 0 auto 16px; border-radius: 1px; opacity: 0.55;
         }
+        .page-footer .footer-dot { display: inline-block; width: 4px; height: 4px; background-color: #d4c8b0; border-radius: 50%; margin: 0 8px; vertical-align: middle; }
+        .page-footer a { color: var(--pine); text-decoration: none; font-weight: 500; }
+        .page-footer a:hover { color: #1f3627; text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
 
         /* 响应式 */
         @media (max-width: 600px) {
-            body {
-                padding: 1.5rem 1rem;
-            }
-
-            .nav-top {
-                padding: 1rem 1.25rem;
-            }
-
-            .nav-home {
-                font-size: 0.82rem;
-            }
-
-            .letter-card {
-                padding: 2.5rem 1.5rem 2rem;
-                border-radius: 5px;
-            }
-
-            .letter-card::before,
-            .letter-card::after {
-                left: 1.5rem;
-                right: 1.5rem;
-            }
-            .letter-card::before {
-                top: 1.1rem;
-            }
-            .letter-card::after {
-                bottom: 1.1rem;
-            }
-
-            .seal {
-                width: 38px;
-                height: 38px;
-                top: -15px;
-                right: 22px;
-                font-size: 0.95rem;
-            }
-            .seal::after {
-                width: 22px;
-                height: 22px;
-            }
-
-            .letter-title {
-                font-size: 1.15rem;
-                margin-bottom: 1.5rem;
-                margin-top: 0.15rem;
-            }
-
-            .letter-core {
-                font-size: 0.95rem;
-                margin-bottom: 1.5rem;
-                padding: 1rem 0.5rem;
-            }
-
-            .letter-core::before {
-                transform: translateX(-50%) translateX(-80px);
-                font-size: 2.2rem;
-            }
-            .letter-core::after {
-                transform: translateX(-50%) translateX(80px);
-                font-size: 2.2rem;
-            }
-
-            .letter-note {
-                font-size: 0.85rem;
-                margin-bottom: 1.5rem;
-                padding: 0;
-            }
-
-            .letter-date {
-                font-size: 0.76rem;
-            }
-
-            .ornament-divider {
-                max-width: 200px;
-                margin-bottom: 1.5rem;
-            }
-
-            .footer-copy {
-                margin-top: 2.25rem;
-                font-size: 0.72rem;
-            }
+            .main-container { padding: 22px 12px 16px; max-width: 100%; }
+            .page-title { font-size: 1.5rem; }
+            .field-row { flex-direction: column; gap: 12px; }
+            .msg-card { padding: 18px 15px 14px; }
+            .msg-time { margin-left: 0; width: 100%; }
+            .reply-card { padding: 10px 12px; }
         }
-
-        @media (max-width: 380px) {
-            .letter-card {
-                padding: 2rem 1.15rem 1.75rem;
-            }
-
-            .letter-card::before,
-            .letter-card::after {
-                left: 1.15rem;
-                right: 1.15rem;
-            }
-
-            .seal {
-                right: 16px;
-                width: 34px;
-                height: 34px;
-                top: -13px;
-                font-size: 0.85rem;
-            }
-            .seal::after {
-                width: 19px;
-                height: 19px;
-            }
-
-            .letter-title {
-                font-size: 1.05rem;
-            }
-            .letter-core {
-                font-size: 0.88rem;
-            }
-            .letter-core::before,
-            .letter-core::after {
-                display: none;
-            }
-            .letter-note {
-                font-size: 0.8rem;
-            }
+        @media (min-width: 768px) {
+            .main-container { padding-top: 44px; max-width: 700px; }
+            .page-title { font-size: 2.1rem; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
         }
     </style>
 </head>
 <body>
+    <main class="main-container">
 
-    <!-- 返回首页 -->
-    <nav class="nav-top" aria-label="返回导航">
-        <a href="/" class="nav-home" title="返回首页">
-            <span class="nav-arrow">←</span> 返回首页
-        </a>
-    </nav>
+        <div class="back-link-wrapper">
+            <a href="/" class="back-link" aria-label="返回首页">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+                返回首页
+            </a>
+        </div>
 
-    <!-- 主体 -->
-    <main class="main-wrapper">
-        <article class="letter-card" aria-label="致访客的短笺">
-            <!-- 蜡封装饰 -->
-            <div class="seal" aria-hidden="true">✉</div>
+        <header class="page-header">
+            <span class="header-label">Message Board</span>
+            <h1 class="page-title">留言板</h1>
+            <p class="page-desc">留下你的想法，也可以回复别人的留言</p>
+            <span class="header-ornament"></span>
+        </header>
 
-            <!-- 标题 -->
-            <h1 class="letter-title">
-                <span class="emoji">📮</span>此页尚在构思中
-            </h1>
+        <!-- 发表留言 -->
+        <section class="compose-card">
+            <h2 class="compose-title">发表留言</h2>
+            <form id="msgForm" class="compose-form" novalidate>
+                <div class="field-row">
+                    <div class="field">
+                        <input id="msgNick" class="field" type="text" placeholder="昵称 *" maxlength="40" autocomplete="nickname" required>
+                    </div>
+                    <div class="field">
+                        <input id="msgEmail" class="field" type="email" placeholder="邮箱（可选）" maxlength="120" autocomplete="email">
+                    </div>
+                </div>
+                <textarea id="msgContent" class="field" placeholder="说点什么… *" maxlength="1000" required></textarea>
+                <div class="form-actions">
+                    <span class="form-hint">纯文本 · 按时间倒序展示</span>
+                    <button type="submit" class="btn-primary" id="msgSubmit">发布留言</button>
+                </div>
+            </form>
+        </section>
 
-            <!-- 核心文案 -->
-            <div class="letter-core">
-                <p>这个页面，站长未来会更新，谢谢。</p>
-            </div>
+        <!-- 留言列表 -->
+        <ul id="msgList" class="msg-list">
+            <li class="empty">正在加载留言…</li>
+        </ul>
 
-            <!-- 花饰分隔 -->
-            <div class="ornament-divider" aria-hidden="true">
-                <span class="line"></span>
-                <span class="dot"></span>
-                <span class="line"></span>
-            </div>
-
-            <!-- 短笺说明 -->
-            <div class="letter-note">
-                <p>
-                    目前正在思考它的具体形态，如果你有想法，不妨直接通过<a href="mailto:hi@example.com" title="发送邮件给站长">邮箱</a>告诉我。你的每一条建议，都会帮助我更好地决定这里放什么。
-                </p>
-            </div>
-
-            <!-- 日期 -->
-            <p class="letter-date" id="current-date"></p>
-        </article>
-
-        <!-- 版权 -->
-        <footer class="footer-copy">
-            <span id="copyright-year"></span>
-            <span class="divider-dot">·</span>
-            <span>保持期待，后会有期</span>
+        <footer class="page-footer">
+            <span>&copy; 2026 Skyler Huang</span>
+            <span class="footer-dot"></span>
+            <span>留言板</span>
+            <span class="footer-dot"></span>
+            <a href="/">返回首页</a>
         </footer>
+
     </main>
 
+    <!-- Supabase JS SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-        (function() {
-            const now = new Date();
-            const year = now.getFullYear();
-            const month = now.getMonth() + 1;
-            const day = now.getDate();
+        (function () {
+            'use strict';
 
-            // 设置日期：格式如 2025年7月11日
-            const dateEl = document.getElementById('current-date');
-            if (dateEl) {
-                dateEl.textContent = year + '年' + month + '月' + day + '日';
+            /* ===== Supabase 配置（公开 anon key，可安全置于前端） ===== */
+            const SUPABASE_URL = 'https://nmpseuwcmdsqypehluve.supabase.co';
+            const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5tcHNldXdjbWRzcXlwZWhsdXZlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ2MDM2MjEsImV4cCI6MjEwMDE3OTYyMX0.nXekidDzUX7atdw3BjWQuaGYMLUCKM2Ss5ZzNqxkEDQ';
+
+            /* ===== 删除密码（仅浏览器端校验，见 SQL 注释中的安全说明） ===== */
+            const DELETE_PASSWORD = 'hletian2026';
+
+            const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+            const msgForm = document.getElementById('msgForm');
+            const msgNick = document.getElementById('msgNick');
+            const msgEmail = document.getElementById('msgEmail');
+            const msgContent = document.getElementById('msgContent');
+            const msgSubmit = document.getElementById('msgSubmit');
+            const msgList = document.getElementById('msgList');
+
+            /* ===== 工具函数 ===== */
+            function esc(s) {
+                return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+                    return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+                });
             }
 
-            // 设置版权年份
-            const copyEl = document.getElementById('copyright-year');
-            if (copyEl) {
-                copyEl.textContent = '© ' + year + ' 保留所有权利';
+            function fmtTime(t) {
+                const d = new Date(t);
+                if (isNaN(d.getTime())) return '';
+                const p = function (n) { return String(n).padStart(2, '0'); };
+                return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate()) +
+                    ' ' + p(d.getHours()) + ':' + p(d.getMinutes());
             }
+
+            function showError(msg) {
+                const old = msgList.querySelector('.banner-error');
+                if (old) old.remove();
+                const div = document.createElement('div');
+                div.className = 'banner-error';
+                div.textContent = msg;
+                msgList.parentNode.insertBefore(div, msgList);
+            }
+
+            /* ===== 加载留言 + 回复 ===== */
+            async function loadBoard() {
+                const [{ data: msgs, error: e1 }, { data: reps, error: e2 }] = await Promise.all([
+                    client.from('board_messages').select('*').order('created_at', { ascending: false }),
+                    client.from('board_replies').select('*').order('created_at', { ascending: false })
+                ]);
+
+                const errEl = document.querySelector('.banner-error');
+                if (errEl) errEl.remove();
+
+                if (e1) { showError('留言加载失败：' + e1.message); return; }
+
+                const repliesByMsg = {};
+                (reps || []).forEach(function (r) {
+                    (repliesByMsg[r.message_id] = repliesByMsg[r.message_id] || []).push(r);
+                });
+
+                msgList.innerHTML = '';
+
+                if (!msgs || msgs.length === 0) {
+                    msgList.innerHTML = '<li class="empty">还没有留言，来抢沙发吧。</li>';
+                    return;
+                }
+
+                msgs.forEach(function (m) {
+                    const li = document.createElement('li');
+                    li.className = 'msg-card';
+
+                    const replies = repliesByMsg[m.id] || [];
+                    const replyHtml = replies.map(function (r) {
+                        return '' +
+                            '<li class="reply-card">' +
+                            '  <div class="reply-head">' +
+                            '    <span class="reply-nick">' + esc(r.nickname) + '</span>' +
+                            '    <span class="reply-time">' + fmtTime(r.created_at) + '</span>' +
+                            '  </div>' +
+                            '  <p class="reply-content-text">' + esc(r.content) + '</p>' +
+                            '  <button class="link-btn danger" data-act="del-reply" data-id="' + esc(r.id) + '">删除</button>' +
+                            '</li>';
+                    }).join('');
+
+                    li.innerHTML = '' +
+                        '<div class="msg-head">' +
+                        '  <span class="msg-nick">' + esc(m.nickname) + '</span>' +
+                        (m.email ? '  <a class="msg-email" href="mailto:' + esc(m.email) + '">' + esc(m.email) + '</a>' : '') +
+                        '  <span class="msg-time">' + fmtTime(m.created_at) + '</span>' +
+                        '</div>' +
+                        '<p class="msg-content">' + esc(m.content) + '</p>' +
+                        '<div class="msg-actions">' +
+                        '  <button class="link-btn" data-act="reply" data-id="' + esc(m.id) + '">回复</button>' +
+                        '  <button class="link-btn danger" data-act="del-msg" data-id="' + esc(m.id) + '">删除</button>' +
+                        '</div>' +
+                        '<div class="reply-form" id="reply-' + esc(m.id) + '" hidden>' +
+                        '  <div class="field-row">' +
+                        '    <input class="field reply-nick" type="text" placeholder="昵称 *" maxlength="40" required>' +
+                        '  </div>' +
+                        '  <textarea class="field reply-content" placeholder="回复内容 *" maxlength="1000" rows="2" required></textarea>' +
+                        '  <div class="reply-form-actions">' +
+                        '    <button class="link-btn" data-act="cancel-reply" data-id="' + esc(m.id) + '">取消</button>' +
+                        '    <button class="btn-small" data-act="send-reply" data-id="' + esc(m.id) + '">回复</button>' +
+                        '  </div>' +
+                        '</div>' +
+                        '<ul class="reply-list">' + replyHtml + '</ul>';
+
+                    msgList.appendChild(li);
+                });
+            }
+
+            /* ===== 发布留言 ===== */
+            msgForm.addEventListener('submit', async function (e) {
+                e.preventDefault();
+                const nickname = msgNick.value.trim();
+                const content = msgContent.value.trim();
+                const email = msgEmail.value.trim();
+
+                if (!nickname || !content) {
+                    alert('昵称和内容为必填项');
+                    return;
+                }
+
+                msgSubmit.disabled = true;
+                msgSubmit.textContent = '发布中…';
+                const { error } = await client.from('board_messages').insert({
+                    nickname: nickname,
+                    email: email || null,
+                    content: content
+                });
+                msgSubmit.disabled = false;
+                msgSubmit.textContent = '发布留言';
+
+                if (error) { alert('发布失败：' + error.message); return; }
+                msgForm.reset();
+                loadBoard();
+            });
+
+            /* ===== 列表内事件委托 ===== */
+            msgList.addEventListener('click', async function (e) {
+                const btn = e.target.closest('[data-act]');
+                if (!btn) return;
+                const act = btn.dataset.act;
+                const id = btn.dataset.id;
+
+                if (act === 'reply') {
+                    document.getElementById('reply-' + id).hidden = false;
+                } else if (act === 'cancel-reply') {
+                    document.getElementById('reply-' + id).hidden = true;
+                } else if (act === 'send-reply') {
+                    const box = document.getElementById('reply-' + id);
+                    const nick = box.querySelector('.reply-nick').value.trim();
+                    const c = box.querySelector('.reply-content').value.trim();
+                    if (!nick || !c) { alert('昵称和回复内容均必填'); return; }
+                    const { error } = await client.from('board_replies').insert({
+                        message_id: id, nickname: nick, content: c
+                    });
+                    if (error) { alert('回复失败：' + error.message); return; }
+                    loadBoard();
+                } else if (act === 'del-msg') {
+                    await deleteMessage(id);
+                } else if (act === 'del-reply') {
+                    await deleteReply(id);
+                }
+            });
+
+            /* ===== 删除（密码校验在客户端） ===== */
+            async function deleteMessage(id) {
+                const pw = prompt('删除留言需要密码：');
+                if (pw === null) return;
+                if (pw !== DELETE_PASSWORD) { alert('密码错误，无法删除'); return; }
+                if (!confirm('确定删除这条留言及其所有回复？')) return;
+                const { error } = await client.from('board_messages').delete().eq('id', id);
+                if (error) { alert('删除失败：' + error.message); return; }
+                loadBoard();
+            }
+
+            async function deleteReply(id) {
+                const pw = prompt('删除回复需要密码：');
+                if (pw === null) return;
+                if (pw !== DELETE_PASSWORD) { alert('密码错误，无法删除'); return; }
+                const { error } = await client.from('board_replies').delete().eq('id', id);
+                if (error) { alert('删除失败：' + error.message); return; }
+                loadBoard();
+            }
+
+            /* ===== 实时订阅（可选，自动刷新） ===== */
+            try {
+                client
+                    .channel('board-realtime')
+                    .on('postgres_changes', { event: '*', schema: 'public', table: 'board_messages' }, loadBoard)
+                    .on('postgres_changes', { event: '*', schema: 'public', table: 'board_replies' }, loadBoard)
+                    .subscribe();
+            } catch (err) {
+                /* 实时订阅失败不影响基本读写 */
+            }
+
+            loadBoard();
         })();
     </script>
 </body>
