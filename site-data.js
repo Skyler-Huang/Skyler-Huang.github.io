@@ -6,6 +6,16 @@ const siteData = {
         githubUrl: 'https://github.com/Skyler-Huang',
         avatarLetter: 'S'
     },
+    quotes: [
+        '行动是治愈恐惧的良药。',
+        '会计是商业的语言。',
+        '慢即是快，少即是多。',
+        '复杂的事情简单做，简单的事情重复做。',
+        '学习是为了忘记，然后内化。',
+        '专注是稀缺品。',
+        '把标准定高一点，结果不会太差。',
+        '流水不争先，争的是滔滔不绝。'
+    ],
     navigation: {
         items: [
             { label: '首页', href: '/', isActive: true },
@@ -111,6 +121,7 @@ const siteData = {
         copyright: '© 2026 黄乐天',
         domain: 'hletian.cn',
         powered: 'Powered by GitHub Pages',
-        note: '正在建设中，持续更新中'
+        note: '正在建设中，持续更新中',
+        lastUpdated: '2026-07-23'
     }
 };
