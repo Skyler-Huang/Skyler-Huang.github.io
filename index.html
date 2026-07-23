@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -486,6 +485,7 @@
 
         .section-block {
             margin-top: 44px;
+            scroll-margin-top: calc(var(--nav-height) + 16px);
             opacity: 0;
             transform: translateY(24px);
             transition: opacity 0.5s ease-out, transform 0.5s ease-out;
@@ -669,6 +669,96 @@
             color: #b0a89e;
         }
 
+        /* ========== 底部导航栏（页脚上方） ========== */
+        .bottom-nav {
+            max-width: var(--max-width);
+            margin: 40px auto 0;
+            padding: 18px 24px 4px;
+            border-top: 1px solid rgba(180, 155, 127, 0.30);
+            opacity: 0;
+            transform: translateY(12px);
+            transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+        }
+
+        .bottom-nav.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .bottom-nav-inner {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 4px 6px;
+        }
+
+        .bottom-nav-link {
+            display: inline-flex;
+            align-items: center;
+            padding: 6px 14px;
+            font-size: 0.88rem;
+            color: var(--text-dark);
+            text-decoration: none;
+            letter-spacing: 0.05em;
+            border-radius: var(--radius-sm);
+            transition: color var(--transition-fast), background-color var(--transition-fast);
+            position: relative;
+        }
+
+        .bottom-nav-link:hover {
+            color: var(--primary);
+            background-color: var(--hover-bg);
+        }
+
+        .bottom-nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 2px;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background-color: var(--accent);
+            border-radius: 1px;
+            transition: width var(--transition-fast), left var(--transition-fast);
+        }
+
+        .bottom-nav-link:hover::after {
+            width: calc(100% - 28px);
+            left: 14px;
+        }
+
+        .bottom-nav-sep {
+            width: 1px;
+            height: 16px;
+            background-color: rgba(180, 155, 127, 0.35);
+            margin: 0 6px;
+            flex-shrink: 0;
+        }
+
+        .bottom-nav-top {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            margin-left: 8px;
+            padding: 6px 16px;
+            font-size: 0.88rem;
+            font-family: var(--font-sans);
+            color: var(--primary);
+            background: transparent;
+            border: 1px solid rgba(61, 90, 75, 0.35);
+            border-radius: 999px;
+            cursor: pointer;
+            letter-spacing: 0.05em;
+            transition: background-color var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
+        }
+
+        .bottom-nav-top:hover {
+            background-color: var(--primary);
+            color: #ffffff;
+            border-color: var(--primary);
+        }
+
         @media (max-width: 600px) {
             .header {
                 padding: 36px 16px 16px;
@@ -785,6 +875,22 @@
                 padding: 16px 16px 28px;
                 font-size: 0.76rem;
             }
+            .bottom-nav {
+                padding: 16px 16px 4px;
+                gap: 4px;
+            }
+            .bottom-nav-sep {
+                display: none;
+            }
+            .bottom-nav-link {
+                padding: 6px 12px;
+                font-size: 0.82rem;
+            }
+            .bottom-nav-top {
+                margin-left: 0;
+                font-size: 0.82rem;
+                padding: 6px 14px;
+            }
             .back-to-top {
                 width: 40px;
                 height: 40px;
@@ -860,6 +966,20 @@
     <main class="main-container" id="mainContainer">
         <!-- 分类区域 + 自我介绍 由 JS 动态生成 -->
     </main>
+
+    <!-- ==================== 底部导航栏 ==================== -->
+    <nav class="bottom-nav" id="bottomNav" aria-label="页脚导航">
+        <div class="bottom-nav-inner">
+            <a class="bottom-nav-link" href="#section-professional">专业</a>
+            <span class="bottom-nav-sep" aria-hidden="true"></span>
+            <a class="bottom-nav-link" href="#section-tools">工具</a>
+            <span class="bottom-nav-sep" aria-hidden="true"></span>
+            <a class="bottom-nav-link" href="#section-life">生活</a>
+            <span class="bottom-nav-sep" aria-hidden="true"></span>
+            <a class="bottom-nav-link" href="#section-connect">连接</a>
+            <button class="bottom-nav-top" id="bottomNavTop" type="button">返回顶部 <span aria-hidden="true">↑</span></button>
+        </div>
+    </nav>
 
     <!-- ==================== 底部信息 ==================== -->
     <footer class="footer" id="footer">
@@ -1514,6 +1634,21 @@
                 }
             } else {
                 loadDefault();
+            }
+        })();
+    </script>
+
+    <!-- ==================== 底部导航栏脚本 ==================== -->
+    <script>
+        (function () {
+            var bn = document.getElementById('bottomNav');
+            if (bn) bn.classList.add('visible');
+
+            var topBtn = document.getElementById('bottomNavTop');
+            if (topBtn) {
+                topBtn.addEventListener('click', function () {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
             }
         })();
     </script>
