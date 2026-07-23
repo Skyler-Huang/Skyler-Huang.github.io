@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -329,78 +330,7 @@
         <!-- ==================== 文章列表（主内容区） ==================== -->
         <main>
             <ol class="post-list">
-
-                <!--
-                ==========================================
-                文章条目 #1（最新）
-                日期：2026-07-21
-                替换说明：
-                  1. 修改 <time> 的 datetime 属性和显示文字
-                  2. 修改 <a> 的 href 为真实文章链接
-                  3. 修改 <a> 内的标题文字
-                  4. 修改 <p> 内的摘要文字
-                ==========================================
-                -->
-                <li class="post-item">
-                    <article>
-                        <time class="post-date" datetime="2026-07-21">2026-07-21</time>
-                        <h2 class="post-title">
-                             <a href="/blog/记账工具开发笔记：从想法到上线.html">记账工具开发笔记：从想法到上线</a>
-                        </h2>
-                        <p class="post-excerpt">
-                            通过咖啡因子来规划储蓄习惯，AI提示词工程赋能网站建设
-                        </p>
-                    </article>
-                </li>
-
-                <!--
-                ==========================================
-                文章条目 #2
-                日期：2026-07-20
-                ==========================================
-                -->
-                <li class="post-item">
-                    <article>
-                        <time class="post-date" datetime="2026-07-20">2026-07-20</time>
-                        <h2 class="post-title">
-                            <!-- ★ 替换 href="#" 为真实文章链接 -->
-                            <a href="#">极简理财第一步：搭建自己的"财务仪表盘"</a>
-                        </h2>
-                        <!-- ★ 替换摘要文字 -->
-                        <p class="post-excerpt">
-                            用几个关键数字（净资产、储蓄率、被动收入占比）快速判断财务状况，告别复杂的报表。
-                        </p>
-                    </article>
-                </li>
-
-                <!--
-                ==========================================
-                文章条目 #3
-                日期：2026-07-19
-                ==========================================
-                -->
-                <li class="post-item">
-                    <article>
-                        <time class="post-date" datetime="2026-07-19">2026-07-19</time>
-                        <h2 class="post-title">
-                            <!-- ★ 替换 href="#" 为真实文章链接 -->
-                            <a href="#">紧急备用金到底该存多少？一个可落地的计算方式</a>
-                        </h2>
-                        <!-- ★ 替换摘要文字 -->
-                        <p class="post-excerpt">
-                            结合月支出、收入稳定性和心理安全感，给出适合不同人群的备用金额度建议与存放位置。
-                        </p>
-                    </article>
-                </li>
-
-                <!--
-                ==========================================
-                后续新增文章在此处添加，格式参照上方条目。
-                注意：新文章请插入到列表最上方（第一条之前），
-                以保持从新到旧的倒序排列。
-                ==========================================
-                -->
-
+                <!-- 文章条目由 JavaScript 动态生成，数据来源：../blog-data.js -->
             </ol>
         </main>
 
@@ -414,6 +344,34 @@
         </footer>
 
     </div><!-- .page-wrapper 结束 -->
+
+    <!-- ==================== 数据驱动脚本 ==================== -->
+    <script src="../blog-data.js"></script>
+    <script>
+        (function () {
+            var list = document.querySelector('.post-list');
+            if (!list || typeof blogPosts === 'undefined') return;
+
+            // 按日期倒序排列（最新在上）
+            var posts = blogPosts.slice().sort(function (a, b) {
+                return b.date.localeCompare(a.date);
+            });
+
+            posts.forEach(function (post) {
+                var li = document.createElement('li');
+                li.className = 'post-item';
+                li.innerHTML =
+                    '<article>' +
+                        '<time class="post-date" datetime="' + post.date + '">' + post.date + '</time>' +
+                        '<h2 class="post-title">' +
+                            '<a href="' + post.link + '">' + post.title + '</a>' +
+                        '</h2>' +
+                        '<p class="post-excerpt">' + post.summary + '</p>' +
+                    '</article>';
+                list.appendChild(li);
+            });
+        })();
+    </script>
 
 </body>
 </html>
