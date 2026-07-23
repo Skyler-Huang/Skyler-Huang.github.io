@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -190,6 +191,63 @@
             background-color: var(--accent);
             opacity: 0.35;
             border: none;
+        }
+
+        /* ========== 天气模块 ========== */
+        .weather-widget {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 6px 9px;
+            margin-top: 14px;
+            padding: 7px 18px;
+            background-color: var(--card-bg);
+            border: 1px solid rgba(180, 155, 127, 0.30);
+            border-radius: 999px;
+            box-shadow: var(--shadow-sm);
+            font-family: var(--font-sans);
+            font-size: 0.9rem;
+            color: var(--text);
+            letter-spacing: 0.02em;
+            max-width: 92%;
+            animation: fadeInUp 0.7s ease-out both;
+            animation-delay: 0.60s;
+        }
+
+        .weather-widget .w-icon {
+            font-size: 1.3rem;
+            line-height: 1;
+        }
+
+        .weather-widget .w-city {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .weather-widget .w-cond {
+            color: var(--text);
+        }
+
+        .weather-widget .w-temp {
+            color: var(--accent);
+            font-weight: 600;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .weather-widget .w-sep {
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background-color: var(--accent);
+            opacity: 0.55;
+            flex-shrink: 0;
+        }
+
+        /* 加载中 / 失败等静默状态：不报错、不红屏 */
+        .weather-widget.is-muted {
+            color: var(--text-light);
+            font-style: italic;
         }
 
         .nav-bar {
@@ -642,6 +700,15 @@
                 width: 18px;
                 height: 18px;
             }
+            .weather-widget {
+                font-size: 0.82rem;
+                padding: 6px 14px;
+                margin-top: 12px;
+                max-width: 96%;
+            }
+            .weather-widget .w-icon {
+                font-size: 1.15rem;
+            }
             .nav-inner {
                 justify-content: flex-start;
                 padding: 0 16px;
@@ -780,6 +847,12 @@
         <div class="header-inner">
             <!-- 头部内容由 JS 动态生成 -->
         </div>
+
+        <!-- 天气模块：城市 / 天气 / 温度（数据由底部脚本动态填充） -->
+        <div class="weather-widget is-muted" id="weatherWidget" aria-live="polite">
+            <span class="w-text">天气加载中…</span>
+        </div>
+
         <hr class="header-divider" aria-hidden="true">
     </header>
 
@@ -1319,6 +1392,129 @@
             console.log('📖 hletian.cn — 个人数字据点已就绪');
             console.log('   风格：旧式账簿 / 极简信笺');
             console.log('   黄乐天 · Skyler · 会计学专业');
+        })();
+    </script>
+
+    <!-- ==================== 天气模块脚本 ==================== -->
+    <script>
+        (function () {
+            var widget = document.getElementById('weatherWidget');
+            if (!widget) return;
+
+            // WMO 天气代码 → [中文描述, emoji]
+            var WMO = {
+                0:  ['晴', '☀️'],
+                1:  ['晴间多云', '🌤️'],
+                2:  ['多云', '⛅'],
+                3:  ['阴', '☁️'],
+                45: ['雾', '🌫️'],
+                48: ['雾凇', '🌫️'],
+                51: ['毛毛雨', '🌦️'],
+                53: ['毛毛雨', '🌦️'],
+                55: ['毛毛雨', '🌦️'],
+                56: ['冻毛毛雨', '🌧️'],
+                57: ['冻毛毛雨', '🌧️'],
+                61: ['小雨', '🌧️'],
+                63: ['中雨', '🌧️'],
+                65: ['大雨', '🌧️'],
+                66: ['冻雨', '🌧️'],
+                67: ['冻雨', '🌧️'],
+                71: ['小雪', '🌨️'],
+                73: ['中雪', '🌨️'],
+                75: ['大雪', '🌨️'],
+                77: ['雪粒', '🌨️'],
+                80: ['阵雨', '🌦️'],
+                81: ['阵雨', '🌦️'],
+                82: ['强阵雨', '⛈️'],
+                85: ['阵雪', '🌨️'],
+                86: ['强阵雪', '🌨️'],
+                95: ['雷阵雨', '⛈️'],
+                96: ['雷阵雨伴冰雹', '⛈️'],
+                99: ['雷阵雨伴冰雹', '⛈️']
+            };
+
+            function decodeWMO(code) {
+                var m = WMO[code];
+                return m ? { text: m[0], emoji: m[1] } : { text: '未知', emoji: '🌡️' };
+            }
+
+            function setWeather(city, text, emoji, temp) {
+                widget.classList.remove('is-muted');
+                widget.innerHTML =
+                    '<span class="w-icon">' + emoji + '</span>' +
+                    '<span class="w-city">' + city + '</span>' +
+                    '<span class="w-sep"></span>' +
+                    '<span class="w-cond">' + text + '</span>' +
+                    '<span class="w-sep"></span>' +
+                    '<span class="w-temp">' + temp + '°C</span>';
+            }
+
+            function setMuted(msg) {
+                widget.classList.add('is-muted');
+                widget.innerHTML = '<span class="w-text">' + msg + '</span>';
+            }
+
+            var DEFAULT = { lat: 30.59, lon: 114.30, name: '武汉' };
+
+            function fetchWeather(lat, lon, cityName) {
+                var url = 'https://api.open-meteo.com/v1/forecast?latitude=' + lat +
+                    '&longitude=' + lon + '&current=temperature_2m,weather_code&timezone=auto';
+                fetch(url)
+                    .then(function (r) { if (!r.ok) throw new Error('net'); return r.json(); })
+                    .then(function (data) {
+                        var cur = data && data.current;
+                        if (!cur) throw new Error('empty');
+                        var t = cur.temperature_2m;
+                        var temp = (t != null && !isNaN(t)) ? Math.round(t) : '--';
+                        var w = decodeWMO(cur.weather_code);
+                        setWeather(cityName, w.text, w.emoji, temp);
+                    })
+                    .catch(function () { setMuted('天气暂不可用'); });
+            }
+
+            function reverseGeocode(lat, lon, fallbackName) {
+                var url = 'https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=' +
+                    lat + '&longitude=' + lon + '&localityLanguage=zh';
+                fetch(url)
+                    .then(function (r) { if (!r.ok) throw new Error('net'); return r.json(); })
+                    .then(function (g) {
+                        var name = g.city || g.locality || g.principalSubdivision || fallbackName;
+                        fetchWeather(lat, lon, name);
+                    })
+                    .catch(function () { fetchWeather(lat, lon, fallbackName); });
+            }
+
+            function loadDefault() {
+                fetchWeather(DEFAULT.lat, DEFAULT.lon, DEFAULT.name);
+            }
+
+            // 自动获取地理位置；超时 / 拒绝 / 不可用则回退武汉
+            if (navigator.geolocation) {
+                var done = false;
+                var timer = setTimeout(function () {
+                    if (!done) { done = true; loadDefault(); }
+                }, 8000);
+                try {
+                    navigator.geolocation.getCurrentPosition(
+                        function (pos) {
+                            if (done) return;
+                            done = true; clearTimeout(timer);
+                            var lat = pos.coords.latitude, lon = pos.coords.longitude;
+                            reverseGeocode(lat, lon, '我的位置');
+                        },
+                        function () {
+                            if (done) return;
+                            done = true; clearTimeout(timer);
+                            loadDefault();
+                        },
+                        { enableHighAccuracy: false, timeout: 8000, maximumAge: 600000 }
+                    );
+                } catch (e) {
+                    if (!done) { done = true; clearTimeout(timer); loadDefault(); }
+                }
+            } else {
+                loadDefault();
+            }
         })();
     </script>
 </body>
