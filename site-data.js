@@ -1,10 +1,11 @@
 const siteData = {
     header: {
-        name: '黄乐天',
+        name: '黄乐天 · 会计学专业 · 北方民族大学',
         englishName: 'Skyler',
         tagline: '会计学专业 · 用技术为专业能力提效',
         githubUrl: 'https://github.com/Skyler-Huang',
-        avatarLetter: 'S'
+        avatarLetter: 'S',
+        pageTitle: '黄乐天｜会计学专业｜个人网站｜hletian.cn'
     },
     quotes: [
         '行动是治愈恐惧的良药。',
