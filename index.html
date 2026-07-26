@@ -3,8 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>黄乐天 · Skyler | 会计学专业 · 用技术为专业能力提效</title>
-    <meta name="description" content="黄乐天（Skyler）的个人数字据点——会计学专业，探索技术如何为专业能力提效。hletian.cn">
+    <title>黄乐天｜会计学专业｜个人网站｜hletian.cn</title>
+    <meta name="description" content="黄乐天，北方民族大学会计学专业在读学生，专注审计、财会与财务数字化方向。hletian.cn 是他的个人数字据点，记录会计学学习笔记、效率工具与提示词工程实践，探索技术如何为专业能力提效，分享理性、克制的专业成长思考、读书笔记与日常学习沉淀。">
+    <meta name="keywords" content="黄乐天、会计学、审计、财会、财务、北方民族大学、个人网站">
+
+    <!-- ============ Open Graph（社交分享） ============ -->
+    <meta property="og:title" content="黄乐天｜会计学专业｜个人网站｜hletian.cn">
+    <meta property="og:description" content="会计学专业学生黄乐天的个人数字据点，记录学习笔记与效率工具">
+    <meta property="og:url" content="https://hletian.cn">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="黄乐天的个人网站">
+
+    <!-- ============ 国内社交平台分享（微信 / QQ / 微博） ============ -->
+    <meta property="weixin:title" content="黄乐天｜会计学专业｜个人网站">
+    <meta property="weixin:description" content="会计学专业学生黄乐天的个人数字据点">
+
+    <!-- ============ 结构化数据：Person（JSON-LD，供搜索引擎与 AI 爬虫理解） ============ -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "黄乐天",
+      "givenName": "乐天",
+      "familyName": "黄",
+      "jobTitle": "会计学专业学生",
+      "description": "会计学专业学生，北方民族大学，个人网站站长",
+      "url": "https://hletian.cn",
+      "sameAs": [
+        "https://github.com/Skyler-Huang"
+      ],
+      "alumniOf": {
+        "@type": "CollegeOrUniversity",
+        "name": "北方民族大学"
+      },
+      "knowsAbout": ["会计学", "审计", "财会", "财务数字化"]
+    }
+    </script>
     <style>
         :root {
             --bg: #faf7f2;
@@ -1242,13 +1276,12 @@
             }
 
             // ========== 更新页面标题 ==========
+            // 说明：<title> / description / keywords / OG 等标签在 <head> 中静态维护（含 SEO/GEO 优化）。
+            // 此处仅用 siteData.header.pageTitle 同步 document.title，不再覆盖 meta description。
             function updatePageTitle() {
                 var d = siteData.header;
-                document.title = d.name + ' · ' + d.englishName + ' | ' + d.tagline;
-                var metaDesc = document.querySelector('meta[name="description"]');
-                if (metaDesc) {
-                    metaDesc.setAttribute('content',
-                        d.name + '（' + d.englishName + '）的个人数字据点——' + d.tagline + '。' + siteData.footer.domain);
+                if (d.pageTitle) {
+                    document.title = d.pageTitle;
                 }
             }
 
