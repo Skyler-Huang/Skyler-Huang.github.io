@@ -123,6 +123,6 @@ const siteData = {
         domain: 'hletian.cn',
         powered: 'Powered by GitHub Pages',
         note: '正在建设中，持续更新中',
-        lastUpdated: '2026-07-23'
+        lastUpdated: '2026-10-09'
     }
 };
