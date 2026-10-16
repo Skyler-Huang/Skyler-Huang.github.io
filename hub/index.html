@@ -711,52 +711,6 @@ function vMoney() {
   </div>`;
 }
 
-/* ---------------------------------------------------------- 消息 */
-function vMsg() {
-  const msgs = D.messages ?? [];
-  const SRC = { wechat: '微信', qq: 'QQ', sms: '短信', other: '其他' };
-  const CLS = { wechat: 'ok', qq: 'brand', sms: 'plain', other: 'plain' };
-
-  if (!msgs.length) {
-    return `
-    <div class="vhead"><h2>消息</h2></div>
-    <p class="vdesc">手机通知转发进来的微信 / QQ 消息会出现在这里。</p>
-    <div class="card"><div class="body pad">
-      <div style="font-weight:600;margin-bottom:9px">还没有数据</div>
-      <div class="hint" style="margin:0">
-        手机端装 SmsForwarder 并授予通知使用权后，微信和 QQ 的通知会转发进来。<br>
-        注意：转发的目标地址要填<b>你电脑的局域网地址</b>（不是 Supabase 的地址）——
-        项目域名在国内被墙，手机发不出去。
-      </div>
-    </div></div>`;
-  }
-
-  const kept = msgs.filter((m) => !m.is_filtered && m.importance >= 1).length;
-  const rows = msgs.map((m) => {
-    const imp = m.importance >= 2;
-    return `<div class="li" style="${m.is_filtered || m.importance < 1 ? 'opacity:.42' : ''}">
-      <span class="chip ${m.is_filtered ? 'plain' : CLS[m.source] || 'plain'}">${SRC[m.source] || m.source}</span>
-      <div class="grow">
-        <div style="font-weight:${imp ? 600 : 400}">
-          ${esc(m.sender || '(未知)')}${m.group_name ? ` <span style="color:var(--muted);font-weight:400">· ${esc(m.group_name)}</span>` : ''}
-          ${m.is_filtered ? ' <span class="chip plain">已过滤</span>' : ''}
-        </div>
-        <div class="sub" style="white-space:pre-wrap">${esc(m.content || '')}</div>
-      </div>
-      <span class="sub" style="font-family:var(--mono);flex:none">${m.when_text}</span>
-    </div>`;
-  }).join('');
-
-  return `
-  <div class="vhead"><h2>消息</h2>
-    <span class="sub">共 ${msgs.length} 条 · 会被 AI 看到的 ${kept} 条</span></div>
-  <p class="vdesc">早晚报生成时，AI 会从这些消息里挑出真正需要你知道的几条，其余折叠。</p>
-  <div class="card">
-    <header><span class="accent"></span><h3>最近消息</h3><span class="extra">按时间倒序</span></header>
-    <div class="body">${rows}</div>
-  </div>`;
-}
-
 /* ---------------------------------------------------------- 报告 */
 function vReport() {
   const rs = D.reports ?? [];
@@ -893,11 +847,11 @@ function vSetting() {
    =========================================================================== */
 const VIEWS = [
   ['overview', '总览'], ['week', '课表'], ['todo', '待办与截止'], ['study', '学习'],
-  ['money', '记账'], ['msg', '消息'], ['report', '报告'], ['memory', '工作记忆'], ['setting', '设置'],
+  ['money', '记账'], ['report', '报告'], ['memory', '工作记忆'], ['setting', '设置'],
 ];
 const RENDER = {
   overview: vOverview, week: vWeek, todo: vTodo, study: vStudy,
-  money: vMoney, msg: vMsg, report: vReport, memory: vMemory, setting: vSetting,
+  money: vMoney, report: vReport, memory: vMemory, setting: vSetting,
 };
 
 function paintNav() {
