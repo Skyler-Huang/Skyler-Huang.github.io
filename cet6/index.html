@@ -68,6 +68,7 @@ mark{background:var(--mark);color:inherit;border-radius:2px;padding:0 1px}
   font-size:12px;color:var(--tx3);min-height:20px;margin:0 0 16px;letter-spacing:.01em}
 .statusline b{color:var(--tx2);font-weight:600;font-variant-numeric:tabular-nums}
 .statusline .sep{color:var(--line);padding:0 2px}
+.statusline .statuslinks{display:inline-flex;align-items:center;gap:1px;white-space:nowrap}
 .todayflag{color:var(--ok);font-weight:600}
 .todayflag::before{content:"·";color:var(--tx3);font-weight:400;margin-right:6px}
 
@@ -1030,7 +1031,7 @@ function resetSession() {
 function statusLine() {
   const q = buildTodayQueue();
   const today = todayAnswered() ? '<span class="todayflag">今天记下了</span>' : "";
-  return `<div class="statusline">今日新词 <b>${q.newTotal}</b> 个<span class="sep">·</span>到期复习 <b>${q.reviews.length}</b> 个${today}<span class="sep">·</span><button type="button" class="textlink" data-act="limits-open">今天学多少</button></div>`;
+  return `<div class="statusline"><span class="statuscounts">今日新词 <b>${q.newTotal}</b> 个<span class="sep">·</span>到期复习 <b>${q.reviews.length}</b> 个${today}</span><span class="statuslinks"><span class="sep">·</span><button type="button" class="textlink" data-act="limits-open">今天学多少</button><span class="sep">·</span><button type="button" class="textlink" data-act="manual-open">挑词</button></span></div>`;
 }
 
 /* ── 学习页 ─────────────────────────────────────────────── */
@@ -2827,7 +2828,12 @@ function toggleManual(id) {
   const list = document.querySelector(".manuallist");
   const scrollTop = list ? list.scrollTop : 0;
   if (isManual(id)) {
-    removeManual(id); save(); render();
+    removeManual(id);
+    if (Q.active && Q.mode === "sprint") {
+      const idx = Q.items.findIndex(x => x.id === id);
+      if (idx > Q.i) Q.items.splice(idx, 1);
+    }
+    save(); render();
     const after = document.querySelector(".manuallist"); if (after) after.scrollTop = scrollTop;
     return;
   }
@@ -2837,6 +2843,10 @@ function toggleManual(id) {
   if (isGrad(id)) { toast("这个词已经四项全稳毕业，不再进新词队列"); return; }
   if (manualCapacityLeft() <= 0) { toast("今日新词额度已满，先做掉几个或把额度调大"); return; }
   addManual(id, false);
+  // 当前轮已经开跑时，新挑的词先排到本轮末尾，避免这一轮白挑。
+  if (Q.active && Q.mode === "sprint" && Q.i < Q.items.length && !Q.items.some(x => x.id === id)) {
+    Q.items.push(d);
+  }
   save();
   render();
   const after = document.querySelector(".manuallist"); if (after) after.scrollTop = scrollTop;
@@ -2858,6 +2868,7 @@ function importManualText(text, label) {
   const wc = parsed.mapping.w, gc = parsed.mapping.g;
   if (wc < 0) { toast("没有找到单词列"); return; }
   let accepted = 0, overflow = 0, missing = 0, due = 0, dup = 0;
+  const acceptedIds = [];
   let room = manualCapacityLeft();
   parsed.rows.forEach(row => {
     const n = normalizeRow(row[wc], gc >= 0 ? row[gc] : "");
@@ -2876,6 +2887,7 @@ function importManualText(text, label) {
     if (isManual(d.id)) { dup++; return; }
     if (room > 0) {
       addManual(d.id, false);
+      acceptedIds.push(d.id);
       accepted++;
       room--;
     } else {
@@ -2883,6 +2895,12 @@ function importManualText(text, label) {
       if (!MY.includes(d.id)) MY.push(d.id);
     }
   });
+  if (Q.active && Q.mode === "sprint" && Q.i < Q.items.length) {
+    acceptedIds.forEach(id => {
+      const d = DATA.find(x => x.id === id);
+      if (d && !Q.items.some(x => x.id === id)) Q.items.push(d);
+    });
+  }
   save();
   render();
   let msg = `导入 ${parsed.rows.length} 个词`;
