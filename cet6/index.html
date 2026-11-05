@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#f6f4ef">
-<title>六级单词 · 义项级学习 0.2</title>
+<title>六级单词 · 义项级学习 0.3</title>
 <meta name="description" content="一张卡，一个义项，一个动作。六级冲刺池 + 场景词汇，四种能力在后台记，进度只存本机。">
 <style>
 :root{
@@ -405,6 +405,110 @@ html[data-theme=dark] .ab.grad{color:#0d1524}
 .localhit .add:hover{border-color:var(--accent);color:var(--accent)}
 
 /* toast */
+/* ── 0.3 学习卡：音标 / 反馈 / 能力点 / 标签 ─────────────── */
+.phonetic{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin:2px 0 14px;color:var(--tx3);font-size:13px}
+.phonetic .ph{font-family:ui-monospace,Consolas,monospace;letter-spacing:.02em}
+.phonetic .speaker{appearance:none;border:1px solid var(--line);background:var(--panel);color:var(--tx3);
+  width:28px;height:28px;border-radius:8px;display:grid;place-items:center;cursor:pointer;font-size:13px;padding:0}
+.phonetic .speaker:hover{border-color:var(--accent);color:var(--accent)}
+.phonetic.under-clue{margin-top:-2px;margin-bottom:10px}
+.cardtag{font-size:10px;font-weight:650;color:var(--accent);background:var(--accent-bg);border-radius:5px;padding:2px 6px;white-space:nowrap}
+.feedback .fb-main{font-size:14px;line-height:1.7}
+.feedback .fb-row{display:flex;gap:8px;align-items:baseline;margin-top:5px;font-size:12.5px;color:var(--tx2)}
+.feedback .fb-row .lab{flex:0 0 52px;color:var(--tx3);font-size:11px}
+.feedback .fb-ex{margin-top:7px;padding-top:7px;border-top:1px solid color-mix(in srgb,var(--tx) 8%,transparent);
+  font-size:12.5px;line-height:1.65;color:var(--tx2)}
+.feedback .fb-ex .src{font-size:10.5px;color:var(--tx3);margin-top:2px}
+.feedback .fb-back{display:block;margin-top:5px;font-size:11.5px;color:var(--bad)}
+.abilityline{display:flex;flex-wrap:wrap;gap:7px 14px;align-items:center;margin-top:12px;padding-top:11px;
+  border-top:1px dashed var(--line2);font-size:11px;color:var(--tx3)}
+.abilityline .abgrp{display:inline-flex;align-items:center;gap:5px;white-space:nowrap}
+.abilityline .abdots{display:inline-flex;gap:2px}
+.abilityline .abdot{width:6px;height:6px;border-radius:50%;background:var(--line)}
+.abilityline .abdot.on1{background:var(--warn)}
+.abilityline .abdot.on2{background:var(--ok)}
+.abilityline .abgrp.cur{color:var(--tx);font-weight:600}
+
+/* ── 0.3 主页弹层：查词 / 今天学多少 / 挑词 ─────────────── */
+body.modal-open{overflow:hidden}
+.modalback{position:fixed;inset:0;z-index:70;background:rgba(20,22,26,.42);display:flex;align-items:center;
+  justify-content:center;padding:18px;-webkit-backdrop-filter:blur(2px);backdrop-filter:blur(2px)}
+.modalpanel{width:min(680px,100%);max-height:86vh;overflow:auto;background:var(--panel);border:1px solid var(--line);
+  border-radius:18px;box-shadow:var(--shadow-lg);padding:20px 22px 18px}
+.modalpanel.wide{width:min(760px,100%)}
+.modalhead{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
+.modalhead h3{font-size:17px;margin:0;letter-spacing:-.01em}
+.modalclose{appearance:none;border:1px solid var(--line);background:var(--panel);color:var(--tx3);width:32px;height:32px;
+  border-radius:8px;cursor:pointer;font-size:16px;line-height:1}
+.modalclose:hover{border-color:var(--accent);color:var(--accent)}
+.modalnote{font-size:11px;color:var(--tx3);line-height:1.7;margin:8px 0 0}
+.modalfoot{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:14px;padding-top:12px;border-top:1px solid var(--line2)}
+.modalfoot .spacer{margin-left:auto}
+.modalpanel .ydcard{margin-top:10px}
+.modalpanel .lookupresult{margin-top:10px}
+.quickactions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.quickactions .primary,.quickactions .ghostbtn{min-height:38px;padding:0 16px;font-size:13px}
+.quicklocal{margin-top:14px}
+.quicklocal .localhit{display:flex;align-items:baseline;gap:8px;padding:7px 0;border-bottom:1px solid var(--line2);font-size:12.5px;flex-wrap:wrap}
+.quicklocal .localhit:last-child{border-bottom:0}
+.quicklocal .w{font-weight:650;min-width:90px}
+.quicklocal .g{color:var(--tx2);flex:1;min-width:100px}
+.quicklocal .mini-actions{display:flex;gap:5px;margin-left:auto}
+.quicklocal .mini-actions button{appearance:none;border:1px solid var(--line);background:var(--panel);border-radius:7px;
+  color:var(--tx3);font-size:10.5px;padding:3px 8px;cursor:pointer;white-space:nowrap}
+.quicklocal .mini-actions button:hover{border-color:var(--accent);color:var(--accent)}
+
+.limitblock{padding:12px 0 4px;border-bottom:1px solid var(--line2)}
+.limitblock:last-of-type{border-bottom:0}
+.limitblock h4{font-size:12px;color:var(--tx3);margin:0 0 8px;font-weight:600;letter-spacing:.04em}
+.limitpresets{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:9px}
+.limitbtn{appearance:none;border:1px solid var(--line);background:var(--bg);color:var(--tx2);border-radius:8px;
+  min-width:44px;height:34px;padding:0 10px;font-size:12.5px;cursor:pointer;font-variant-numeric:tabular-nums}
+.limitbtn:hover{border-color:var(--accent);color:var(--accent)}
+.limitbtn.on{background:var(--accent);border-color:var(--accent);color:#fff}
+html[data-theme=dark] .limitbtn.on{color:#0d1524}
+.customrow{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:12px;color:var(--tx3)}
+.customrow input{width:92px;height:34px;border:1px solid var(--line);border-radius:8px;background:var(--bg);
+  color:var(--tx);padding:0 9px;font-size:13px;outline:none;font-variant-numeric:tabular-nums}
+.customrow input:focus{border-color:var(--accent)}
+.customrow button{appearance:none;border:1px solid var(--line);background:var(--panel);border-radius:8px;height:34px;
+  padding:0 12px;font-size:12px;color:var(--tx2);cursor:pointer}
+.customrow button:hover{border-color:var(--accent);color:var(--accent)}
+.limitwarn{font-size:11px;color:var(--warn);margin-top:7px;line-height:1.6}
+
+.manualmeta{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;font-size:12px;color:var(--tx3);margin:10px 0 6px}
+.manualmeta b{color:var(--tx);font-variant-numeric:tabular-nums}
+.manualmeta .warn{color:var(--warn)}
+.manuallist{max-height:44vh;overflow:auto;border:1px solid var(--line2);border-radius:10px;background:var(--bg)}
+.manualrow{display:flex;align-items:center;gap:9px;padding:8px 11px;border-bottom:1px solid var(--line2);cursor:pointer;font-size:12.5px}
+.manualrow:last-child{border-bottom:0}
+.manualrow:hover{background:var(--panel)}
+.manualrow input{width:16px;height:16px;accent-color:var(--accent);margin:0;flex:0 0 auto}
+.manualrow .w{font-weight:650;min-width:96px}
+.manualrow .g{color:var(--tx2);flex:1;min-width:100px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.manualrow .bd{font-size:10px}
+.manualrow.disabled{opacity:.55;cursor:not-allowed}
+.manualrow.disabled:hover{background:transparent}
+.manualempty{padding:26px 12px;text-align:center;color:var(--tx3);font-size:12.5px}
+.manualfile{display:none}
+
+.statusline .textlink{font-size:11px;padding:0 2px}
+.lead-links{display:flex;gap:6px 14px;justify-content:center;flex-wrap:wrap;margin-top:10px}
+.lead-links .textlink{font-size:12px}
+
+/* ── 0.3 响应式补充 ─────────────────────────────────────── */
+@media(max-width:680px){
+  .modalback{padding:10px;align-items:flex-start;padding-top:76px}
+  .modalpanel{max-height:calc(100vh - 90px);padding:16px 14px 14px;border-radius:14px}
+  .modalpanel.wide{width:100%}
+  .manuallist{max-height:46vh}
+  .phonetic{font-size:12px}
+  .abilityline{gap:6px 10px;font-size:10.5px}
+  .statusline .textlink{font-size:10.5px}
+  .top-actions{gap:6px}
+  .top-actions .ghostbtn{padding:0 9px}
+}
+
 #toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(8px);
   background:var(--tx);color:var(--bg);padding:9px 17px;border-radius:10px;font-size:12.5px;
   opacity:0;pointer-events:none;transition:.2s;z-index:80;box-shadow:var(--shadow-lg);max-width:88vw;text-align:center}
@@ -483,12 +587,13 @@ body.diagmode #topbar{min-height:60px}
 <body>
 
 <header id="topbar">
-  <div class="brand">六级单词<small>义项级 0.2</small></div>
+  <div class="brand">六级单词<small>义项级 0.3</small></div>
   <nav id="boards" aria-label="学习板块">
     <button type="button" class="board on" data-board="sprint">六级冲刺池</button>
     <button type="button" class="board" data-board="scene">场景词汇</button>
   </nav>
   <div class="top-actions">
+    <button type="button" class="ghostbtn" id="quickLookupBtn" aria-label="查词">查词</button>
     <a class="ghostbtn" id="siteHome" href="/" hidden aria-label="回个人主页">主页</a>
     <button type="button" class="ghostbtn" id="diagBtn"><span class="dotmark"></span>诊断</button>
     <button type="button" class="iconbtn" id="themeBtn" aria-label="切换深浅色" title="深浅色">◐</button>
@@ -528,6 +633,10 @@ let LOG = {};          // "YYYY-MM-DD" -> 义项回忆次数
 let MY = [];           // 我的词库 id
 let MYWORDS = [];      // 行外添加/导入的自定义词条
 let SETTINGS = { ...DEFAULT_SETTINGS };
+let MANUAL = { day: "", ids: [], quick: [] }; // 仅今天有效的手动新词队列
+let MODAL = null;      // null | {type:"lookup"|"limits"|"manual"}
+let MANUAL_UI = { q: "", onlyUngrad: true };
+let QL = { pending: false }; // 主页查词：是否已点“加入我的词库”，等待二选一
 
 try {
   const s = JSON.parse(localStorage.getItem(KEY) || "{}");
@@ -542,6 +651,13 @@ try {
   MY = Array.isArray(x.my) ? x.my : [];
   MYWORDS = Array.isArray(x.mywords) ? x.mywords.filter(w => w && w.id && w.w) : [];
   SETTINGS = { ...DEFAULT_SETTINGS, ...(x.settings || {}) };
+  if (x.manual && typeof x.manual === "object") {
+    MANUAL = {
+      day: String(x.manual.day || ""),
+      ids: Array.isArray(x.manual.ids) ? [...new Set(x.manual.ids.filter(Boolean))] : [],
+      quick: Array.isArray(x.manual.quick) ? [...new Set(x.manual.quick.filter(Boolean))] : []
+    };
+  }
 } catch (e) {}
 
 /* 自定义词条并回 DATA；PROG 不动 */
@@ -553,6 +669,10 @@ try {
     if (!MY.includes(w.id)) MY.push(w.id);
   });
   MY = MY.filter(id => DATA.some(d => d.id === id));
+  const today = dayKey();
+  if (MANUAL.day !== today) MANUAL = { day: today, ids: [], quick: [] };
+  MANUAL.ids = [...new Set(MANUAL.ids)].filter(id => DATA.some(d => d.id === id));
+  MANUAL.quick = [...new Set(MANUAL.quick)].filter(id => DATA.some(d => d.id === id));
   Object.keys(SCHED).forEach(id => {
     const s = SCHED[id];
     if (!s || typeof s !== "object" || typeof s.d !== "number") delete SCHED[id];
@@ -560,11 +680,28 @@ try {
 })();
 
 /* ── 存储 ────────────────────────────────────────────────── */
+function clampNew(v, fallback) {
+  const n = Number(v);
+  if (!Number.isFinite(n)) return fallback;
+  return Math.max(1, Math.min(100, Math.floor(n)));
+}
+function clampReview(v, fallback) {
+  const n = Number(v);
+  if (!Number.isFinite(n)) return fallback;
+  return Math.max(0, Math.min(200, Math.floor(n)));
+}
+function normalizeSettings() {
+  SETTINGS.newLimit = clampNew(SETTINGS.newLimit, DEFAULT_SETTINGS.newLimit);
+  SETTINGS.reviewLimit = clampReview(SETTINGS.reviewLimit, DEFAULT_SETTINGS.reviewLimit);
+  if (![6, 10, 15, 20].includes(SETTINGS.sceneBatch)) SETTINGS.sceneBatch = DEFAULT_SETTINGS.sceneBatch;
+}
+normalizeSettings();
+
 function save() {
   try {
     localStorage.setItem(KEY, JSON.stringify({ prog: PROG, history: HISTORY.slice(-40) }));
     localStorage.setItem(XKEY, JSON.stringify({
-      sched: SCHED, log: LOG, my: MY, mywords: MYWORDS, settings: SETTINGS
+      sched: SCHED, log: LOG, my: MY, mywords: MYWORDS, settings: SETTINGS, manual: MANUAL
     }));
   } catch (e) {
     toast("本地存储写入失败，可能是浏览器空间满了");
@@ -594,6 +731,37 @@ function isBasicWord(d) {
   const c = (d.cefr || "").toUpperCase();
   if (c === "A1" || c === "A2" || c === "B1") return true;
   return !!d.collins && parseInt(d.collins, 10) >= 4;
+}
+
+/* ── 今日手动队列（只存今天，不写 SCHED） ───────────────── */
+function ensureManualDay() {
+  const today = dayKey();
+  if (!MANUAL.day || MANUAL.day !== today) {
+    MANUAL = { day: today, ids: [], quick: [] };
+  }
+}
+function manualIds() {
+  ensureManualDay();
+  return MANUAL.ids.filter(id => DATA.some(d => d.id === id));
+}
+function isManual(id) { return manualIds().includes(id); }
+function isQuickTagged(id) { ensureManualDay(); return MANUAL.quick.includes(id); }
+function answeredToday(id) {
+  const s = SCHED[id];
+  return !!(s && dayKey(s.l) === dayKey());
+}
+function manualCapacityLeft() {
+  return Math.max(0, SETTINGS.newLimit - todayNewCount() - manualIds().length);
+}
+function addManual(id, front) {
+  ensureManualDay();
+  MANUAL.ids = MANUAL.ids.filter(x => x !== id);
+  if (front) MANUAL.ids.unshift(id); else MANUAL.ids.push(id);
+}
+function removeManual(id) {
+  ensureManualDay();
+  MANUAL.ids = MANUAL.ids.filter(x => x !== id);
+  MANUAL.quick = MANUAL.quick.filter(x => x !== id);
 }
 
 /* ── 日期 / 调度 ─────────────────────────────────────────── */
@@ -669,24 +837,42 @@ function sprintPool() {
   return DATA.filter(d => isSprintWord(d) && !isGrad(d.id) && needsMeaning(d));
 }
 
-function buildSprintQueue(opts) {
+function buildTodayQueue(opts) {
   opts = opts || {};
+  ensureManualDay();
   const now = Date.now();
   const pool = sprintPool();
-  const newLeft = Math.max(0, SETTINGS.newLimit - todayNewCount());
-  const reviewLeft = Math.max(0, SETTINGS.reviewLimit - todayReviewCount());
 
-  let reviews = pool.filter(d => isDue(d.id, now));
+  // 手动队列里的词优先；只收未毕业、今天还没作答、还有释义的词。
+  // 手动队列计入今日新词额度，超出部分不进入本轮。
+  const availableNew = Math.max(0, SETTINGS.newLimit - todayNewCount());
+  const manual = manualIds()
+    .map(id => DATA.find(d => d.id === id))
+    .filter(d => d && needsMeaning(d) && !isGrad(d.id) && !answeredToday(d.id))
+    .slice(0, availableNew);
+  const manualSet = new Set(manual.map(d => d.id));
+
+  // 到期复习：手动队列里的词从复习队列剔除，避免同一天出现两次。
+  const reviewLeft = Math.max(0, SETTINGS.reviewLimit - todayReviewCount());
+  let reviews = pool.filter(d => isDue(d.id, now) && !manualSet.has(d.id));
   reviews.sort((a, b) => reviewScore(b.id) - reviewScore(a.id));
   reviews = reviews.slice(0, reviewLeft);
 
-  let fresh = pool.filter(d => !SCHED[d.id] && !(PROG[d.id] && PROG[d.id].seen > 0));
+  // 系统新词 = 今日新词额度 − 手动队列已占用的部分。
+  const systemNewLeft = Math.max(0, availableNew - manual.length);
+  let fresh = pool.filter(d => !SCHED[d.id] && !(PROG[d.id] && PROG[d.id].seen > 0) && !manualSet.has(d.id));
   fresh.sort((a, b) => dynamicPri(b) - dynamicPri(a));
-  fresh = fresh.slice(0, newLeft);
+  fresh = fresh.slice(0, systemNewLeft);
 
   if (opts.skipReview) reviews = [];
-  return { reviews, news: fresh, ids: [...reviews, ...fresh].map(d => d.id) };
+  return {
+    manual, reviews, news: fresh,
+    newTotal: manual.length + fresh.length,
+    ids: [...manual, ...reviews, ...fresh].map(d => d.id)
+  };
 }
+// 兼容旧调用点
+function buildSprintQueue(opts) { return buildTodayQueue(opts); }
 
 /* ── 出题池 ─────────────────────────────────────────────── */
 let POOL_SENSE = [], POOL_GLOSS = [], POOL_WORD = [];
@@ -829,22 +1015,22 @@ let LOOKUP = { word: "", status: "idle", data: null, source: "", err: "", hits: 
 const LOOKUP_CACHE = new Map();
 let LAST_LOOKUP_AT = 0;
 
-let Q = { active: false, board: "sprint", mode: "sprint", items: [], i: 0, cur: null, wrong: [], results: [], fromPredict: false, final: null, reviewN: 0, sceneTitle: "" };
+let Q = { active: false, board: "sprint", mode: "sprint", items: [], i: 0, cur: null, wrong: [], results: [], fromPredict: false, final: null, reviewN: 0, manualN: 0, sceneTitle: "" };
 let PRED = { active: false, ids: [], sys: [], user: [], done: [] };
 let ADVANCE_TIMER = null;
 let DIAG_SCROLL = 0;
 
 function resetSession() {
   clearTimeout(ADVANCE_TIMER);
-  Q = { active: false, board: BOARD, mode: BOARD === "scene" ? "scene" : "sprint", items: [], i: 0, cur: null, wrong: [], results: [], fromPredict: false, final: null, reviewN: 0, sceneTitle: "" };
+  Q = { active: false, board: BOARD, mode: BOARD === "scene" ? "scene" : "sprint", items: [], i: 0, cur: null, wrong: [], results: [], fromPredict: false, final: null, reviewN: 0, manualN: 0, sceneTitle: "" };
   PRED = { active: false, ids: [], sys: [], user: [], done: [] };
 }
 
 /* ── 状态栏 ─────────────────────────────────────────────── */
 function statusLine() {
-  const q = buildSprintQueue();
+  const q = buildTodayQueue();
   const today = todayAnswered() ? '<span class="todayflag">今天记下了</span>' : "";
-  return `<div class="statusline">今日新词 <b>${q.news.length}</b> 个<span class="sep">·</span>到期复习 <b>${q.reviews.length}</b> 个${today}</div>`;
+  return `<div class="statusline">今日新词 <b>${q.newTotal}</b> 个<span class="sep">·</span>到期复习 <b>${q.reviews.length}</b> 个${today}<span class="sep">·</span><button type="button" class="textlink" data-act="limits-open">今天学多少</button></div>`;
 }
 
 /* ── 学习页 ─────────────────────────────────────────────── */
@@ -855,11 +1041,12 @@ function renderStudy() {
     body = Q.i >= Q.items.length ? doneHtml() : quizHtml();
     return `<div class="study">${status}${body}</div>`;
   }
-  const q = buildSprintQueue();
+  const q = buildTodayQueue();
   if (!q.ids.length) return `<div class="study">${status}${emptyQueueHtml()}</div>`;
-  const reviewN = q.reviews.length, newN = q.news.length;
+  const reviewN = q.reviews.length, newN = q.newTotal;
   let head = "";
-  if (reviewN && newN) head = `先复习 <b>${reviewN}</b> 张，再学 <b>${newN}</b> 个新词。`;
+  if (q.manual.length) head = `今天你挑了 <b>${q.manual.length}</b> 个词，先做这些。`;
+  else if (reviewN && newN) head = `先复习 <b>${reviewN}</b> 张，再学 <b>${newN}</b> 个新词。`;
   else if (reviewN) head = `今天有 <b>${reviewN}</b> 张到期复习。`;
   else head = `今天学 <b>${newN}</b> 个新词。`;
   return `<div class="study">${status}
@@ -869,9 +1056,12 @@ function renderStudy() {
       <p>打开就做，不用选。做错会拉回近期，做对会拉远。四种能力在后台各自记，这一张只练一项。</p>
       <div class="start-actions">
         <button type="button" class="primary" data-act="start">${todayAnswered() ? "继续" : "开始"}</button>
-        ${reviewN ? '<button type="button" class="textlink" data-act="skip">跳过复习，只学新词</button>' : ""}
       </div>
-      <p class="quiet">今日额度：新词 ${SETTINGS.newLimit} · 复习 ${SETTINGS.reviewLimit} · 额度分开，老词不挤占新词</p>
+      <div class="lead-links">
+        ${reviewN ? '<button type="button" class="textlink" data-act="skip">跳过复习，只学新词</button>' : ""}
+        <button type="button" class="textlink" data-act="manual-open">挑今天要学的词</button>
+      </div>
+      <p class="quiet">今日额度：新词 ${SETTINGS.newLimit} · 复习 ${SETTINGS.reviewLimit} · <button type="button" class="textlink" data-act="limits-open">调整</button></p>
     </div>
   </div>`;
 }
@@ -902,7 +1092,7 @@ function startSession(skipReview) {
   if (Q.active && Q.mode === "scene" && Q.i < Q.items.length) {
     if (!confirm("开始冲刺练习会结束当前场景这一轮（已经答过的都已保存）。继续？")) return;
   }
-  const q = buildSprintQueue({ skipReview: !!skipReview });
+  const q = buildTodayQueue({ skipReview: !!skipReview });
   if (!q.ids.length) {
     toast(skipReview ? "今天没有可学的新词额度了" : "今天没有可做的卡了");
     render();
@@ -913,10 +1103,26 @@ function startSession(skipReview) {
     active: true, board: "sprint", mode: "sprint",
     items: q.ids.map(id => DATA.find(d => d.id === id)).filter(Boolean),
     i: 0, cur: null, wrong: [], results: [], fromPredict: false, final: null,
-    reviewN: q.reviews.length, sceneTitle: ""
+    reviewN: q.reviews.length, manualN: q.manual.length, sceneTitle: ""
   };
   render();
   window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function phoneticRow(d, withSpeaker) {
+  const ph = d.ph ? `/${esc(d.ph)}/` : "";
+  if (!ph && !withSpeaker) return "";
+  return `<div class="phonetic">${ph ? `<span class="ph">${ph}</span>` : ""}
+    ${withSpeaker ? '<button type="button" class="speaker" data-act="speak" aria-label="播放发音" title="播放发音">🔊</button>' : ""}</div>`;
+}
+
+function abilityLine(d, kind) {
+  const p = PROG[d.id] || blank();
+  return `<div class="abilityline">${ABILITIES.map(k => {
+    const lv = p[k] || 0;
+    return `<span class="abgrp ${k === kind ? "cur" : ""}">${AB_SHORT[k]}
+      <span class="abdots"><span class="abdot ${lv >= 1 ? "on1" : ""}"></span><span class="abdot ${lv >= 2 ? "on2" : ""}"></span></span></span>`;
+  }).join("")}</div>`;
 }
 
 function quizHtml() {
@@ -936,23 +1142,27 @@ function quizHtml() {
   if (q.kind === "write") {
     body = `<div class="prompt">${q.prompt}</div>
       <div class="clue">${hl(q.hint)}</div>
+      ${phoneticRow(d, true)}
       <input id="typeIn" class="typebox" type="text" autocomplete="off" autocapitalize="off" spellcheck="false"
         placeholder="敲出英文单词，回车提交" value="${answered ? esc(q.given || "") : ""}" ${answered ? "disabled" : ""}>
       <div class="hintline">提示：${esc(d.w[0])}… · 共 ${d.w.length} 个字母</div>`;
   } else if (q.kind === "listen") {
     body = `<div class="prompt">${q.prompt}</div>
       <div style="margin:14px 0 18px"><button type="button" class="speakbtn" data-act="speak">▶ 播放单词</button>
+        ${d.ph ? `<span class="phonetic" style="display:inline-flex;margin:0 0 0 12px;vertical-align:middle"><span class="ph">/${esc(d.ph)}/</span></span>` : ""}
         <span class="hintline" style="margin-left:10px">听不出就多听两遍，再选。</span></div>
       <div class="options">${q.opts.map((o, i) => optionHtml(o, i, q, answered)).join("")}</div>`;
   } else {
     body = `<div class="prompt">${q.prompt}</div>
       <div class="word ${d.w.length > 11 ? "small" : ""}">${hl(d.w)}</div>
+      ${phoneticRow(d, true)}
       <div class="options">${q.opts.map((o, i) => optionHtml(o, i, q, answered)).join("")}</div>`;
   }
 
   return `<div class="studycard qcard" id="quizcard">
     <div class="cardtop">
       <span class="kind">${AB_LABEL[q.kind]}</span>
+      ${d.custom || isQuickTagged(d.id) ? '<span class="cardtag">自定义</span>' : ""}
       <span class="qprog">${prog}${Q.fromPredict ? " · 预测轮" : ""}</span>
       ${addBtn}
     </div>
@@ -963,6 +1173,7 @@ function quizHtml() {
         ? `<span class="hintline">答案已记下</span><span class="spacer"></span><button type="button" class="nextbtn" data-act="next">下一题 →</button>`
         : `<button type="button" class="textlink amber" data-act="stuck">我卡住了</button><span class="spacer"></span><span class="hintline">想不起来就点它，算一次没想起来</span>`}
     </div>
+    ${abilityLine(d, q.kind)}
     ${detailHtml(d, q)}
   </div>`;
 }
@@ -980,26 +1191,38 @@ function optionHtml(o, i, q, answered) {
 function feedbackHtml(q, answered) {
   if (!answered) return `<div class="feedback" id="fb"></div>`;
   const ok = !!q.ok;
-  const right = q.kind === "read" || q.kind === "sense" ? q.answer : q.d.w;
+  const d = q.d;
+  const right = q.kind === "read" || q.kind === "sense" ? q.answer : d.w;
+  const target = q.target || { pos: "", item: q.answer };
+  const example = d.exam || d.gen;
+  const exLabel = d.exam ? "真题原句" : "生成短句，非真题";
+  const exSrc = d.exam ? [d.exam.src, d.examKind].filter(Boolean).join(" · ") : (d.gen && d.gen.src) || "";
   return `<div class="feedback on ${ok ? "ok" : "no"}">
-    ${ok
-      ? `✓ 对。<b>${esc(right)}</b>`
-      : `✗ 正确答案：<b>${esc(right)}</b>${q.given === "__STUCK__" ? "<span class=\"sub\">你点了「我卡住了」，已按没想起来记。</span>" : "<span class=\"sub\">已放回近期队列，明天会先碰到它。</span>"}`}
+    <div class="fb-main">${ok ? "✓ 对。" : "✗ "}正确答案：<b>${esc(right)}</b></div>
+    <div class="fb-row"><span class="lab">当前义项</span><span>${target.pos ? `<b>${esc(target.pos)}</b> ` : ""}${esc(target.item || right)}</span></div>
+    ${example ? `<div class="fb-ex">${esc(example.en)}<div style="color:var(--tx3);font-size:11.5px">${esc(example.zh || "")}</div><div class="src">${esc(exSrc)} · ${esc(exLabel)}</div></div>` : ""}
+    ${ok ? "" : `<span class="fb-back">已放回近期队列。${q.given === "__STUCK__" ? "你点了「我卡住了」，按没想起来记。" : ""}</span>`}
   </div>`;
 }
 
 function detailHtml(d, q) {
   const p = PROG[d.id] || blank();
   const current = q.target ? q.target.item : "";
-  const glossRow = d.gloss
-    ? `<div class="sense-row ${current === d.gloss ? "current" : ""}"><span class="pos">考纲</span><span class="items">${esc(d.gloss)}</span></div>`
+  const allItems = (d.senses || []).flatMap(s => s.items || []);
+  const otherCount = Math.max(0, allItems.length - (current && allItems.includes(current) ? 1 : 0));
+
+  // 折叠区只放“当前义项之外”的东西；当前义项已经在反馈里了。
+  const glossRow = d.gloss && current !== d.gloss
+    ? `<div class="sense-row"><span class="pos">考纲</span><span class="items">${esc(d.gloss)}</span></div>`
     : "";
-  const senses = (d.senses || []).length
-    ? `<div class="sensebox">${glossRow}${d.senses.map(s => `
-        <div class="sense-row ${s.items && s.items.includes(current) ? "current" : ""}">
-          <span class="pos">${esc(s.pos || "")}</span><span class="items">${esc((s.items || []).join("、"))}</span>
-        </div>`).join("")}</div>`
-    : `<div class="sensebox" style="color:var(--tx3);font-size:12.5px">${glossRow}这本词典没给这个词切义项，只有考纲简要释义。</div>`;
+  const otherSenses = (d.senses || []).map(s => ({
+    pos: s.pos || "",
+    items: (s.items || []).filter(x => x !== current)
+  })).filter(s => s.items.length);
+  const senses = (glossRow || otherSenses.length)
+    ? `<div class="sensebox">${glossRow}${otherSenses.map(s => `
+        <div class="sense-row"><span class="pos">${esc(s.pos)}</span><span class="items">${esc(s.items.join("、"))}</span></div>`).join("")}</div>`
+    : `<div class="sensebox" style="color:var(--tx3);font-size:12.5px">没有其它义项。</div>`;
 
   let exam = "";
   if (d.exam) {
@@ -1020,13 +1243,13 @@ function detailHtml(d, q) {
   }).join("");
 
   return `<details class="peek">
-    <summary>看全部义项 / 看四种能力</summary>
+    <summary>其余 ${otherCount} 个义项 / 能力明细 ▾</summary>
     <div class="detail">
       <div class="detail-grid">
-        <div><h4>全部义项</h4>${senses}${exam}
-          <p class="detail-note">当前题只考「${AB_LABEL[q.kind]}」，其余义项先折叠。义项是从 ECDICT 机械切分的，生僻义未人工核对。</p>
+        <div><h4>其余义项</h4>${senses}${exam}
+          <p class="detail-note">当前义项已在卡片反馈里显示；这里只放其余义项。义项是从 ECDICT 机械切分的，生僻义未人工核对。</p>
         </div>
-        <div><h4>四种能力 · 只在这里展开</h4>${rows}
+        <div><h4>四种能力明细</h4>${rows}
           <p class="detail-note">${p.grad ? "这个词四项都稳，已毕业并永久移出冲刺池。" : "系统只按最弱项排下一题；你现在不用管另外三项。"}</p>
           <p class="detail-note">累计作答 ${p.seen || 0} 次 · 错题 ${wrongTotal(d.id)} 次</p>
         </div>
@@ -1043,7 +1266,7 @@ function doneHtml() {
   const scene = Q.mode === "scene";
   const canAgain = scene
     ? sceneWords(Q.sceneTitle).some(d => !isGrad(d.id) && needsMeaning(d))
-    : buildSprintQueue().ids.length > 0;
+    : buildTodayQueue().ids.length > 0;
   return `<div class="studycard donecard">
     <div class="eyebrow">${scene ? "场景练习" : "这一轮"}做完了</div>
     <div class="bignum">${n}<small>张</small></div>
@@ -1112,13 +1335,15 @@ function answer(val) {
     toast(q.d.w + " 四项都稳，已毕业，移出冲刺池");
   }
   Q.results.push({ id: q.d.id, kind: q.kind, ok: q.ok });
+  // 手动队列只服务今天这一轮；做过的词从今日手动队列移除，避免同一张卡再出现。
+  if (isManual(q.d.id)) removeManual(q.d.id);
   save();
 
   clearTimeout(ADVANCE_TIMER);
   render();
   ADVANCE_TIMER = setTimeout(() => {
     if (Q.active && Q.cur && Q.cur.answered) nextQ();
-  }, q.ok ? 1100 : 2000);
+  }, q.ok ? 2200 : 3200);
 }
 
 function nextQ() {
@@ -1328,8 +1553,9 @@ function diagOverview() {
   const examN = DATA.filter(d => d.exam).length;
   const sprintN = sprintPool().length;
   const dueN = sprintPool().filter(d => isDue(d.id)).length;
-  const newN = Math.max(0, SETTINGS.newLimit - todayNewCount());
-  const revN = Math.max(0, SETTINGS.reviewLimit - todayReviewCount());
+  const q = buildTodayQueue();
+  const newN = q.newTotal;
+  const revN = q.reviews.length;
 
   const abilityCards = ABILITIES.map(k => {
     const stable = Object.values(PROG).filter(p => p && (p[k] || 0) >= 2).length;
@@ -1342,8 +1568,7 @@ function diagOverview() {
       <div class="foot">练过 ${tested} · 不稳 ${lv1} · 错题 ${Object.values(PROG).reduce((a, p) => a + ((p.wrong && p.wrong[k]) || 0), 0)}</div></div>`;
   }).join("");
 
-  const q = buildSprintQueue();
-  const queueRows = [...q.reviews.map(d => ({ d, type: "到期" })), ...q.news.map(d => ({ d, type: "新词" }))]
+  const queueRows = [...q.manual.map(d => ({ d, type: "手动" })), ...q.reviews.map(d => ({ d, type: "到期" })), ...q.news.map(d => ({ d, type: "新词" }))]
     .slice(0, 40).map(({ d, type }) => `<div class="todo" style="display:flex;align-items:center;gap:10px;padding:8px 10px;border-bottom:1px solid var(--line2)">
       <span class="w" style="font-family:var(--serif);font-size:16px;min-width:110px">${esc(d.w)}</span>
       <span class="g" style="color:var(--tx2);font-size:12px;flex:1;min-width:100px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(d.gloss || "")}</span>
@@ -1383,11 +1608,11 @@ function diagOverview() {
     <p class="dsub">新词和复习分开限额，老词不挤占新词。场景练习也计入当天新词/复习。</p>
     <div class="settings">
       <div class="field"><label for="setNew">每日新词</label>
-        <select id="setNew" data-setting="newLimit">${[5, 6, 7, 8].map(n => `<option value="${n}" ${SETTINGS.newLimit === n ? "selected" : ""}>${n} 个</option>`).join("")}</select>
-        <span class="help">默认 6。基础一般时，6 个新词约 4–5 分钟。</span></div>
+        <input id="setNew" data-setting="newLimit" type="number" min="1" max="100" value="${SETTINGS.newLimit}">
+        <span class="help">1–100 任意整数，默认 6。学习页「今天学多少」读写同一个值。</span></div>
       <div class="field"><label for="setReview">每日复习</label>
-        <select id="setReview" data-setting="reviewLimit">${[10, 11, 12, 13, 14, 15].map(n => `<option value="${n}" ${SETTINGS.reviewLimit === n ? "selected" : ""}>${n} 个</option>`).join("")}</select>
-        <span class="help">默认 12。和 6 个新词合起来约 10–14 分钟。</span></div>
+        <input id="setReview" data-setting="reviewLimit" type="number" min="0" max="200" value="${SETTINGS.reviewLimit}">
+        <span class="help">0–200 任意整数，默认 12。和学习页共用同一个值。</span></div>
       <div class="field"><label for="setScene">场景单轮题量</label>
         <select id="setScene" data-setting="sceneBatch">${[6, 10, 15, 20].map(n => `<option value="${n}" ${SETTINGS.sceneBatch === n ? "selected" : ""}>${n} 张</option>`).join("")}</select>
         <span class="help">自主浏览场景时，一轮最多做几张。</span></div>
@@ -1396,9 +1621,9 @@ function diagOverview() {
 
   <div class="dsec">
     <h2>今天的队列</h2>
-    <p class="dsub">复习在前，新词在后。学习页只显示剩余数量，不把这个列表摊在首页。</p>
+    <p class="dsub">手动挑的在前，到期复习其次，系统新词最后。学习页只显示剩余数量，不把这个列表摊在首页。</p>
     ${queueRows || '<div class="empty">今天这一队已经清完。断两天回来也不会归零，到期词会按超期程度补上。</div>'}
-    ${q.reviews.length + q.news.length > 40 ? '<p style="font-size:11px;color:var(--tx3)">只显示前 40 条。</p>' : ""}
+    ${q.manual.length + q.reviews.length + q.news.length > 40 ? '<p style="font-size:11px;color:var(--tx3)">只显示前 40 条。</p>' : ""}
   </div>`;
 }
 
@@ -1752,13 +1977,14 @@ function exportLib() {
 function exportProg() {
   download("cet6-my-progress-0.2.json", {
     prog: PROG, history: HISTORY, sched: SCHED, log: LOG, my: MY, mywords: MYWORDS, settings: SETTINGS,
-    exportedAt: new Date().toISOString()
+    manual: MANUAL, exportedAt: new Date().toISOString()
   });
   toast("已导出个人进度、排程、日志和我的词库");
 }
 function clearProg() {
   if (!confirm("清空本机全部练习进度、错题、排程、日志和预测记录？自定义词条会保留。不可撤销。")) return;
   PROG = {}; HISTORY = []; SCHED = {}; LOG = {};
+  MANUAL = { day: dayKey(), ids: [], quick: [] };
   resetSession();
   save();
   render();
@@ -1772,6 +1998,7 @@ function importLibrary(obj) {
   const ids = new Set(DATA.map(d => d.id));
   MYWORDS.forEach(w => { w.custom = true; if (!ids.has(w.id)) { DATA.push(w); ids.add(w.id); } });
   LIB.limit = 30; LIB.q = ""; LIB.tag.clear(); LIB.st.clear(); CSV_IMPORT = null;
+  MANUAL = { day: dayKey(), ids: [], quick: [] };
   resetSession();
   rebuildPools();
   render();
@@ -1795,10 +2022,19 @@ function importProgress(obj) {
   }
   if (obj.settings) {
     const s = { ...DEFAULT_SETTINGS, ...obj.settings };
-    if (!(s.newLimit >= 5 && s.newLimit <= 8)) s.newLimit = DEFAULT_SETTINGS.newLimit;
-    if (!(s.reviewLimit >= 10 && s.reviewLimit <= 15)) s.reviewLimit = DEFAULT_SETTINGS.reviewLimit;
+    s.newLimit = clampNew(s.newLimit, DEFAULT_SETTINGS.newLimit);
+    s.reviewLimit = clampReview(s.reviewLimit, DEFAULT_SETTINGS.reviewLimit);
     if (![6, 10, 15, 20].includes(s.sceneBatch)) s.sceneBatch = DEFAULT_SETTINGS.sceneBatch;
     SETTINGS = s;
+  }
+  if (obj.manual && obj.manual.day === dayKey()) {
+    MANUAL = {
+      day: obj.manual.day,
+      ids: Array.isArray(obj.manual.ids) ? [...new Set(obj.manual.ids.filter(Boolean))] : [],
+      quick: Array.isArray(obj.manual.quick) ? [...new Set(obj.manual.quick.filter(Boolean))] : []
+    };
+  } else {
+    MANUAL = { day: dayKey(), ids: [], quick: [] };
   }
   CSV_IMPORT = null;
   seedLegacySchedule();
@@ -2029,6 +2265,7 @@ async function doLookup() {
   if (LOOKUP.loading) { toast("上一次还在查，稍等"); return; }
   LOOKUP.word = raw;
   LOOKUP.loading = true;
+  QL.pending = false;
   LOOKUP.data = null;
   LOOKUP.hits = findLocal(raw); // 本地先给一份，不让网络把整块区域占成空白
   LOOKUP.err = "";
@@ -2246,7 +2483,7 @@ function diagData() {
   const cet6 = DATA.filter(d => d.cet6).length;
   return `<div class="dsec">
     <h2>数据来源、许可与诚实声明</h2>
-    <p class="dsub">词库版本 ${esc(META.version)} · 页面 0.2 · ${DATA.length} 条 · 单文件离线</p>
+    <p class="dsub">词库版本 ${esc(META.version)} · 页面 0.3 · ${DATA.length} 条 · 单文件离线</p>
     <p>这一版没有生成任何释义、例句或搭配。所有内容来自下面两个开源仓库，加工只做了筛选、字段对齐和机械切分。</p>
     <div class="tablewrap"><table class="res-tbl"><thead><tr><th>来源</th><th>许可</th><th>用到了什么</th></tr></thead><tbody>
       ${META.sources.map(s => `<tr><td><a href="${safeUrl(s.url)}" target="_blank" rel="noopener">${esc(s.name)}</a></td><td>${esc(s.license)}</td><td>${esc(s.use)}</td></tr>`).join("")}
@@ -2265,7 +2502,7 @@ function diagData() {
 
   <div class="dsec">
     <h2>队列与限额</h2>
-    <p>简化 SM-2：做错 → 1 天后；四项全稳 → 30 天；任何一项掉到 0 → 1 天；其余按连续正确的倍数递增，封顶 30 天。队列按「超期程度 × 生疏程度」排序。每日新词默认 ${DEFAULT_SETTINGS.newLimit}、复习默认 ${DEFAULT_SETTINGS.reviewLimit}，分开限额；首页只显示剩余队列量，不显示「下次第几天」。诊断页保留未来 7 天预计到期。</p>
+    <p>简化 SM-2：做错 → 1 天后；四项全稳 → 30 天；任何一项掉到 0 → 1 天；其余按连续正确的倍数递增，封顶 30 天。队列按「超期程度 × 生疏程度」排序。每日新词默认 ${DEFAULT_SETTINGS.newLimit}、复习默认 ${DEFAULT_SETTINGS.reviewLimit}，可在学习页或诊断页调到 1–100 / 0–200；手动挑的今日队列计入新词额度。首页只显示剩余队列量，不显示「下次第几天」。诊断页保留未来 7 天预计到期。</p>
     <p style="font-size:11.5px;color:var(--tx3)">PROG 的字段和四种能力的记分逻辑没有改；排程只读 PROG 的四维档位，单独存 {间隔, 到期, 上次作答}，不写回 PROG。</p>
   </div>
 
@@ -2294,12 +2531,387 @@ function diagData() {
   </div>`;
 }
 
+/* ── 0.3 主页弹层 ───────────────────────────────────────── */
+function modalShell(title, body, foot, wide) {
+  return `<div class="modalback"><div class="modalpanel${wide ? " wide" : ""}">
+    <div class="modalhead"><h3>${esc(title)}</h3><button type="button" class="modalclose" data-act="modal-close" aria-label="关闭">✕</button></div>
+    ${body}
+    ${foot ? `<div class="modalfoot">${foot}</div>` : ""}
+  </div></div>`;
+}
+
+function renderModal() {
+  if (!MODAL) return "";
+  if (MODAL.type === "lookup") return quickLookupHtml();
+  if (MODAL.type === "limits") return limitsModalHtml();
+  if (MODAL.type === "manual") return manualModalHtml();
+  return "";
+}
+
+function closeModal() {
+  MODAL = null;
+  QL.pending = false;
+  render();
+}
+
+function openQuickLookup() {
+  MODAL = { type: "lookup" };
+  QL.pending = false;
+  render();
+  setTimeout(() => { const i = $("#lookupQ"); if (i) i.focus(); }, 60);
+}
+
+function openLimits() {
+  MODAL = { type: "limits" };
+  render();
+}
+
+function openManual() {
+  MODAL = { type: "manual" };
+  MANUAL_UI.q = "";
+  render();
+}
+
+/* 查词轻量入口：复用 LOOKUP / doLookup / 0.2 的解析与节流 */
+function quickLookupHtml() {
+  const d = LOOKUP.data;
+  let result = "";
+  if (LOOKUP.loading) {
+    result = '<div class="lookup-empty" style="margin-top:10px">查词中… 本地匹配先放在下面，联网结果到了再替换。</div>';
+  } else if (d) {
+    const phones = [d.phones && d.phones.uk ? `英 /${d.phones.uk}/` : "", d.phones && d.phones.us ? `美 /${d.phones.us}/` : ""].filter(Boolean).join(" · ");
+    const groups = (d.groups || []).map(g => `<div class="ydgroup"><span class="pos">${esc(g.pos || "释义")}</span><span class="items">${esc((g.items || []).join("；"))}</span></div>`).join("");
+    const tags = (d.tags || []).map(t => `<span class="bd blue">${esc(t)}</span>`).join("");
+    const bad = !d.canAdd && !d.truncated ? '<div class="warnbox"><b>原始字段解析异常，暂不支持加入。</b>这是数据源的问题，不是你的输入问题。</div>' : "";
+    const trunc = d.truncated ? '<div class="warnbox">这个兜底来源只返回截断释义，暂不支持加入，避免污染义项池。</div>' : "";
+    const source = LOOKUP.source === "jsonapi" ? "有道 jsonapi" : LOOKUP.source === "suggest" ? "有道 suggest（跨域兜底）" : "本地词库";
+    result = `<div class="ydcard">
+      <div class="ydhead"><span class="w">${esc(d.word || LOOKUP.word)}</span><span class="phone">${esc(phones)}</span></div>
+      <div class="ydtags">${tags}<span class="bd">来源：${esc(source)}</span></div>
+      ${groups || '<div class="lookup-empty">没有解析出可用的中文释义。</div>'}
+      ${(d.wfs || []).length ? `<div class="ydwfs">词形：${d.wfs.slice(0, 6).map(x => `${esc(x.name || "")} ${esc(x.value || "")}`).join(" · ")}</div>` : ""}
+      ${trunc}${bad}
+      ${d.canAdd ? (QL.pending
+        ? `<div class="quickactions">
+            <button type="button" class="primary" data-act="quick-now">现在练它</button>
+            <button type="button" class="ghostbtn" data-act="quick-store">放进我的词库</button>
+            <button type="button" class="textlink" data-act="quick-stage-back">先别加</button>
+          </div>`
+        : `<div class="quickactions"><button type="button" class="primary" data-act="quick-stage">加入我的词库</button></div>`)
+        : ""}
+    </div>`;
+  } else if (LOOKUP.status === "error" || LOOKUP.localMode) {
+    result = `<div class="warnbox">${esc(LOOKUP.err || "这次没查到，下面只搜本地词库。")}</div>`;
+  }
+
+  const hits = LOOKUP.hits.length ? `<div class="quicklocal">
+    <div class="libmeta" style="margin:0 0 4px">本地词库匹配 ${LOOKUP.hits.length} 条</div>
+    ${LOOKUP.hits.map(h => `<div class="localhit"><span class="w">${esc(h.w)}</span><span class="g">${esc(h.gloss || "")}</span>
+      <span class="mini-actions">
+        <button type="button" data-act="quick-local-now" data-id="${esc(h.id)}">现在练它</button>
+        <button type="button" data-act="quick-local-store" data-id="${esc(h.id)}">放进词库</button>
+      </span></div>`).join("")}
+  </div>` : "";
+
+  return modalShell("查词", `
+    <div class="searchbar"><input id="lookupQ" type="search" placeholder="输入英文单词，回车查" value="${esc(LOOKUP.word)}" autocomplete="off" spellcheck="false"><button type="button" data-act="lookup">查词</button></div>
+    <p class="modalnote">查到后先预览；加入时再选「现在练它」或「放进我的词库」。释义来自有道免费接口，仅限个人学习研究，控制频率。</p>
+    ${result}${hits}
+    ${!d && !LOOKUP.hits.length && !LOOKUP.loading ? '<div class="lookup-empty">输入一个词开始查。查不到时会只搜本地词库。</div>' : ""}
+  `);
+}
+
+function entryFromLookupData(d) {
+  const w = String(d.word || LOOKUP.word || "").trim();
+  if (!w) return null;
+  const existing = DATA.find(x => x.w.toLowerCase() === w.toLowerCase());
+  if (existing) {
+    if (!MY.includes(existing.id)) MY.push(existing.id);
+    return existing;
+  }
+  const gloss = (d.groups || []).flatMap(g => g.items || []).join("；");
+  if (!gloss) return null;
+  const e = buildCustomEntry(w, gloss, "有道 " + (LOOKUP.source === "jsonapi" ? "jsonapi" : "suggest"), d.tags || []);
+  e.ph = (d.phones && (d.phones.uk || d.phones.us)) || "";
+  e.senses = (d.groups || []).map(g => ({ pos: g.pos || "", items: (g.items || []).slice(0, 12) })).filter(s => s.items.length);
+  e.gloss = ((d.groups && d.groups[0] && d.groups[0].items && d.groups[0].items[0]) || e.gloss || "").slice(0, 40);
+  MYWORDS.push(e);
+  DATA.push(e);
+  MY.push(e.id);
+  rebuildPools();
+  return e;
+}
+
+function quickUseWord(d, mode) {
+  if (!d) return;
+  if (mode === "now" && answeredToday(d.id)) {
+    toast("这个词今天已经做过了");
+    return;
+  }
+  if (mode === "now" && isGrad(d.id)) {
+    toast("这个词已经四项全稳毕业，不再进今日队列");
+    return;
+  }
+  if (!MY.includes(d.id)) MY.push(d.id);
+  save();
+  if (mode === "store") {
+    save();
+    closeModal();
+    toast("已放进我的词库，可去场景词汇 → 我的词库练");
+    return;
+  }
+  const already = isManual(d.id);
+  if (!already && manualCapacityLeft() <= 0) {
+    toast("今日新词额度已满，先把已有的做掉，或点「今天学多少」调大额度");
+    return;
+  }
+  ensureManualDay();
+  addManual(d.id, true);
+  if (!MANUAL.quick.includes(d.id)) MANUAL.quick.push(d.id);
+  save();
+
+  if (Q.active && Q.mode === "sprint" && Q.i < Q.items.length) {
+    const wasAnswered = !!(Q.cur && Q.cur.answered);
+    const idx = Q.items.findIndex(x => x.id === d.id);
+    if (idx === Q.i) {
+      closeModal();
+      toast("这张就是它");
+      return;
+    }
+    if (idx > Q.i) {
+      const [it] = Q.items.splice(idx, 1);
+      Q.items.splice(Q.i + 1, 0, it);
+    } else if (idx === -1) {
+      Q.items.splice(Q.i + 1, 0, d);
+    }
+    MODAL = null; QL.pending = false;
+    render();
+    if (wasAnswered) setTimeout(() => { if (Q.active && Q.cur && Q.cur.answered) nextQ(); }, 30);
+    return;
+  }
+  if (Q.active && Q.mode === "scene") {
+    MODAL = null; QL.pending = false;
+    render();
+    toast("已加入今日冲刺队列，切到「六级冲刺池」就开始");
+    return;
+  }
+  MODAL = null; QL.pending = false;
+  startSession(false);
+}
+
+function quickCommit(mode) {
+  if (!LOOKUP.data || !LOOKUP.data.canAdd) { toast("这条预览暂不支持加入"); return; }
+  if (mode === "now") {
+    const w = String(LOOKUP.data.word || LOOKUP.word || "").trim();
+    const ex = DATA.find(x => x.w.toLowerCase() === w.toLowerCase());
+    if (ex && (isGrad(ex.id) || answeredToday(ex.id))) {
+      toast(isGrad(ex.id) ? "这个词已经毕业，不再进今日队列" : "这个词今天已经做过了");
+      return;
+    }
+    if (!(ex && isManual(ex.id)) && manualCapacityLeft() <= 0) {
+      toast("今日新词额度已满，先把已有的做掉，或点「今天学多少」调大额度");
+      return;
+    }
+  }
+  const e = entryFromLookupData(LOOKUP.data);
+  if (!e) { toast("没有可用的中文释义，暂不加入"); return; }
+  LOOKUP.data = null;
+  LOOKUP.status = "idle";
+  quickUseWord(e, mode);
+}
+
+function quickLocal(id, mode) {
+  const d = DATA.find(x => x.id === id);
+  if (!d) return;
+  if (!MY.includes(d.id)) MY.push(d.id);
+  quickUseWord(d, mode);
+}
+
+/* 今天学多少 */
+function limitsModalHtml() {
+  const newPresets = [6, 10, 15, 20, 30, 50];
+  const revPresets = [12, 20, 30, 50, 80];
+  const manualNow = manualIds().length;
+  const manualCap = Math.max(0, SETTINGS.newLimit - todayNewCount());
+  const over = manualNow > manualCap;
+  return modalShell("今天学多少", `
+    <div class="limitblock">
+      <h4>今日新词</h4>
+      <div class="limitpresets">${newPresets.map(n => `<button type="button" class="limitbtn ${SETTINGS.newLimit === n ? "on" : ""}" data-act="limit-new" data-v="${n}">${n}</button>`).join("")}</div>
+      <div class="customrow"><span>自定义</span><input id="customNew" type="number" min="1" max="100" value="${SETTINGS.newLimit}" inputmode="numeric"><span>1–100</span>
+        <button type="button" data-act="limit-apply">应用</button></div>
+    </div>
+    <div class="limitblock">
+      <h4>今日复习</h4>
+      <div class="limitpresets">${revPresets.map(n => `<button type="button" class="limitbtn ${SETTINGS.reviewLimit === n ? "on" : ""}" data-act="limit-review" data-v="${n}">${n}</button>`).join("")}</div>
+      <div class="customrow"><span>自定义</span><input id="customReview" type="number" min="0" max="200" value="${SETTINGS.reviewLimit}" inputmode="numeric"><span>0–200</span>
+        <button type="button" data-act="limit-apply">应用自定义</button></div>
+    </div>
+    ${over ? `<div class="limitwarn">今日手动队列已有 ${manualNow} 个词，超过当前新词额度；超出的部分不会进入今日队列。</div>` : ""}
+    <p class="modalnote">量设得大，单轮会更长，但调度逻辑不变，做错的词仍然会提前回来。</p>
+  `);
+}
+
+function setLimit(kind, v) {
+  if (kind === "newLimit") SETTINGS.newLimit = clampNew(v, SETTINGS.newLimit);
+  else if (kind === "reviewLimit") SETTINGS.reviewLimit = clampReview(v, SETTINGS.reviewLimit);
+  save();
+  render();
+  toast(kind === "newLimit" ? "今日新词：" + SETTINGS.newLimit : "今日复习：" + SETTINGS.reviewLimit);
+}
+
+function applyCustomLimits() {
+  const n = $("#customNew"), r = $("#customReview");
+  if (n && n.value !== "") SETTINGS.newLimit = clampNew(n.value, SETTINGS.newLimit);
+  if (r && r.value !== "") SETTINGS.reviewLimit = clampReview(r.value, SETTINGS.reviewLimit);
+  save();
+  render();
+  toast("已保存：" + SETTINGS.newLimit + " 新词 / " + SETTINGS.reviewLimit + " 复习");
+}
+
+/* 挑今天要学的词 */
+function manualCandidates() {
+  ensureManualDay();
+  const now = Date.now();
+  const q = MANUAL_UI.q.trim().toLowerCase();
+  return DATA.filter(d => (isSprintWord(d) || isMy(d.id)) && needsMeaning(d) && !isDue(d.id, now) && !answeredToday(d.id))
+    .filter(d => MANUAL_UI.onlyUngrad ? !isGrad(d.id) : true)
+    .filter(d => {
+      if (!q) return true;
+      const hay = [d.w, d.gloss, (d.senses || []).map(s => (s.items || []).join(" ")).join(" ")].join(" ").toLowerCase();
+      return hay.includes(q);
+    })
+    .sort((a, b) => dynamicPri(b) - dynamicPri(a));
+}
+
+function manualModalHtml() {
+  ensureManualDay();
+  const list = manualCandidates();
+  const show = list.slice(0, 80);
+  const selected = manualIds();
+  const room = manualCapacityLeft();
+  const cap = Math.max(0, SETTINGS.newLimit - todayNewCount());
+  const over = selected.length > cap;
+  const rows = show.map(d => {
+    const checked = selected.includes(d.id);
+    const disabled = !checked && (isGrad(d.id) || room <= 0);
+    const badges = [
+      d.custom ? '<span class="bd blue">自定义</span>' : "",
+      isGrad(d.id) ? '<span class="bd">已毕业</span>' : "",
+      isMy(d.id) && !d.custom ? '<span class="bd blue">我的词库</span>' : ""
+    ].filter(Boolean).join("");
+    return `<label class="manualrow ${disabled ? "disabled" : ""}">
+      <input type="checkbox" data-manual-id="${esc(d.id)}" ${checked ? "checked" : ""} ${disabled ? "disabled" : ""}>
+      <span class="w">${esc(d.w)}</span><span class="g">${esc(d.gloss || "")}</span>${badges}
+    </label>`;
+  }).join("");
+  return modalShell("挑今天要学的词", `
+    <div class="searchbar"><input id="manualQ" type="search" placeholder="搜单词 / 释义…" value="${esc(MANUAL_UI.q)}" autocomplete="off"><button type="button" data-act="manual-clear">清空</button></div>
+    <label class="switch" style="margin:2px 0 8px"><input type="checkbox" id="manualOnly" ${MANUAL_UI.onlyUngrad ? "checked" : ""}>只看未毕业</label>
+    <div class="manualmeta"><span>已勾 <b>${selected.length}</b> 个 / 今日新词额度 <b>${SETTINGS.newLimit}</b></span>
+      <span>·</span><span>今日已学 <b>${todayNewCount()}</b>，还可选 <b>${room}</b></span>
+    </div>
+    ${over ? '<div class="limitwarn">超出额度，超出部分不会进今日队列。</div>' : (room <= 0 ? '<div class="limitwarn">今日新词额度已满，先做掉几个或把额度调大。</div>' : "")}
+    <div class="manuallist">${rows || '<div class="manualempty">没有匹配的词。</div>'}</div>
+    <p class="modalnote">${list.length > show.length ? `只显示前 ${show.length} 个，用搜索缩小范围。` : ""}手动挑的词计入今日新词额度；已到期的复习词不在这里，仍由系统复习队列安排。</p>
+    <input type="file" id="manualFile" class="manualfile" accept=".csv,.txt,text/plain,text/csv">
+    <div class="modalfoot">
+      <button type="button" class="ghostbtn" data-act="manual-import">从文件导入今日词表</button>
+      <span class="spacer"></span>
+      <button type="button" class="primary" style="min-height:36px;padding:0 16px;font-size:12.5px" data-act="modal-close">完成</button>
+    </div>
+  `, "", true);
+}
+
+function toggleManual(id) {
+  const list = document.querySelector(".manuallist");
+  const scrollTop = list ? list.scrollTop : 0;
+  if (isManual(id)) {
+    removeManual(id); save(); render();
+    const after = document.querySelector(".manuallist"); if (after) after.scrollTop = scrollTop;
+    return;
+  }
+  const d = DATA.find(x => x.id === id);
+  if (!d) return;
+  if (answeredToday(id)) { toast("这个词今天已经做过了"); return; }
+  if (isGrad(id)) { toast("这个词已经四项全稳毕业，不再进新词队列"); return; }
+  if (manualCapacityLeft() <= 0) { toast("今日新词额度已满，先做掉几个或把额度调大"); return; }
+  addManual(id, false);
+  save();
+  render();
+  const after = document.querySelector(".manuallist"); if (after) after.scrollTop = scrollTop;
+}
+
+function decodeBuffer(buf) {
+  let text = new TextDecoder("utf-8").decode(buf);
+  if (text.includes("\uFFFD")) {
+    try {
+      const gbk = new TextDecoder("gbk").decode(buf);
+      if (!gbk.includes("\uFFFD")) text = gbk;
+    } catch (e) {}
+  }
+  return text;
+}
+
+function importManualText(text, label) {
+  const parsed = parseCsvText(text, label);
+  const wc = parsed.mapping.w, gc = parsed.mapping.g;
+  if (wc < 0) { toast("没有找到单词列"); return; }
+  let accepted = 0, overflow = 0, missing = 0, due = 0, dup = 0;
+  let room = manualCapacityLeft();
+  parsed.rows.forEach(row => {
+    const n = normalizeRow(row[wc], gc >= 0 ? row[gc] : "");
+    if (!n.w) return;
+    let d = DATA.find(x => x.w.toLowerCase() === n.w.toLowerCase());
+    if (d) {
+      if (answeredToday(d.id) || isGrad(d.id) || isDue(d.id)) { due++; return; }
+    } else {
+      if (!n.g) { missing++; return; }
+      d = buildCustomEntry(n.w, n.g, "文件导入", ["我的词库"]);
+      MYWORDS.push(d);
+      DATA.push(d);
+      MY.push(d.id);
+      rebuildPools();
+    }
+    if (isManual(d.id)) { dup++; return; }
+    if (room > 0) {
+      addManual(d.id, false);
+      accepted++;
+      room--;
+    } else {
+      overflow++;
+      if (!MY.includes(d.id)) MY.push(d.id);
+    }
+  });
+  save();
+  render();
+  let msg = `导入 ${parsed.rows.length} 个词`;
+  if (accepted) msg += `，今日额度收下 ${accepted} 个`;
+  if (overflow) msg += `，剩下 ${overflow} 个放进我的词库，明天再学`;
+  if (missing) msg += `，${missing} 个缺释义未进队列`;
+  if (due) msg += `，${due} 个到期/已毕业词由系统队列处理`;
+  if (dup) msg += `，${dup} 个已在今日队列`;
+  toast(msg);
+}
+
+function handleManualFile(file) {
+  if (!file) return;
+  const r = new FileReader();
+  r.onload = () => {
+    try { importManualText(decodeBuffer(r.result), file.name); }
+    catch (err) { toast("读取失败：" + err.message); }
+  };
+  r.readAsArrayBuffer(file);
+}
+
 /* ── 顶栏 / 路由 ────────────────────────────────────────── */
 function updateTopbar() {
   const boards = $("#boards");
   const diagBtn = $("#diagBtn");
   const isDiag = MODE === "diag";
   if (boards) boards.hidden = isDiag;
+  const quick = $("#quickLookupBtn");
+  if (quick) quick.hidden = isDiag;
   if (diagBtn) diagBtn.innerHTML = isDiag ? "← 返回学习" : '<span class="dotmark"></span>诊断';
   document.body.classList.toggle("diagmode", isDiag);
   document.querySelectorAll(".board").forEach(b => b.classList.toggle("on", b.dataset.board === BOARD));
@@ -2310,17 +2922,20 @@ function render() {
   updateTopbar();
   const app = $("#app");
   if (!app) return;
-  if (MODE === "diag") app.innerHTML = renderDiag();
+  let html = "";
+  if (MODE === "diag") html = renderDiag();
   else if (BOARD === "scene") {
     if (Q.active && Q.mode === "scene" && Q.board === "scene") {
-      app.innerHTML = `<div class="study">${Q.i >= Q.items.length ? doneHtml() : quizHtml()}</div>`;
+      html = `<div class="study">${Q.i >= Q.items.length ? doneHtml() : quizHtml()}</div>`;
     } else {
-      app.innerHTML = renderScene();
+      html = renderScene();
     }
   }
-  else app.innerHTML = renderStudy();
+  else html = renderStudy();
+  app.innerHTML = html + (MODAL ? renderModal() : "");
+  document.body.classList.toggle("modal-open", !!MODAL);
   bindDynamic();
-  if (MODE === "study" && Q.active && Q.cur && !Q.cur.answered) {
+  if (MODE === "study" && !MODAL && Q.active && Q.cur && !Q.cur.answered) {
     if (Q.cur.kind === "write") {
       setTimeout(() => {
         const t = $("#typeIn");
@@ -2330,8 +2945,6 @@ function render() {
           if (innerWidth < 680) t.scrollIntoView({ block: "center", behavior: "smooth" });
         }
       }, 60);
-    } else if (Q.cur.kind === "listen") {
-      setTimeout(() => { if (Q.active && Q.cur && Q.cur.kind === "listen" && !Q.cur.answered) speak(Q.cur.d.w); }, 350);
     }
   }
 }
@@ -2347,6 +2960,7 @@ function setBoard(b) {
 }
 
 function toggleDiag() {
+  MODAL = null;
   if (MODE === "diag") {
     MODE = "study";
     render();
@@ -2380,11 +2994,13 @@ function removeMy(id) {
     DATA = DATA.filter(x => x.id !== id);
     MYWORDS = MYWORDS.filter(x => x.id !== id);
     MY = MY.filter(x => x !== id);
+    removeManual(id);
     delete SCHED[id];
     if (Q.cur && Q.cur.d && Q.cur.d.id === id) Q.cur = null;
     rebuildPools();
   } else {
     MY = MY.filter(x => x !== id);
+    if (isManual(id)) removeManual(id);
   }
   save();
   render();
@@ -2405,6 +3021,21 @@ function onAppClick(e) {
     case "opt": answer(el.dataset.opt); break;
     case "speak": if (Q.cur) speak(Q.cur.d.w); break;
     case "add": addCurrent(); break;
+    case "modal-close": closeModal(); break;
+    case "limits-open": openLimits(); break;
+    case "manual-open": openManual(); break;
+    case "limit-new": setLimit("newLimit", parseInt(el.dataset.v, 10)); break;
+    case "limit-review": setLimit("reviewLimit", parseInt(el.dataset.v, 10)); break;
+    case "limit-apply": applyCustomLimits(); break;
+    case "manual-clear": MANUAL_UI.q = ""; render(); break;
+    case "manual-import": { const f = $("#manualFile"); if (f) f.click(); break; }
+    case "quick-open": openQuickLookup(); break;
+    case "quick-stage": QL.pending = true; render(); break;
+    case "quick-stage-back": QL.pending = false; render(); break;
+    case "quick-now": quickCommit("now"); break;
+    case "quick-store": quickCommit("store"); break;
+    case "quick-local-now": quickLocal(el.dataset.id, "now"); break;
+    case "quick-local-store": quickLocal(el.dataset.id, "store"); break;
     case "go-scene": setBoard("scene"); break;
     case "go-diag": MODE = "diag"; DIAG_TAB = "overview"; render(); window.scrollTo({ top: 0, behavior: "smooth" }); break;
     case "go-predict": MODE = "diag"; DIAG_TAB = "predict"; render(); window.scrollTo({ top: 0, behavior: "smooth" }); break;
@@ -2464,13 +3095,21 @@ function onAppChange(e) {
   if (t.matches("[data-setting]")) {
     const k = t.dataset.setting;
     const v = parseInt(t.value, 10);
-    if (k === "newLimit" && v >= 5 && v <= 8) SETTINGS.newLimit = v;
-    else if (k === "reviewLimit" && v >= 10 && v <= 15) SETTINGS.reviewLimit = v;
+    if (k === "newLimit") SETTINGS.newLimit = clampNew(v, SETTINGS.newLimit);
+    else if (k === "reviewLimit") SETTINGS.reviewLimit = clampReview(v, SETTINGS.reviewLimit);
     else if (k === "sceneBatch" && [6, 10, 15, 20].includes(v)) SETTINGS.sceneBatch = v;
     save(); render(); toast("已保存");
     return;
   }
   if (t.id === "basicOnly") { SCENE.basicOnly = t.checked; render(); return; }
+  if (t.id === "manualOnly") { MANUAL_UI.onlyUngrad = t.checked; render(); return; }
+  if (t.matches("[data-manual-id]")) { toggleManual(t.dataset.manualId); return; }
+  if (t.id === "manualFile" && t.files && t.files[0]) {
+    const f = t.files[0];
+    handleManualFile(f);
+    t.value = "";
+    return;
+  }
   if (t.matches("[data-csvmap]") && CSV_IMPORT) {
     const k = t.dataset.csvmap;
     CSV_IMPORT.mapping[k] = parseInt(t.value, 10);
@@ -2539,6 +3178,17 @@ function onAppInput(e) {
       const el = $("#libQ");
       if (el) { el.focus(); el.setSelectionRange(el.value.length, el.value.length); }
     }, 180);
+    return;
+  }
+  if (t.id === "manualQ") {
+    clearTimeout(MANUAL_UI._t);
+    MANUAL_UI._t = setTimeout(() => {
+      if (t !== document.getElementById("manualQ")) return;
+      MANUAL_UI.q = t.value;
+      render();
+      const el = $("#manualQ");
+      if (el) { el.focus(); el.setSelectionRange(el.value.length, el.value.length); }
+    }, 160);
   }
 }
 
@@ -2554,6 +3204,14 @@ function onAppKeydown(e) {
   if (t.id === "lookupQ" && e.key === "Enter") { e.preventDefault(); doLookup(); return; }
   if (t.id === "libQ" && e.key === "Enter") {
     e.preventDefault(); LIB.q = t.value; LIB.limit = 30; render();
+    return;
+  }
+  if (t.id === "manualQ" && e.key === "Enter") {
+    e.preventDefault(); MANUAL_UI.q = t.value; render();
+    return;
+  }
+  if ((t.id === "customNew" || t.id === "customReview") && e.key === "Enter") {
+    e.preventDefault(); applyCustomLimits();
   }
 }
 
@@ -2586,6 +3244,8 @@ function init() {
     try { localStorage.setItem("kb-theme", n); } catch (e) {}
   });
   $("#diagBtn").addEventListener("click", toggleDiag);
+  $("#quickLookupBtn").addEventListener("click", openQuickLookup);
+  document.addEventListener("keydown", e => { if (e.key === "Escape" && MODAL) closeModal(); });
   document.querySelectorAll("#boards .board").forEach(b => b.addEventListener("click", () => setBoard(b.dataset.board)));
   render();
 }
